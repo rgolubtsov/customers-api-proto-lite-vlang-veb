@@ -1,52 +1,17 @@
-# Prerequisites
-*.d
+#
+# .gitignore
+# =============================================================================
+# Customers API Lite microservice prototype (V port). Version 0.0.1
+# =============================================================================
+# A daemon written in V (vlang/veb), designed and intended to be run
+# as a microservice, implementing a special Customers API prototype
+# with a smart yet simplified data scheme.
+#
+# This is the configuration of the project Git ignorables,
+# i.e. objects that should not be put into the repository.
+#
 
-# Object files
+# === Object files ============================================================
 *.o
-*.ko
-*.obj
-*.elf
 
-# Linker output
-*.ilk
-*.map
-*.exp
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
-
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
-
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+# vim:set nu et ts=4 sw=4:
