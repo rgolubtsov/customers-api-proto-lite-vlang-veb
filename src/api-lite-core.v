@@ -1,5 +1,5 @@
 /*
- * src/main.v
+ * src/api-lite-core.v
  * ============================================================================
  * Customers API Lite microservice prototype (V port). Version 0.0.1
  * ============================================================================
@@ -14,42 +14,49 @@
 
 module main
 
-import vweb
-import databases
-import os
+//import vweb
+//import databases
+//import os
 
-const port = 8765
+//const port = 8765
 
-struct App {
+/*struct App {
     vweb.Context
-}
+}*/
 
-pub fn (app App) before_request() {
+/*pub fn (app App) before_request() {
     println('[web] before_request: ${app.req.method} ${app.req.url}')
-}
+}*/
 
+/**
+ * The microservice entry point.
+ *
+ * @returns The exit code of the overall termination of the daemon.
+ */
 fn main() {
-    mut db := databases.create_db_connection() or { panic(err) }
+    println('[Customers API Lite]')
 
-    sql db {
+//  mut db := databases.create_db_connection() or { panic(err) }
+
+/*  sql db {
         create table User
         create table Product
-    } or { panic('error on create table: ${err}') }
+    } or { panic('error on create table: ${err}') }*/
 
-    db.close() or { panic(err) }
+//  db.close() or { panic(err) }
 
-    mut app := &App{}
+/*  mut app := &App{}
     app.serve_static('/favicon.ico', 'src/assets/favicon.ico')
     // makes all static files available.
-    app.mount_static_folder_at(os.resource_abs_path('.'), '/')
+    app.mount_static_folder_at(os.resource_abs_path('.'), '/')*/
 
-    vweb.run(app, port)
+//  vweb.run(app, port)
 }
 
-pub fn (mut app App) index() vweb.Result {
+/*pub fn (mut app App) index() vweb.Result {
     title := 'vweb app'
 
     return $vweb.html()
-}
+}*/
 
 // vim:set nu et ts=4 sw=4:
