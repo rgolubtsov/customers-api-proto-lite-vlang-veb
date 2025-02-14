@@ -1,4 +1,4 @@
-# Customers API Lite microservice prototype :small_orange_diamond: <img src="https://vlang.io/img/v-logo.png" style="border:0;width:32px" alt="V" /> (V port)
+# Customers API Lite microservice prototype :small_orange_diamond: <img src="https://vlang.io/img/v-logo.png" style="border:0;width:32px" alt="V" />
 
 **A daemon written in V (vlang/veb), designed and intended to be run as a microservice,
 <br />implementing a special Customers API prototype with a smart yet simplified data scheme**
