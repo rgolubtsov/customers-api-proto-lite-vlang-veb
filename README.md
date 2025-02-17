@@ -64,7 +64,10 @@ V 0.4.9 3953445
 **Build** the microservice using the **V frontend**:
 
 ```
-$ v -o api-lited .
+$ if [ ! -d bin ]; then \
+      mkdir bin; \
+  fi && \
+  v -o bin/api-lited .
 ```
 
 ## Running
@@ -72,7 +75,7 @@ $ v -o api-lited .
 **Run** the microservice using its executable directly, built previously by the V frontend:
 
 ```
-$ ./api-lited; echo $?
+$ ./bin/api-lited; echo $?
 ...
 ```
 
