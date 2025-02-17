@@ -10,7 +10,7 @@
  * (See the LICENSE file at the top of the source tree.)
  */
 
-// The main module of the daemon ----------------------------------------------
+// The main module of the daemon and the entry point --------------------------
 
 module main
 
@@ -28,11 +28,9 @@ module main
     println('[web] before_request: ${app.req.method} ${app.req.url}')
 }*/
 
-/**
- * The microservice entry point.
- *
- * @returns The exit code of the overall termination of the daemon.
- */
+// main The microservice entry point.
+//
+// @returns The exit code of the overall termination of the daemon.
 fn main() {
     println('[Customers API Lite]')
 
