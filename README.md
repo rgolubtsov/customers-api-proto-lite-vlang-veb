@@ -70,9 +70,18 @@ $ if [ ! -d bin ]; then \
   v -o bin/api-lited .
 ```
 
+Or **build** the microservice using **GNU Make** (optional, but for convenience &mdash; it covers the same **V frontend** build workflow under the hood):
+
+```
+$ make clean
+...
+$ make all  # <== Building the daemon.
+...
+```
+
 ## Running
 
-**Run** the microservice using its executable directly, built previously by the V frontend:
+**Run** the microservice using its executable directly, built previously by the V frontend or GNU Make's `all` target:
 
 ```
 $ ./bin/api-lited; echo $?
