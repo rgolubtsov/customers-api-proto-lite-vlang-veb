@@ -33,14 +33,45 @@ Surely, one may consider this project to be suitable for a wide variety of appli
 
 ## Building
 
-The microservice might be built and run successfully under **Arch Linux** (proven). &mdash; First install the necessary dependencies (`base-devel`, `tcc`, `docker`):
+The microservice might be built and run successfully under **Ubuntu Server (Ubuntu 24.04.2 LTS x86-64)** and **Arch Linux** (both proven). &mdash; First install the necessary dependencies (`build-essential`, `tcc`, `docker.io`):
+
+* In Ubuntu Server:
+
+```
+$ sudo apt-get update && \
+  sudo apt-get install build-essential tcc docker.io -y
+...
+```
+
+* In Arch Linux:
 
 ```
 $ sudo pacman -Syu base-devel tcc docker
 ...
 ```
 
-The V distribution should be installed from the AUR (Arch User Repository) since it is not yet added to the official Arch Linux repositories. For that to be done, simply download a snapshot of the V AUR-package, unpack it and do build/install it system-wide:
+The V distribution should be installed separately:
+
+* In Ubuntu Server:
+
+```
+$ curl -LOk https://github.com/vlang/v/releases/latest/download/v_linux.zip
+...
+$
+$ unzip v_linux.zip
+...
+```
+
+Then it needs to add V to the `PATH` environment variable to make it accessible system-wide &mdash; edit the `.profile` config so that it will contain reference to the `v/` directory, something like the following (and do relogin after that):
+
+```
+$ cat .profile
+...
+PATH="$HOME/bin:$HOME/.local/bin:$HOME/v:$PATH"
+...
+```
+
+* In Arch Linux &mdash; from the AUR (Arch User Repository) since it is not yet added to the official Arch Linux repositories. For that to be done, simply download a snapshot of the V AUR-package, unpack it and do build/install it system-wide:
 
 ```
 $ mkdir -p aur/build && cd aur/build/
@@ -60,6 +91,8 @@ Then V can be invoked from anywhere just like system default C compiler:
 $ v --version
 V 0.4.9 3953445
 ```
+
+---
 
 **Build** the microservice using the **V frontend**:
 
