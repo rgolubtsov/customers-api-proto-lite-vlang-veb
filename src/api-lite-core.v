@@ -38,13 +38,6 @@ fn main() {
 
     // Starting up the bundled web server.
     veb.run[CustomersApiLiteApp, RequestContext](mut app, server_port)
-
-//  mut db := databases.create_db_connection() or { panic(err) }
-//  sql db {
-//      create table User
-//      create table Product
-//  } or { panic('error on create table: ${err}') }
-//  db.close() or { panic(err) }
 }
 
 // vim:set nu et ts=4 sw=4:
