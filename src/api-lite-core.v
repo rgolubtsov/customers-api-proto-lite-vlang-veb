@@ -18,7 +18,7 @@ import veb
 
 // CustomersApiLiteApp The struct containing data that are shared between
 // different routes.
-struct CustomersApiLiteApp {}
+pub struct CustomersApiLiteApp {}
 
 // RequestContext The struct containing data that are specific to each request.
 struct RequestContext {
