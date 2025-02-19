@@ -14,7 +14,12 @@
 
 module main
 
+import toml
 import veb
+
+// Helper constants.
+const o_bracket = '['
+const c_bracket = ']'
 
 // CustomersApiLiteApp The struct containing data that are shared between
 // different routes.
@@ -25,19 +30,34 @@ struct RequestContext {
     veb.Context
 }
 
-// server_port The port number used to run the bundled web server.
-const server_port = 8765
-
 // main The microservice entry point.
 //
 // @returns The exit code of the overall termination of the daemon.
 fn main() {
-    println('[Customers API Lite]')
+    // Getting the daemon settings.
+    settings := get_settings()
+
+    daemon_name := settings.value('daemon.name').string()
+
+    // Getting the port number used to run the bundled web server.
+    server_port := settings.value('server.port').int()
+
+    // Identifying whether debug logging is enabled.
+    dbg := settings.value('logger.debug.enabled').bool()
+
+    println(o_bracket +    daemon_name   + c_bracket)
+    println(o_bracket + '${server_port}' + c_bracket)
+    println(o_bracket + '${dbg        }' + c_bracket)
 
     mut app := &CustomersApiLiteApp{}
 
     // Starting up the bundled web server.
     veb.run[CustomersApiLiteApp, RequestContext](mut app, server_port)
+}
+
+// get_settings Helper function. Used to get the daemon settings.
+fn get_settings() toml.Doc {
+    return toml.parse_file('./etc/settings.conf') or { panic(err) }
 }
 
 // vim:set nu et ts=4 sw=4:
