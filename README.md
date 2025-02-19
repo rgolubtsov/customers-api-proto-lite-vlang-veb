@@ -118,9 +118,7 @@ $ make all  # <== Building the daemon.
 
 ```
 $ ./bin/api-lited; echo $?
-[Customers API Lite]
-[8765]
-[false]
+[2025-02-19][19:35:10] [DEBUG] [Customers API Lite]
 [veb] Running app on http://localhost:8765/
 ```
 
