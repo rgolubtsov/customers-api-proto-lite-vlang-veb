@@ -124,4 +124,21 @@ $ ./bin/api-lited; echo $?
 [veb] Running app on http://localhost:8765/
 ```
 
+Thus, from now on it is already possible to send HTTP requests to the running daemon:
+
+```
+$ curl -v http://localhost:8765
+...
+> GET / HTTP/1.1
+...
+< HTTP/1.1 404 Not Found
+< Content-Type: text/plain
+< Content-Length: 13
+< Server: veb
+...
+404 Not Found
+```
+
+---
+
 **TBD** :dvd:
