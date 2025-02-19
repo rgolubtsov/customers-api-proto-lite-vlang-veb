@@ -14,16 +14,36 @@
 
 module main
 
-import toml
 import veb
+import toml
+import log
+import os
 
 // Helper constants.
 const o_bracket = '['
 const c_bracket = ']'
 
+// settings_ The path and filename of the daemon settings.
+const settings_ = './etc/settings.conf'
+
+// Daemon settings key for the microservice daemon name.
+const daemon_name_ = 'daemon.name'
+
+// Daemon settings key for the server port number.
+const server_port_ = 'server.port'
+
+// Daemon settings key for the debug logging enabler.
+const log_enabled_ = 'logger.debug.enabled'
+
+const log_dir_ = './log_/'
+const logfile_ = 'customers-api-lite.log'
+const logtime_ = '[YYYY-MM-DD][HH:mm:ss]'
+
 // CustomersApiLiteApp The struct containing data that are shared between
 // different routes.
-pub struct CustomersApiLiteApp {}
+pub struct CustomersApiLiteApp {
+    logger log.Log
+}
 
 // RequestContext The struct containing data that are specific to each request.
 struct RequestContext {
@@ -37,27 +57,45 @@ fn main() {
     // Getting the daemon settings.
     settings := get_settings()
 
-    daemon_name := settings.value('daemon.name').string()
+    daemon_name := settings.value(daemon_name_).string()
 
     // Getting the port number used to run the bundled web server.
-    server_port := settings.value('server.port').int()
+    server_port := settings.value(server_port_).int()
 
     // Identifying whether debug logging is enabled.
-    dbg := settings.value('logger.debug.enabled').bool()
+    dbg := settings.value(log_enabled_).bool()
 
-    println(o_bracket +    daemon_name   + c_bracket)
-    println(o_bracket + '${server_port}' + c_bracket)
-    println(o_bracket + '${dbg        }' + c_bracket)
+    // Creating and configuring the main logger of the daemon.
+    mut l := log.Log{}
 
-    mut app := &CustomersApiLiteApp{}
+    // Suppressing the following temporary service message:
+    // NOTE: the `log.Log` output goes to stderr now by default, not to stdout.
+    l.set_output_stream(os.stderr())
+
+    if !os.exists(log_dir_) { os.mkdir(log_dir_, os.MkdirParams{})! }
+
+    l.set_custom_time_format(logtime_)
+    l.set_always_flush(true)
+    l.set_full_logpath(log_dir_ + logfile_)
+    l.log_to_console_too()
+
+    if dbg { l.set_level(.debug) }
+
+    l.debug(o_bracket + daemon_name + c_bracket)
+
+    mut app := &CustomersApiLiteApp{
+        logger: l
+    }
 
     // Starting up the bundled web server.
     veb.run[CustomersApiLiteApp, RequestContext](mut app, server_port)
+
+    l.close()
 }
 
 // get_settings Helper function. Used to get the daemon settings.
 fn get_settings() toml.Doc {
-    return toml.parse_file('./etc/settings.conf') or { panic(err) }
+    return toml.parse_file(settings_) or { panic(err) }
 }
 
 // vim:set nu et ts=4 sw=4:
