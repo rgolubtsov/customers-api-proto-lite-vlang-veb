@@ -1,7 +1,7 @@
 --
 -- data/sql/01-create-and-populate-table-customers.sql
 -- ============================================================================
--- Customers API Lite microservice prototype (V port). Version 0.0.8
+-- Customers API Lite microservice prototype (V port). Version 0.0.9
 -- ============================================================================
 -- A daemon written in V (vlang/veb), designed and intended to be run
 -- as a microservice, implementing a special Customers API prototype
