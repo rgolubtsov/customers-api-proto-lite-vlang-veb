@@ -1,7 +1,7 @@
 /*
  * src/api-lite-core.v
  * ============================================================================
- * Customers API Lite microservice prototype (V port). Version 0.0.7
+ * Customers API Lite microservice prototype (V port). Version 0.0.8
  * ============================================================================
  * A daemon written in V (vlang/veb), designed and intended to be run
  * as a microservice, implementing a special Customers API prototype
@@ -19,9 +19,12 @@ import toml
 import log
 import os
 
+import vseryakov.syslog as s
+
 // Helper constants.
-const o_bracket = '['
-const c_bracket = ']'
+const empty_string =  ''
+const o_bracket    = '['
+const c_bracket    = ']'
 
 // settings_ The path and filename of the daemon settings.
 const settings_ = './etc/settings.conf'
@@ -55,7 +58,7 @@ struct RequestContext {
 // @returns The exit code of the overall termination of the daemon.
 fn main() {
     // Getting the daemon settings.
-    settings := get_settings()
+    settings := get_settings_()
 
     daemon_name := settings.value(daemon_name_).string()
 
@@ -79,9 +82,13 @@ fn main() {
     l.set_full_logpath(log_dir_ + logfile_)
     l.log_to_console_too()
 
-    if dbg { l.set_level(.debug) }
+    // Opening the system logger.
+    // Calling <syslog.h> openlog(NULL, LOG_CONS | LOG_PID, LOG_DAEMON);
+    s.open(empty_string, s.log_cons | s.log_pid, s.log_daemon)
 
-    l.debug(o_bracket + daemon_name + c_bracket)
+//  if dbg { l.set_level(.debug) }
+
+    dbg_(dbg, mut l, o_bracket + daemon_name + c_bracket)
 
     mut app := &CustomersApiLiteApp{
         logger: l
@@ -91,11 +98,23 @@ fn main() {
     veb.run[CustomersApiLiteApp, RequestContext](mut app, server_port)
 
     l.close()
+
+    // Closing the system logger.
+    // Calling <syslog.h> closelog();
+    s.close()
 }
 
-// get_settings Helper function. Used to get the daemon settings.
-fn get_settings() toml.Doc {
+// get_settings_ Helper function. Used to get the daemon settings.
+fn get_settings_() toml.Doc {
     return toml.parse_file(settings_) or { panic(err) }
+}
+
+// dbg_ Helper func. Used to log messages for debugging aims in a free form.
+fn dbg_(dbg bool, mut l log.Log, message string) {
+    if dbg {
+        l.debug(message);
+        s.debug(message);
+    }
 }
 
 // vim:set nu et ts=4 sw=4:
