@@ -14,8 +14,9 @@
 
 module helper
 
-import toml
 import log
+import veb
+import toml
 
 import vseryakov.syslog as s
 
@@ -39,6 +40,19 @@ pub const log_enabled_ = 'logger.debug.enabled'
 pub const log_dir_ = './log_/'
 pub const logfile_ = 'customers-api-lite.log'
 pub const logtime_ = '[YYYY-MM-DD][HH:mm:ss]'
+
+// CustomersApiLiteApp The struct containing data that are shared between
+// different routes.
+pub struct CustomersApiLiteApp {
+pub mut:
+    dbg bool
+    l   log.Log
+}
+
+// RequestContext The struct containing data that are specific to each request.
+pub struct RequestContext {
+    veb.Context
+}
 
 // get_settings_ Helper function. Used to get the daemon settings.
 pub fn get_settings_() toml.Doc {

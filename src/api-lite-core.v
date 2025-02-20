@@ -22,17 +22,6 @@ import vseryakov.syslog as s
 
 import helper as h
 
-// CustomersApiLiteApp The struct containing data that are shared between
-// different routes.
-pub struct CustomersApiLiteApp {
-    logger log.Log
-}
-
-// RequestContext The struct containing data that are specific to each request.
-struct RequestContext {
-    veb.Context
-}
-
 // main The microservice entry point.
 //
 // @returns The exit code of the overall termination of the daemon.
@@ -70,12 +59,13 @@ fn main() {
 
     h.dbg_(dbg, mut l, h.o_bracket + daemon_name + h.c_bracket)
 
-    mut app := &CustomersApiLiteApp{
-        logger: l
+    mut app := &h.CustomersApiLiteApp{
+        dbg: dbg
+        l:   l
     }
 
     // Starting up the bundled web server.
-    veb.run[CustomersApiLiteApp, RequestContext](mut app, server_port)
+    veb.run[h.CustomersApiLiteApp, h.RequestContext](mut app, server_port)
 
     l.close()
 
