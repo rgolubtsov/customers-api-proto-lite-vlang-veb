@@ -96,6 +96,15 @@ V 0.4.9 01bee65
 
 ---
 
+The microservice is utilizing a third-party module `vseryakov.syslog` to be able to log messages to the Unix syslog facility, so it needs to install this module prior building the microservice:
+
+```
+$ v install vseryakov.syslog
+Scanning `vseryakov.syslog`...
+Installing `vseryakov.syslog`...
+Installed `vseryakov.syslog` in ~/.vmodules/vseryakov/syslog .
+```
+
 **Build** the microservice using the **V frontend**:
 
 ```
