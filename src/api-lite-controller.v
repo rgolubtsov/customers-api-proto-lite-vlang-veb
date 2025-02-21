@@ -18,6 +18,21 @@ import log
 
 import helper as h
 
+struct Logger_ {
+    logging string
+    enabled bool
+}
+
+// common_ctrl_hlpr_ Common controller helper function.
+pub fn common_ctrl_hlpr_(dbg bool) &Logger_ {
+    logger := &Logger_{
+        logging: 'debug'
+        enabled: dbg
+    }
+
+    return logger
+}
+
 // list_customers_ Helper function for the `list_customers()` endpoint.
 pub fn list_customers_(dbg bool, mut l log.Log) {
     h.dbg_(dbg, mut l, h.o_bracket + '${dbg}' + h.c_bracket)
