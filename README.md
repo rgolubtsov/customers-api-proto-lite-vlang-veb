@@ -129,9 +129,9 @@ $ make all  # <== Building the daemon.
 
 ```
 $ ./bin/api-lited; echo $?
-[2025-02-21][11:05:10] [DEBUG] [Customers API Lite]
+[2025-02-21][18:20:00] [DEBUG] [Customers API Lite]
 [veb] Running app on http://localhost:8765/
-[2025-02-21][11:10:05] [DEBUG] [true]
+[2025-02-21][18:20:40] [DEBUG] [true]
 ```
 
 Thus, from now on it is already possible to send HTTP requests to the running daemon:
@@ -142,11 +142,11 @@ $ curl -v http://localhost:8765/v1/customers
 > GET /v1/customers HTTP/1.1
 ...
 < HTTP/1.1 200 OK
-< Content-Type: text/plain
-< Content-Length: 6
+< Content-Type: application/json
+< Content-Length: 34
 < Server: veb
 ...
-[true]
+{"logging":"debug","enabled":true}
 ```
 
 ---

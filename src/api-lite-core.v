@@ -23,8 +23,8 @@ import vseryakov.syslog as s
 import helper     as h
 import controller as c
 
-// CustomersApiLiteApp The struct containing data that are shared between
-// different routes.
+// CustomersApiLiteApp The main web app struct containing arbitrary data
+// that are accessible by all endpoints and shared between different routes.
 struct CustomersApiLiteApp {
     dbg bool
 mut:
@@ -32,6 +32,7 @@ mut:
 }
 
 // RequestContext The struct containing data that are specific to each request.
+// It also holds a standard HTTP request/response pair.
 struct RequestContext {
     veb.Context
 }
@@ -102,7 +103,9 @@ fn (mut app CustomersApiLiteApp) list_customers(mut ctx RequestContext)
 
     c.list_customers_(app.dbg, mut app.l)
 
-    return ctx.text(h.o_bracket + '${app.dbg}' + h.c_bracket)
+    logger := c.common_ctrl_hlpr_(app.dbg)
+
+    return ctx.json(logger)
 }
 
 // vim:set nu et ts=4 sw=4:
