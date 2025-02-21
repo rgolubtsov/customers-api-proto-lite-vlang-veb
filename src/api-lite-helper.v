@@ -1,7 +1,7 @@
 /*
  * src/api-lite-helper.v
  * ============================================================================
- * Customers API Lite microservice prototype (V port). Version 0.0.9
+ * Customers API Lite microservice prototype (V port). Version 0.0.10
  * ============================================================================
  * A daemon written in V (vlang/veb), designed and intended to be run
  * as a microservice, implementing a special Customers API prototype
@@ -14,9 +14,8 @@
 
 module helper
 
-import log
-import veb
 import toml
+import log
 
 import vseryakov.syslog as s
 
@@ -40,19 +39,6 @@ pub const log_enabled_ = 'logger.debug.enabled'
 pub const log_dir_ = './log_/'
 pub const logfile_ = 'customers-api-lite.log'
 pub const logtime_ = '[YYYY-MM-DD][HH:mm:ss]'
-
-// CustomersApiLiteApp The struct containing data that are shared between
-// different routes.
-pub struct CustomersApiLiteApp {
-pub mut:
-    dbg bool
-    l   log.Log
-}
-
-// RequestContext The struct containing data that are specific to each request.
-pub struct RequestContext {
-    veb.Context
-}
 
 // get_settings_ Helper function. Used to get the daemon settings.
 pub fn get_settings_() toml.Doc {
