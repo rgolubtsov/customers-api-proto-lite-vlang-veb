@@ -14,26 +14,13 @@
 
 module controller
 
-import veb
+import log
 
 import helper as h
 
-// Defining an alias for the `CustomersApiLiteApp` struct.
-type App = h.CustomersApiLiteApp
-
-// list_customers The `GET /v1/customers` endpoint.
-//
-// Retrieves from the database and lists all customer profiles.
-//
-// @returns The `Result` dummy struct with the `200 OK` HTTP status code
-//          and the response body in JSON representation, containing a list
-//          of all customer profiles.
-//          May return client or server error depending on incoming request.
-@['/v1/customers']
-fn (mut app App) list_customers(mut ctx h.RequestContext) veb.Result {
-    h.dbg_(app.dbg, mut app.l, h.o_bracket + '${app.dbg}' + h.c_bracket)
-
-    return ctx.text(h.o_bracket + '${app.dbg}' + h.c_bracket)
+// list_customers_ Helper function for the `list_customers()` endpoint.
+pub fn list_customers_(dbg bool, mut l log.Log) {
+    h.dbg_(dbg, mut l, h.o_bracket + '${dbg}' + h.c_bracket)
 }
 
 // vim:set nu et ts=4 sw=4:

@@ -14,13 +14,27 @@
 
 module main
 
-import veb
 import log
+import veb
 import os
 
 import vseryakov.syslog as s
 
-import helper as h
+import helper     as h
+import controller as c
+
+// CustomersApiLiteApp The struct containing data that are shared between
+// different routes.
+struct CustomersApiLiteApp {
+    dbg bool
+mut:
+    l   log.Log
+}
+
+// RequestContext The struct containing data that are specific to each request.
+struct RequestContext {
+    veb.Context
+}
 
 // main The microservice entry point.
 //
@@ -59,19 +73,36 @@ fn main() {
 
     h.dbg_(dbg, mut l, h.o_bracket + daemon_name + h.c_bracket)
 
-    mut app := &h.CustomersApiLiteApp{
+    mut app := &CustomersApiLiteApp{
         dbg: dbg
         l:   l
     }
 
     // Starting up the bundled web server.
-    veb.run[h.CustomersApiLiteApp, h.RequestContext](mut app, server_port)
+    veb.run[CustomersApiLiteApp, RequestContext](mut app, server_port)
 
     l.close()
 
     // Closing the system logger.
     // Calling <syslog.h> closelog();
     s.close()
+}
+
+// list_customers The `GET /v1/customers` endpoint.
+//
+// Retrieves from the database and lists all customer profiles.
+//
+// @returns The `Result` dummy struct with the `200 OK` HTTP status code
+//          and the response body in JSON representation, containing a list
+//          of all customer profiles.
+//          May return client or server error depending on incoming request.
+@['/v1/customers']
+fn (mut app CustomersApiLiteApp) list_customers(mut ctx RequestContext)
+    veb.Result {
+
+    c.list_customers_(app.dbg, mut app.l)
+
+    return ctx.text(h.o_bracket + '${app.dbg}' + h.c_bracket)
 }
 
 // vim:set nu et ts=4 sw=4:
