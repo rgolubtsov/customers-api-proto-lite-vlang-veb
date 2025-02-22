@@ -25,15 +25,15 @@ pub const o_bracket    = '['
 pub const c_bracket    = ']'
 
 // settings_ The path and filename of the daemon settings.
-const settings_ = './etc/settings.conf'
+pub const settings_ = './etc/settings.conf'
 
-// Daemon settings key for the microservice daemon name.
+// daemon_name_ Daemon settings key for the microservice daemon name.
 pub const daemon_name_ = 'daemon.name'
 
-// Daemon settings key for the server port number.
+// server_port_ Daemon settings key for the server port number.
 pub const server_port_ = 'server.port'
 
-// Daemon settings key for the debug logging enabler.
+// log_enabled_ Daemon settings key for the debug logging enabler.
 pub const log_enabled_ = 'logger.debug.enabled'
 
 pub const log_dir_ = './log_/'
