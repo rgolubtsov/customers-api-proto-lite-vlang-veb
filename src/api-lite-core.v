@@ -68,7 +68,7 @@ fn main() {
 
     // Opening the system logger.
     // Calling <syslog.h> openlog(NULL, LOG_CONS | LOG_PID, LOG_DAEMON);
-    s.open(os.args[0], s.log_cons | s.log_pid, s.log_daemon)
+    s.open(os.base(os.args[0]), s.log_cons | s.log_pid, s.log_daemon)
 
 //  if dbg { l.set_level(.debug) }
 
