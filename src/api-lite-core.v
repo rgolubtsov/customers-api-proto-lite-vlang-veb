@@ -25,7 +25,7 @@ import controller as c
 
 // CustomersApiLiteApp The main web app struct containing arbitrary data
 // that are accessible by all endpoints and shared between different routes.
-struct CustomersApiLiteApp {
+pub struct CustomersApiLiteApp {
     dbg bool
 mut:
     l   log.Log
@@ -33,7 +33,7 @@ mut:
 
 // RequestContext The struct containing data that are specific to each request.
 // It also holds a standard HTTP request/response pair.
-struct RequestContext {
+pub struct RequestContext {
     veb.Context
 }
 
@@ -46,7 +46,7 @@ fn main() {
 
     daemon_name := settings.value(h.daemon_name_).string()
 
-    // Getting the port number used to run the bundled web server.
+    // Getting the port number used to run the inbuilt web server.
     server_port := settings.value(h.server_port_).int()
 
     // Identifying whether debug logging is enabled.
@@ -79,8 +79,9 @@ fn main() {
         l:   l
     }
 
-    // Starting up the bundled web server.
-    veb.run[CustomersApiLiteApp, RequestContext](mut app, server_port)
+    // Trying to start up the inbuilt web server.
+    veb.run_at[CustomersApiLiteApp, RequestContext](mut app, port: server_port,
+        show_startup_message: false) or { panic(err) }
 
     l.close()
 
@@ -98,7 +99,7 @@ fn main() {
 //          of all customer profiles.
 //          May return client or server error depending on incoming request.
 @['/v1/customers']
-fn (mut app CustomersApiLiteApp) list_customers(mut ctx RequestContext)
+pub fn (mut app CustomersApiLiteApp) list_customers(mut ctx RequestContext)
     veb.Result {
 
     c.list_customers_(app.dbg, mut app.l)
