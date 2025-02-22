@@ -24,16 +24,20 @@ pub const empty_string =  ''
 pub const o_bracket    = '['
 pub const c_bracket    = ']'
 
-// settings_ The path and filename of the daemon settings.
-const settings_ = './etc/settings.conf'
+// Common notification messages.
+pub const msg_server_started = "Server started on port "
+pub const msg_server_stopped = "Server stopped"
 
-// Daemon settings key for the microservice daemon name.
+// settings_ The path and filename of the daemon settings.
+pub const settings_ = './etc/settings.conf'
+
+// daemon_name_ Daemon settings key for the microservice daemon name.
 pub const daemon_name_ = 'daemon.name'
 
-// Daemon settings key for the server port number.
+// server_port_ Daemon settings key for the server port number.
 pub const server_port_ = 'server.port'
 
-// Daemon settings key for the debug logging enabler.
+// log_enabled_ Daemon settings key for the debug logging enabler.
 pub const log_enabled_ = 'logger.debug.enabled'
 
 pub const log_dir_ = './log_/'
@@ -51,6 +55,18 @@ pub fn dbg_(dbg bool, mut l log.Log, message string) {
         l.debug(message);
         s.debug(message);
     }
+}
+
+// cleanup_ Helper function. Makes final cleanups, closes streams, etc.
+pub fn cleanup_(mut l log.Log) {
+    l.info(msg_server_stopped)
+    s.info(msg_server_stopped)
+
+    l.close()
+
+    // Closing the system logger.
+    // Calling <syslog.h> closelog();
+    s.close()
 }
 
 // vim:set nu et ts=4 sw=4:

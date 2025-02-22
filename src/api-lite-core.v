@@ -23,16 +23,17 @@ import vseryakov.syslog as s
 import helper     as h
 import controller as c
 
-// CustomersApiLiteApp The struct containing data that are shared between
-// different routes.
-struct CustomersApiLiteApp {
+// CustomersApiLiteApp The main web app struct containing arbitrary data
+// that are accessible by all endpoints and shared between different routes.
+pub struct CustomersApiLiteApp {
     dbg bool
 mut:
     l   log.Log
 }
 
 // RequestContext The struct containing data that are specific to each request.
-struct RequestContext {
+// It also holds a standard HTTP request/response pair.
+pub struct RequestContext {
     veb.Context
 }
 
@@ -45,7 +46,7 @@ fn main() {
 
     daemon_name := settings.value(h.daemon_name_).string()
 
-    // Getting the port number used to run the bundled web server.
+    // Getting the port number used to run the inbuilt web server.
     server_port := settings.value(h.server_port_).int()
 
     // Identifying whether debug logging is enabled.
@@ -67,9 +68,12 @@ fn main() {
 
     // Opening the system logger.
     // Calling <syslog.h> openlog(NULL, LOG_CONS | LOG_PID, LOG_DAEMON);
-    s.open(h.empty_string, s.log_cons | s.log_pid, s.log_daemon)
+    s.open(os.args[0], s.log_cons | s.log_pid, s.log_daemon)
 
 //  if dbg { l.set_level(.debug) }
+
+    l.info(h.msg_server_started + '${server_port}')
+    s.info(h.msg_server_started + '${server_port}')
 
     h.dbg_(dbg, mut l, h.o_bracket + daemon_name + h.c_bracket)
 
@@ -78,14 +82,12 @@ fn main() {
         l:   l
     }
 
-    // Starting up the bundled web server.
-    veb.run[CustomersApiLiteApp, RequestContext](mut app, server_port)
-
-    l.close()
-
-    // Closing the system logger.
-    // Calling <syslog.h> closelog();
-    s.close()
+    // Trying to start up the inbuilt web server.
+    veb.run_at[CustomersApiLiteApp, RequestContext](mut app, port: server_port,
+        show_startup_message: false) or {
+            h.cleanup_(mut l)
+            panic(err)
+        }
 }
 
 // list_customers The `GET /v1/customers` endpoint.
@@ -97,12 +99,14 @@ fn main() {
 //          of all customer profiles.
 //          May return client or server error depending on incoming request.
 @['/v1/customers']
-fn (mut app CustomersApiLiteApp) list_customers(mut ctx RequestContext)
+pub fn (mut app CustomersApiLiteApp) list_customers(mut ctx RequestContext)
     veb.Result {
 
     c.list_customers_(app.dbg, mut app.l)
 
-    return ctx.text(h.o_bracket + '${app.dbg}' + h.c_bracket)
+    logger := c.common_ctrl_hlpr_(app.dbg)
+
+    return ctx.json(logger)
 }
 
 // vim:set nu et ts=4 sw=4:
