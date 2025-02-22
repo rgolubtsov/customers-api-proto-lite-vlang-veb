@@ -129,9 +129,9 @@ $ make all  # <== Building the daemon.
 
 ```
 $ ./bin/api-lited; echo $?
-[2025-02-21][18:20:00] [DEBUG] [Customers API Lite]
-[veb] Running app on http://localhost:8765/
-[2025-02-21][18:20:40] [DEBUG] [true]
+[2025-02-22][10:00:40] [INFO ] Server started on port 8765
+[2025-02-22][10:00:40] [DEBUG] [Customers API Lite]
+[2025-02-22][10:00:50] [DEBUG] [true]
 ```
 
 Thus, from now on it is already possible to send HTTP requests to the running daemon:
