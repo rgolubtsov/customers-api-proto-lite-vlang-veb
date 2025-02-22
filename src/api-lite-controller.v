@@ -38,4 +38,20 @@ pub fn list_customers_(dbg bool, mut l log.Log) {
     h.dbg_(dbg, mut l, h.o_bracket + '${dbg}' + h.c_bracket)
 }
 
+// get_customer_ Helper function for the `get_customer()` endpoint.
+pub fn get_customer_(dbg bool, mut l log.Log) {
+    h.dbg_(dbg, mut l, h.o_bracket + '${dbg}' + h.c_bracket)
+}
+
+// list_contacts_ Helper function for the `list_contacts()` endpoint.
+pub fn list_contacts_(dbg bool, mut l log.Log) {
+    h.dbg_(dbg, mut l, h.o_bracket + '${dbg}' + h.c_bracket)
+}
+
+// list_contacts_by_type_ Helper function for the `list_contacts_by_type()`
+// endpoint.
+pub fn list_contacts_by_type_(dbg bool, mut l log.Log) {
+    h.dbg_(dbg, mut l, h.o_bracket + '${dbg}' + h.c_bracket)
+}
+
 // vim:set nu et ts=4 sw=4:

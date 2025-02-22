@@ -94,15 +94,87 @@ fn main() {
 //
 // Retrieves from the database and lists all customer profiles.
 //
-// @returns The `Result` dummy struct with the `200 OK` HTTP status code
-//          and the response body in JSON representation, containing a list
-//          of all customer profiles.
+// @returns The `Result` struct with the `200 OK` HTTP status code
+//          and the response body in JSON representation,
+//          containing a list of all customer profiles.
 //          May return client or server error depending on incoming request.
 @['/v1/customers']
 pub fn (mut app CustomersApiLiteApp) list_customers(mut ctx RequestContext)
     veb.Result {
 
     c.list_customers_(app.dbg, mut app.l)
+
+    logger := c.common_ctrl_hlpr_(app.dbg)
+
+    return ctx.json(logger)
+}
+
+// get_customer The `GET /v1/customers/{customer_id}` endpoint.
+//
+// Retrieves profile details for a given customer from the database.
+//
+// @param `customer_id` The customer ID used to retrieve customer profile data.
+//
+// @returns The `Result` struct with a specific HTTP status code provided,
+//          containing profile details for a given customer
+//          (in the response body in JSON representation).
+@['/v1/customers/:customer_id']
+pub fn (mut app CustomersApiLiteApp) get_customer(mut ctx RequestContext,
+    customer_id string) veb.Result {
+
+    c.get_customer_(app.dbg, mut app.l)
+
+    logger := c.common_ctrl_hlpr_(app.dbg)
+
+    return ctx.json(logger)
+}
+
+// list_contacts The `GET /v1/customers/{customer_id}/contacts` endpoint.
+//
+// Retrieves from the database and lists all contacts
+// associated with a given customer.
+//
+// @param `customer_id` The customer ID used to retrieve contacts
+//                      which belong to this customer.
+//
+// @returns The `Result` struct with the `200 OK` HTTP status code
+//          and the response body in JSON representation,
+//          containing a list of all contacts associated with a given customer.
+//          May return client or server error depending on incoming request.
+@['/v1/customers/:customer_id/contacts']
+pub fn (mut app CustomersApiLiteApp) list_contacts(mut ctx RequestContext,
+    customer_id string) veb.Result {
+
+    c.list_contacts_(app.dbg, mut app.l)
+
+    logger := c.common_ctrl_hlpr_(app.dbg)
+
+    return ctx.json(logger)
+}
+
+// list_contacts_by_type The
+// `GET /v1/customers/{customer_id}/contacts/{contact_type}` endpoint.
+//
+// Retrieves from the database and lists all contacts of a given type
+// associated with a given customer.
+//
+// @param `customer_id`  The customer ID used to retrieve contacts
+//                       which belong to this customer.
+// @param `contact_type` The particular type of contacts to retrieve
+//                       (e.g. phone, email, postal address, etc.).
+//
+// @returns The `Result` struct with the `200 OK` HTTP status code
+//          and the response body in JSON representation,
+//          containing a list of all contacts of a given type
+//          associated with a given customer.
+//          May return client or server error depending on incoming request.
+@['/v1/customers/:customer_id/contacts/:contact_type']
+pub fn (mut app CustomersApiLiteApp) list_contacts_by_type(
+    mut ctx          RequestContext,
+        customer_id  string,
+        contact_type string) veb.Result {
+
+    c.list_contacts_by_type_(app.dbg, mut app.l)
 
     logger := c.common_ctrl_hlpr_(app.dbg)
 
