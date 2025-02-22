@@ -1,7 +1,7 @@
 /*
  * src/api-lite-controller.v
  * ============================================================================
- * Customers API Lite microservice prototype (V port). Version 0.0.10
+ * Customers API Lite microservice prototype (V port). Version 0.0.11
  * ============================================================================
  * A daemon written in V (vlang/veb), designed and intended to be run
  * as a microservice, implementing a special Customers API prototype
@@ -33,8 +33,34 @@ pub fn common_ctrl_hlpr_(dbg bool) &Logger_ {
     return logger
 }
 
+// add_customer_ Helper function for the `add_customer()` endpoint.
+pub fn add_customer_(dbg bool, mut l log.Log, payload string) {
+    h.dbg_(dbg, mut l, h.o_bracket + '${payload}' + h.c_bracket)
+}
+
+// add_contact_ Helper function for the `add_contact()` endpoint.
+pub fn add_contact_(dbg bool, mut l log.Log, payload string) {
+    h.dbg_(dbg, mut l, h.o_bracket + '${payload}' + h.c_bracket)
+}
+
 // list_customers_ Helper function for the `list_customers()` endpoint.
 pub fn list_customers_(dbg bool, mut l log.Log) {
+    h.dbg_(dbg, mut l, h.o_bracket + '${dbg}' + h.c_bracket)
+}
+
+// get_customer_ Helper function for the `get_customer()` endpoint.
+pub fn get_customer_(dbg bool, mut l log.Log) {
+    h.dbg_(dbg, mut l, h.o_bracket + '${dbg}' + h.c_bracket)
+}
+
+// list_contacts_ Helper function for the `list_contacts()` endpoint.
+pub fn list_contacts_(dbg bool, mut l log.Log) {
+    h.dbg_(dbg, mut l, h.o_bracket + '${dbg}' + h.c_bracket)
+}
+
+// list_contacts_by_type_ Helper function for the `list_contacts_by_type()`
+// endpoint.
+pub fn list_contacts_by_type_(dbg bool, mut l log.Log) {
     h.dbg_(dbg, mut l, h.o_bracket + '${dbg}' + h.c_bracket)
 }
 

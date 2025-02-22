@@ -1,7 +1,7 @@
 /*
  * src/api-lite-core.v
  * ============================================================================
- * Customers API Lite microservice prototype (V port). Version 0.0.10
+ * Customers API Lite microservice prototype (V port). Version 0.0.11
  * ============================================================================
  * A daemon written in V (vlang/veb), designed and intended to be run
  * as a microservice, implementing a special Customers API prototype
@@ -68,7 +68,7 @@ fn main() {
 
     // Opening the system logger.
     // Calling <syslog.h> openlog(NULL, LOG_CONS | LOG_PID, LOG_DAEMON);
-    s.open(os.args[0], s.log_cons | s.log_pid, s.log_daemon)
+    s.open(os.base(os.args[0]), s.log_cons | s.log_pid, s.log_daemon)
 
 //  if dbg { l.set_level(.debug) }
 
@@ -90,19 +90,156 @@ fn main() {
         }
 }
 
+// add_customer The `PUT /v1/customers` endpoint.
+//
+// Creates a new customer (puts customer data to the database).
+//
+// The request body is defined exactly in the form
+// as `{"name":"{customer_name}"}`. It should be passed with the accompanied
+// request header `content-type` just like the following:
+//
+// `-H 'content-type: application/json' -d '{"name":"{customer_name}"}'`
+//
+// `{customer_name}` is a name assigned to a newly created customer.
+//
+// @returns The `Result` struct with the `201 Created` HTTP status code,
+//          the `Location` response header (among others), and the response
+//          body in JSON representation, containing profile details
+//          of a newly created customer.
+//          May return client or server error depending on incoming request.
+@['/v1/customers'; put]
+pub fn (mut app CustomersApiLiteApp) add_customer(mut ctx RequestContext)
+    veb.Result {
+
+    payload := ctx.req.data
+
+    c.add_customer_(app.dbg, mut app.l, payload)
+
+    logger := c.common_ctrl_hlpr_(app.dbg)
+
+    return ctx.json(logger)
+}
+
+// add_contact The `PUT /v1/customers/contacts` endpoint.
+//
+// Creates a new contact for a given customer (puts a contact
+// regarding a given customer to the database).
+//
+// The request body is defined exactly in the form
+// as `{"customer_id":"{customer_id}","contact":"{customer_contact}"}`.
+// It should be passed with the accompanied request header `content-type`
+// just like the following:
+//
+// `-H 'content-type: application/json' -d '{"customer_id":"{customer_id}","contact":"{customer_contact}"}'`
+//
+// `{customer_id}` is the customer ID used to associate a newly created contact
+// with this customer.
+//
+// `{customer_contact}` is a newly created contact (phone or email).
+//
+// @returns The `Result` struct with the `201 Created` HTTP status code,
+//          the `Location` response header (among others), and the response
+//          body in JSON representation, containing details of a newly created
+//          customer contact (phone or email).
+//          May return client or server error depending on incoming request.
+@['/v1/customers/contacts'; put]
+pub fn (mut app CustomersApiLiteApp) add_contact(mut ctx RequestContext)
+    veb.Result {
+
+    payload := ctx.req.data
+
+    c.add_contact_(app.dbg, mut app.l, payload)
+
+    logger := c.common_ctrl_hlpr_(app.dbg)
+
+    return ctx.json(logger)
+}
+
 // list_customers The `GET /v1/customers` endpoint.
 //
 // Retrieves from the database and lists all customer profiles.
 //
-// @returns The `Result` dummy struct with the `200 OK` HTTP status code
-//          and the response body in JSON representation, containing a list
-//          of all customer profiles.
+// @returns The `Result` struct with the `200 OK` HTTP status code
+//          and the response body in JSON representation,
+//          containing a list of all customer profiles.
 //          May return client or server error depending on incoming request.
 @['/v1/customers']
 pub fn (mut app CustomersApiLiteApp) list_customers(mut ctx RequestContext)
     veb.Result {
 
     c.list_customers_(app.dbg, mut app.l)
+
+    logger := c.common_ctrl_hlpr_(app.dbg)
+
+    return ctx.json(logger)
+}
+
+// get_customer The `GET /v1/customers/{customer_id}` endpoint.
+//
+// Retrieves profile details for a given customer from the database.
+//
+// @param `customer_id` The customer ID used to retrieve customer profile data.
+//
+// @returns The `Result` struct with a specific HTTP status code provided,
+//          containing profile details for a given customer
+//          (in the response body in JSON representation).
+@['/v1/customers/:customer_id']
+pub fn (mut app CustomersApiLiteApp) get_customer(mut ctx RequestContext,
+    customer_id string) veb.Result {
+
+    c.get_customer_(app.dbg, mut app.l)
+
+    logger := c.common_ctrl_hlpr_(app.dbg)
+
+    return ctx.json(logger)
+}
+
+// list_contacts The `GET /v1/customers/{customer_id}/contacts` endpoint.
+//
+// Retrieves from the database and lists all contacts
+// associated with a given customer.
+//
+// @param `customer_id` The customer ID used to retrieve contacts
+//                      which belong to this customer.
+//
+// @returns The `Result` struct with the `200 OK` HTTP status code
+//          and the response body in JSON representation,
+//          containing a list of all contacts associated with a given customer.
+//          May return client or server error depending on incoming request.
+@['/v1/customers/:customer_id/contacts']
+pub fn (mut app CustomersApiLiteApp) list_contacts(mut ctx RequestContext,
+    customer_id string) veb.Result {
+
+    c.list_contacts_(app.dbg, mut app.l)
+
+    logger := c.common_ctrl_hlpr_(app.dbg)
+
+    return ctx.json(logger)
+}
+
+// list_contacts_by_type The
+// `GET /v1/customers/{customer_id}/contacts/{contact_type}` endpoint.
+//
+// Retrieves from the database and lists all contacts of a given type
+// associated with a given customer.
+//
+// @param `customer_id`  The customer ID used to retrieve contacts
+//                       which belong to this customer.
+// @param `contact_type` The particular type of contacts to retrieve
+//                       (e.g. phone, email, postal address, etc.).
+//
+// @returns The `Result` struct with the `200 OK` HTTP status code
+//          and the response body in JSON representation,
+//          containing a list of all contacts of a given type
+//          associated with a given customer.
+//          May return client or server error depending on incoming request.
+@['/v1/customers/:customer_id/contacts/:contact_type']
+pub fn (mut app CustomersApiLiteApp) list_contacts_by_type(
+    mut ctx          RequestContext,
+        customer_id  string,
+        contact_type string) veb.Result {
+
+    c.list_contacts_by_type_(app.dbg, mut app.l)
 
     logger := c.common_ctrl_hlpr_(app.dbg)
 
