@@ -90,6 +90,71 @@ fn main() {
         }
 }
 
+// add_customer The `PUT /v1/customers` endpoint.
+//
+// Creates a new customer (puts customer data to the database).
+//
+// The request body is defined exactly in the form
+// as `{"name":"{customer_name}"}`. It should be passed with the accompanied
+// request header `content-type` just like the following:
+//
+// `-H 'content-type: application/json' -d '{"name":"{customer_name}"}'`
+//
+// `{customer_name}` is a name assigned to a newly created customer.
+//
+// @returns The `Result` struct with the `201 Created` HTTP status code,
+//          the `Location` response header (among others), and the response
+//          body in JSON representation, containing profile details
+//          of a newly created customer.
+//          May return client or server error depending on incoming request.
+@['/v1/customers'; put]
+pub fn (mut app CustomersApiLiteApp) add_customer(mut ctx RequestContext)
+    veb.Result {
+
+    payload := ctx.req.data
+
+    c.add_customer_(app.dbg, mut app.l, payload)
+
+    logger := c.common_ctrl_hlpr_(app.dbg)
+
+    return ctx.json(logger)
+}
+
+// add_contact The `PUT /v1/customers/contacts` endpoint.
+//
+// Creates a new contact for a given customer (puts a contact
+// regarding a given customer to the database).
+//
+// The request body is defined exactly in the form
+// as `{"customer_id":"{customer_id}","contact":"{customer_contact}"}`.
+// It should be passed with the accompanied request header `content-type`
+// just like the following:
+//
+// `-H 'content-type: application/json' -d '{"customer_id":"{customer_id}","contact":"{customer_contact}"}'`
+//
+// `{customer_id}` is the customer ID used to associate a newly created contact
+// with this customer.
+//
+// `{customer_contact}` is a newly created contact (phone or email).
+//
+// @returns The `Result` struct with the `201 Created` HTTP status code,
+//          the `Location` response header (among others), and the response
+//          body in JSON representation, containing details of a newly created
+//          customer contact (phone or email).
+//          May return client or server error depending on incoming request.
+@['/v1/customers/contacts'; put]
+pub fn (mut app CustomersApiLiteApp) add_contact(mut ctx RequestContext)
+    veb.Result {
+
+    payload := ctx.req.data
+
+    c.add_contact_(app.dbg, mut app.l, payload)
+
+    logger := c.common_ctrl_hlpr_(app.dbg)
+
+    return ctx.json(logger)
+}
+
 // list_customers The `GET /v1/customers` endpoint.
 //
 // Retrieves from the database and lists all customer profiles.

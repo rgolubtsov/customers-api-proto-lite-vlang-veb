@@ -33,6 +33,16 @@ pub fn common_ctrl_hlpr_(dbg bool) &Logger_ {
     return logger
 }
 
+// add_customer_ Helper function for the `add_customer()` endpoint.
+pub fn add_customer_(dbg bool, mut l log.Log, payload string) {
+    h.dbg_(dbg, mut l, h.o_bracket + '${payload}' + h.c_bracket)
+}
+
+// add_contact_ Helper function for the `add_contact()` endpoint.
+pub fn add_contact_(dbg bool, mut l log.Log, payload string) {
+    h.dbg_(dbg, mut l, h.o_bracket + '${payload}' + h.c_bracket)
+}
+
 // list_customers_ Helper function for the `list_customers()` endpoint.
 pub fn list_customers_(dbg bool, mut l log.Log) {
     h.dbg_(dbg, mut l, h.o_bracket + '${dbg}' + h.c_bracket)
