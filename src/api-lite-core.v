@@ -68,9 +68,12 @@ fn main() {
 
     // Opening the system logger.
     // Calling <syslog.h> openlog(NULL, LOG_CONS | LOG_PID, LOG_DAEMON);
-    s.open(h.empty_string, s.log_cons | s.log_pid, s.log_daemon)
+    s.open(os.args[0], s.log_cons | s.log_pid, s.log_daemon)
 
 //  if dbg { l.set_level(.debug) }
+
+    l.info(h.msg_server_started + '${server_port}')
+    s.info(h.msg_server_started + '${server_port}')
 
     h.dbg_(dbg, mut l, h.o_bracket + daemon_name + h.c_bracket)
 
@@ -81,13 +84,10 @@ fn main() {
 
     // Trying to start up the inbuilt web server.
     veb.run_at[CustomersApiLiteApp, RequestContext](mut app, port: server_port,
-        show_startup_message: false) or { panic(err) }
-
-    l.close()
-
-    // Closing the system logger.
-    // Calling <syslog.h> closelog();
-    s.close()
+        show_startup_message: false) or {
+            h.cleanup_(mut l)
+            panic(err)
+        }
 }
 
 // list_customers The `GET /v1/customers` endpoint.
