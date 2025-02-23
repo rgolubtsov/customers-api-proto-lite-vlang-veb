@@ -30,6 +30,7 @@ Surely, one may consider this project to be suitable for a wide variety of appli
 
 * **[Building](#building)**
 * **[Running](#running)**
+* **[Consuming](#consuming)**
 
 ## Building
 
@@ -146,6 +147,50 @@ $ curl -v http://localhost:8765/v1/customers
 ...
 {"logging":"debug","enabled":true}
 ```
+
+## Consuming
+
+The microservice exposes **six REST API endpoints** to web clients. They are all intended to deal with customer entities and/or contact entities that belong to customer profiles. The following table displays their syntax:
+
+No. | Endpoint name                                      | Request method and REST URI                                   | Request body
+--: | -------------------------------------------------- | ------------------------------------------------------------- | ----------------------------------------------------------------
+1   | Create customer                                    | **PUT** `/v1/customers`                                       | `{"name":"{customer_name}"}`
+2   | Create contact                                     | **PUT** `/v1/customers/contacts`                              | `{"customer_id":"{customer_id}","contact":"{customer_contact}"}`
+3   | List customers                                     | **GET** `/v1/customers`                                       | &ndash;
+4   | Retrieve customer                                  | **GET** `/v1/customers/{customer_id}`                         | &ndash;
+5   | List contacts for a given customer                 | **GET** `/v1/customers/{customer_id}/contacts`                | &ndash;
+6   | List contacts of a given type for a given customer | **GET** `/v1/customers/{customer_id}/contacts/{contact_type}` | &ndash;
+
+* The `{customer_name}` placeholder is a string &mdash; it usually means the full name given to a newly created customer.
+* The `{customer_id}` placeholder is a decimal positive integer number, greater than `0`.
+* The `{customer_contact}` placeholder is a string &mdash; it denotes a newly created customer contact (phone or email).
+* The `{contact_type}` placeholder is a string and can take one of two possible values, case-insensitive: `phone` or `email`.
+
+The following command-line snippets display the exact usage for these endpoints (the **cURL** utility is used as an example to access them)^:
+
+1. **Create customer**
+
+**TBD** :cd:
+
+2. **Create contact**
+
+**TBD** :cd:
+
+3. **List customers**
+
+**TBD** :cd:
+
+4. **Retrieve customer**
+
+**TBD** :cd:
+
+5. **List contacts for a given customer**
+
+**TBD** :cd:
+
+6. **List contacts of a given type for a given customer**
+
+**TBD** :cd:
 
 ---
 
