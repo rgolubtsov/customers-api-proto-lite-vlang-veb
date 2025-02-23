@@ -75,6 +75,10 @@ fn main() {
 
     h.dbg_(dbg, mut l, h.o_bracket + daemon_name + h.c_bracket)
 
+    // Attaching Unix signal handlers to ensure daemon clean shutdown.
+    os.signal_opt(.int,  h.cleanup__)! // <== SIGINT
+    os.signal_opt(.term, h.cleanup__)! // <== SIGTERM
+
     mut app := &CustomersApiLiteApp{
         dbg: dbg
         l:   l
