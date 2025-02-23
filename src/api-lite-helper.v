@@ -22,9 +22,8 @@ import os
 import vseryakov.syslog as s
 
 // Helper constants.
-    const exit_failure =   1 //    Failing exit status.
-    const exit_success =   0 // Successful exit status.
-pub const empty_string =  ''
+pub const exit_failure =   1 //    Failing exit status.
+pub const exit_success =   0 // Successful exit status.
 pub const o_bracket    = '['
 pub const c_bracket    = ']'
 
@@ -33,6 +32,13 @@ const err_port_valid_must_be_positive_int
     = 'Valid server port must be a positive integer value, '
     + 'in the range 1024 .. 49151. The default value of 8080 '
     + 'will be used instead.'
+pub const err_cannot_start_server
+    = 'FATAL: Cannot start server '
+pub const err_addr_already_in_use
+    = 'due to address requested already in use. Quitting...'
+pub const err_serv_unknown_reason
+    = 'for an unknown reason. Quitting...'
+pub const err_eaddrinuse_glob = '*98*'
 
 // Common notification messages.
 pub const msg_server_started = 'Server started on port '
