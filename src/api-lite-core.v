@@ -1,7 +1,7 @@
 /*
  * src/api-lite-core.v
  * ============================================================================
- * Customers API Lite microservice prototype (V port). Version 0.0.11
+ * Customers API Lite microservice prototype (V port). Version 0.0.12
  * ============================================================================
  * A daemon written in V (vlang/veb), designed and intended to be run
  * as a microservice, implementing a special Customers API prototype
@@ -75,6 +75,10 @@ fn main() {
 
     h.dbg_(dbg, mut l, h.o_bracket + daemon_name + h.c_bracket)
 
+    // Attaching Unix signal handlers to ensure daemon clean shutdown.
+    os.signal_opt(.int,  h.cleanup__)! // <== SIGINT
+    os.signal_opt(.term, h.cleanup__)! // <== SIGTERM
+
     mut app := &CustomersApiLiteApp{
         dbg: dbg
         l:   l
@@ -84,7 +88,14 @@ fn main() {
     veb.run_at[CustomersApiLiteApp, RequestContext](mut app, port: server_port,
         show_startup_message: false) or {
             h.cleanup_(mut l)
-            panic(err)
+
+            if err.msg().match_glob(h.err_eaddrinuse_glob) {
+                l.error(h.err_cannot_start_server + h.err_addr_already_in_use)
+            } else {
+                l.error(h.err_cannot_start_server + h.err_serv_unknown_reason)
+            }
+
+            exit(h.exit_failure)
         }
 }
 

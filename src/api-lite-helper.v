@@ -1,7 +1,7 @@
 /*
  * src/api-lite-helper.v
  * ============================================================================
- * Customers API Lite microservice prototype (V port). Version 0.0.11
+ * Customers API Lite microservice prototype (V port). Version 0.0.12
  * ============================================================================
  * A daemon written in V (vlang/veb), designed and intended to be run
  * as a microservice, implementing a special Customers API prototype
@@ -17,11 +17,13 @@ module helper
 import toml
 import log
 import veb
+import os
 
 import vseryakov.syslog as s
 
 // Helper constants.
-pub const empty_string =  ''
+pub const exit_failure =   1 //    Failing exit status.
+pub const exit_success =   0 // Successful exit status.
 pub const o_bracket    = '['
 pub const c_bracket    = ']'
 
@@ -30,6 +32,13 @@ const err_port_valid_must_be_positive_int
     = 'Valid server port must be a positive integer value, '
     + 'in the range 1024 .. 49151. The default value of 8080 '
     + 'will be used instead.'
+pub const err_cannot_start_server
+    = 'FATAL: Cannot start server '
+pub const err_addr_already_in_use
+    = 'due to address requested already in use. Quitting...'
+pub const err_serv_unknown_reason
+    = 'for an unknown reason. Quitting...'
+pub const err_eaddrinuse_glob = '*98*'
 
 // Common notification messages.
 pub const msg_server_started = 'Server started on port '
@@ -105,6 +114,20 @@ pub fn cleanup_(mut l log.Log) {
     // Closing the system logger.
     // Calling <syslog.h> closelog();
     s.close()
+}
+
+// cleanup__ Helper function. Does same things as the `cleanup_(mut l log.Log)`
+// function, but gets called when an appropriate POSIX signal is received.
+// There are two signals supported: `SIGINT` (<Ctrl-C>) and `SIGTERM`.
+pub fn cleanup__(signal os.Signal) {
+    eprintln(msg_server_stopped)
+      s.info(msg_server_stopped)
+
+    // Closing the system logger.
+    // Calling <syslog.h> closelog();
+    s.close()
+
+    exit(exit_success)
 }
 
 // vim:set nu et ts=4 sw=4:
