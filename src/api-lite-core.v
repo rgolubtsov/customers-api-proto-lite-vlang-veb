@@ -46,9 +46,6 @@ fn main() {
 
     daemon_name := settings.value(h.daemon_name_).string()
 
-    // Getting the port number used to run the inbuilt web server.
-    server_port := settings.value(h.server_port_).int()
-
     // Identifying whether debug logging is enabled.
     dbg := settings.value(h.log_enabled_).bool()
 
@@ -66,11 +63,12 @@ fn main() {
     l.set_full_logpath(h.log_dir_ + h.logfile_)
     l.log_to_console_too()
 
+    // Getting the port number used to run the inbuilt web server.
+    server_port := h.get_server_port_(settings, mut l)
+
     // Opening the system logger.
     // Calling <syslog.h> openlog(NULL, LOG_CONS | LOG_PID, LOG_DAEMON);
     s.open(os.base(os.args[0]), s.log_cons | s.log_pid, s.log_daemon)
-
-//  if dbg { l.set_level(.debug) }
 
     l.info(h.msg_server_started + '${server_port}')
     s.info(h.msg_server_started + '${server_port}')
