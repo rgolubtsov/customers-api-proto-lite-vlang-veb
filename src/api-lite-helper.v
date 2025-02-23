@@ -17,10 +17,13 @@ module helper
 import toml
 import log
 import veb
+import os
 
 import vseryakov.syslog as s
 
 // Helper constants.
+    const exit_failure =   1 //    Failing exit status.
+    const exit_success =   0 // Successful exit status.
 pub const empty_string =  ''
 pub const o_bracket    = '['
 pub const c_bracket    = ']'
@@ -105,6 +108,20 @@ pub fn cleanup_(mut l log.Log) {
     // Closing the system logger.
     // Calling <syslog.h> closelog();
     s.close()
+}
+
+// cleanup__ Helper function. Does same things as the `cleanup_(mut l log.Log)`
+// function, but gets called when an appropriate POSIX signal is received.
+// There are two signals supported: `SIGINT` (<Ctrl-C>) and `SIGTERM`.
+pub fn cleanup__(signal os.Signal) {
+    eprintln(msg_server_stopped)
+      s.info(msg_server_stopped)
+
+    // Closing the system logger.
+    // Calling <syslog.h> closelog();
+    s.close()
+
+    exit(exit_success)
 }
 
 // vim:set nu et ts=4 sw=4:
