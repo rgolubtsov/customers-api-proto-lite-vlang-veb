@@ -66,6 +66,7 @@ pub fn get_settings_() toml.Doc {
 // the inbuilt web server, from daemon settings.
 //
 // @param `settings` The daemon settings as a `toml.Doc` struct.
+// @param `l`        The main logger of the daemon.
 //
 // @returns The port number on which the server has to be run.
 pub fn get_server_port_(settings toml.Doc, mut l log.Log) int {
