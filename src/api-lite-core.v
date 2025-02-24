@@ -215,25 +215,6 @@ pub fn (mut app CustomersApiLiteApp) add_contact(mut ctx RequestContext)
     return ctx.json(logger)
 }
 
-// list_customers The `GET /v1/customers` endpoint.
-//
-// Retrieves from the database and lists all customer profiles.
-//
-// @returns The `Result` struct with the `200 OK` HTTP status code
-//          and the response body in JSON representation,
-//          containing a list of all customer profiles.
-//          May return client or server error depending on incoming request.
-/* @['/v1/customers']
-pub fn (mut app CustomersApiLiteApp) list_customers(mut ctx RequestContext)
-    veb.Result {
-
-    c.list_customers_(app.dbg, mut app.l)
-
-    logger := c.common_ctrl_hlpr_(app.dbg)
-
-    return ctx.json(logger)
-}*/
-
 // get_customer The `GET /v1/customers/{customer_id}` endpoint.
 //
 // Retrieves profile details for a given customer from the database.
