@@ -32,6 +32,8 @@ const err_port_valid_must_be_positive_int
     = 'Valid server port must be a positive integer value, '
     + 'in the range 1024 .. 49151. The default value of 8080 '
     + 'will be used instead.'
+const err_settings_unable_to_get
+    = 'FATAL: Unable to get daemon settings. Quitting...'
 pub const err_cannot_start_server
     = 'FATAL: Cannot start server '
 pub const err_addr_already_in_use
@@ -68,7 +70,11 @@ pub const logtime_ = '[YYYY-MM-DD][HH:mm:ss]'
 
 // get_settings_ Helper function. Used to get the daemon settings.
 pub fn get_settings_() toml.Doc {
-    return toml.parse_file(settings_) or { panic(err) }
+    return toml.parse_file(settings_) or {
+        eprintln(err_settings_unable_to_get)
+
+        exit(exit_failure)
+    }
 }
 
 // get_server_port_ Retrieves the port number used to run
