@@ -149,6 +149,9 @@ pub fn (mut app CustomersApiLiteApp) add_list_customers(mut ctx RequestContext)
     } else if (method == .get) || (method == .head) {
         c.list_customers_(app.dbg, mut app.l)
     } else {
+        // Methods POST, PATCH, DELETE, OPTIONS, and TRACE go here.
+        // For any other method veb will automatically respond
+        // with the HTTP 404 Not Found status code.
         ctx.res.header.add(.allow, h.hdr_allow_1)
         ctx.res.set_status(.method_not_allowed) //< HTTP 405 Method Not Allowed
 
@@ -182,7 +185,8 @@ pub fn (mut app CustomersApiLiteApp) add_list_customers(mut ctx RequestContext)
 //          body in JSON representation, containing details of a newly created
 //          customer contact (phone or email).
 //          May return client or server error depending on incoming request.
-@['/v1/customers/contacts'; put; head; get; post; patch; delete; options; trace]
+@['/v1/customers/contacts'; put; head;
+    get; post; patch; delete; options; trace]
 pub fn (mut app CustomersApiLiteApp) add_contact(mut ctx RequestContext)
     veb.Result {
 
@@ -203,6 +207,7 @@ pub fn (mut app CustomersApiLiteApp) add_contact(mut ctx RequestContext)
 
         ctx.res.set_status(.created)
     } else if method == .head {
+        // Simply respond with the HTTP 200 OK status code.
     } else {
         ctx.res.header.add(.allow, h.hdr_allow_2)
         ctx.res.set_status(.method_not_allowed)
@@ -224,11 +229,23 @@ pub fn (mut app CustomersApiLiteApp) add_contact(mut ctx RequestContext)
 // @returns The `Result` struct with a specific HTTP status code provided,
 //          containing profile details for a given customer
 //          (in the response body in JSON representation).
-@['/v1/customers/:customer_id']
+@['/v1/customers/:customer_id'; get; head;
+    put; post; patch; delete; options; trace]
 pub fn (mut app CustomersApiLiteApp) get_customer(mut ctx RequestContext,
     customer_id string) veb.Result {
 
-    c.get_customer_(app.dbg, mut app.l)
+    method := ctx.req.method
+
+    h.dbg_(app.dbg, mut app.l, h.o_bracket + method.str() + h.c_bracket)
+
+    if (method == .get) || (method == .head) {
+        c.get_customer_(app.dbg, mut app.l)
+    } else {
+        ctx.res.header.add(.allow, h.hdr_allow_3)
+        ctx.res.set_status(.method_not_allowed)
+
+        return ctx.text(h.new_line)
+    }
 
     logger := c.common_ctrl_hlpr_(app.dbg)
 
@@ -247,11 +264,23 @@ pub fn (mut app CustomersApiLiteApp) get_customer(mut ctx RequestContext,
 //          and the response body in JSON representation,
 //          containing a list of all contacts associated with a given customer.
 //          May return client or server error depending on incoming request.
-@['/v1/customers/:customer_id/contacts']
+@['/v1/customers/:customer_id/contacts'; get; head;
+    put; post; patch; delete; options; trace]
 pub fn (mut app CustomersApiLiteApp) list_contacts(mut ctx RequestContext,
     customer_id string) veb.Result {
 
-    c.list_contacts_(app.dbg, mut app.l)
+    method := ctx.req.method
+
+    h.dbg_(app.dbg, mut app.l, h.o_bracket + method.str() + h.c_bracket)
+
+    if (method == .get) || (method == .head) {
+        c.list_contacts_(app.dbg, mut app.l)
+    } else {
+        ctx.res.header.add(.allow, h.hdr_allow_3)
+        ctx.res.set_status(.method_not_allowed)
+
+        return ctx.text(h.new_line)
+    }
 
     logger := c.common_ctrl_hlpr_(app.dbg)
 
@@ -274,13 +303,25 @@ pub fn (mut app CustomersApiLiteApp) list_contacts(mut ctx RequestContext,
 //          containing a list of all contacts of a given type
 //          associated with a given customer.
 //          May return client or server error depending on incoming request.
-@['/v1/customers/:customer_id/contacts/:contact_type']
+@['/v1/customers/:customer_id/contacts/:contact_type'; get; head;
+    put; post; patch; delete; options; trace]
 pub fn (mut app CustomersApiLiteApp) list_contacts_by_type(
     mut ctx          RequestContext,
         customer_id  string,
         contact_type string) veb.Result {
 
-    c.list_contacts_by_type_(app.dbg, mut app.l)
+    method := ctx.req.method
+
+    h.dbg_(app.dbg, mut app.l, h.o_bracket + method.str() + h.c_bracket)
+
+    if (method == .get) || (method == .head) {
+        c.list_contacts_by_type_(app.dbg, mut app.l)
+    } else {
+        ctx.res.header.add(.allow, h.hdr_allow_3)
+        ctx.res.set_status(.method_not_allowed)
+
+        return ctx.text(h.new_line)
+    }
 
     logger := c.common_ctrl_hlpr_(app.dbg)
 
