@@ -97,11 +97,15 @@ fn main() {
 
             exit(h.exit_failure)
         }
-}
+} // End main.
 
-// add_customer The `PUT /v1/customers` endpoint.
+// REST API endpoints ---------------------------------------------------------
+
+// add_list_customers The compound `PUT /v1/customers`
+//                               / `GET /v1/customers` endpoint.
 //
-// Creates a new customer (puts customer data to the database).
+// 1. `PUT /v1/customers`. Creates a new customer (puts customer data
+//                         to the database).
 //
 // The request body is defined exactly in the form
 // as `{"name":"{customer_name}"}`. It should be passed with the accompanied
@@ -116,13 +120,40 @@ fn main() {
 //          body in JSON representation, containing profile details
 //          of a newly created customer.
 //          May return client or server error depending on incoming request.
-@['/v1/customers'; put]
-pub fn (mut app CustomersApiLiteApp) add_customer(mut ctx RequestContext)
+//
+// 2. `GET /v1/customers`. Retrieves from the database and lists all
+//                         customer profiles.
+//
+// @returns The `Result` struct with the `200 OK` HTTP status code
+//          and the response body in JSON representation,
+//          containing a list of all customer profiles.
+//          May return client or server error depending on incoming request.
+@['/v1/customers'; put; get; head; post; patch; delete; options; trace]
+pub fn (mut app CustomersApiLiteApp) add_list_customers(mut ctx RequestContext)
     veb.Result {
 
-    payload := ctx.req.data
+    method := ctx.req.method
 
-    c.add_customer_(app.dbg, mut app.l, payload)
+    h.dbg_(app.dbg, mut app.l, h.o_bracket + method.str() + h.c_bracket)
+
+    if method == .put {
+        payload := ctx.req.data
+
+        c.add_customer_(app.dbg, mut app.l, payload)
+
+        ctx.res.header.add(.location, h.slash + h.rest_version
+                                    + h.slash + h.rest_prefix
+                                    + h.slash + 1.str()) // TODO: cust.get_id()
+
+        ctx.res.set_status(.created) // <== HTTP 201 Created
+    } else if (method == .get) || (method == .head) {
+        c.list_customers_(app.dbg, mut app.l)
+    } else {
+        ctx.res.header.add(.allow, h.hdr_allow_1)
+        ctx.res.set_status(.method_not_allowed) //< HTTP 405 Method Not Allowed
+
+        return ctx.text(h.new_line)
+    }
 
     logger := c.common_ctrl_hlpr_(app.dbg)
 
@@ -151,13 +182,33 @@ pub fn (mut app CustomersApiLiteApp) add_customer(mut ctx RequestContext)
 //          body in JSON representation, containing details of a newly created
 //          customer contact (phone or email).
 //          May return client or server error depending on incoming request.
-@['/v1/customers/contacts'; put]
+@['/v1/customers/contacts'; put; head; get; post; patch; delete; options; trace]
 pub fn (mut app CustomersApiLiteApp) add_contact(mut ctx RequestContext)
     veb.Result {
 
-    payload := ctx.req.data
+    method := ctx.req.method
 
-    c.add_contact_(app.dbg, mut app.l, payload)
+    h.dbg_(app.dbg, mut app.l, h.o_bracket + method.str() + h.c_bracket)
+
+    if method == .put {
+        payload := ctx.req.data
+
+        c.add_contact_(app.dbg, mut app.l, payload)
+
+        ctx.res.header.add(.location, h.slash + h.rest_version
+                                    + h.slash + h.rest_prefix
+                                    + h.slash + 1.str() // TODO: cust.get_id()
+                                    + h.slash + h.rest_contacts
+                                    + h.slash + h.phone) // TODO: cont_type
+
+        ctx.res.set_status(.created)
+    } else if method == .head {
+    } else {
+        ctx.res.header.add(.allow, h.hdr_allow_2)
+        ctx.res.set_status(.method_not_allowed)
+
+        return ctx.text(h.new_line)
+    }
 
     logger := c.common_ctrl_hlpr_(app.dbg)
 
@@ -172,7 +223,7 @@ pub fn (mut app CustomersApiLiteApp) add_contact(mut ctx RequestContext)
 //          and the response body in JSON representation,
 //          containing a list of all customer profiles.
 //          May return client or server error depending on incoming request.
-@['/v1/customers']
+/* @['/v1/customers']
 pub fn (mut app CustomersApiLiteApp) list_customers(mut ctx RequestContext)
     veb.Result {
 
@@ -181,7 +232,7 @@ pub fn (mut app CustomersApiLiteApp) list_customers(mut ctx RequestContext)
     logger := c.common_ctrl_hlpr_(app.dbg)
 
     return ctx.json(logger)
-}
+}*/
 
 // get_customer The `GET /v1/customers/{customer_id}` endpoint.
 //
