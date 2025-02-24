@@ -22,10 +22,12 @@ import os
 import vseryakov.syslog as s
 
 // Helper constants.
-pub const exit_failure =   1 //    Failing exit status.
-pub const exit_success =   0 // Successful exit status.
-pub const o_bracket    = '['
-pub const c_bracket    = ']'
+pub const exit_failure =    1 //    Failing exit status.
+pub const exit_success =    0 // Successful exit status.
+pub const slash        =  '/'
+pub const o_bracket    =  '['
+pub const c_bracket    =  ']'
+pub const new_line     = '\n'
 
 // Common error messages.
 const err_port_valid_must_be_positive_int
@@ -67,6 +69,18 @@ pub const log_enabled_ = 'logger.debug.enabled'
 pub const log_dir_ = './log_/'
 pub const logfile_ = 'customers-api-lite.log'
 pub const logtime_ = '[YYYY-MM-DD][HH:mm:ss]'
+
+// REST URI path-related constants.
+pub const rest_version  = 'v1'
+pub const rest_prefix   = 'customers'
+pub const rest_contacts = 'contacts'
+pub const phone         = 'phone'
+pub const email         = 'email'
+
+// HTTP response-related constants.
+pub const hdr_allow_1 = 'PUT, GET, HEAD'
+pub const hdr_allow_2 = 'PUT, HEAD'
+pub const hdr_allow_3 = 'GET, HEAD'
 
 // get_settings_ Helper function. Used to get the daemon settings.
 pub fn get_settings_() toml.Doc {
