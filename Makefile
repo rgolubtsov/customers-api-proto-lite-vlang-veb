@@ -16,19 +16,26 @@ PREF = api-lite
 EXEC = $(BIN_DIR)/$(PREF)d
 DEPS = .
 
+DB_PATH = data/db
+DB_FILE = customers-api-lite.db.xz
+
 # Specify flags and other vars here.
 V      = v
 VFLAGS = -o $(EXEC)
 
 MKDIR   = mkdir
 RMFLAGS = -vR
+UNXZ    = unxz
 
 # Making the target (the microservice executable).
 $(EXEC): $(DEPS)
 	if [ ! -d $(BIN_DIR) ]; then \
 	    $(MKDIR) $(BIN_DIR); \
 	fi
-	$(V) $(VFLAGS) $(DEPS)
+	$(V) $(VFLAGS) $(DEPS) && \
+	if [ -f $(DB_PATH)/$(DB_FILE) ]; then \
+	    $(UNXZ) $(DB_PATH)/$(DB_FILE); \
+	fi
 
 .PHONY: all clean
 

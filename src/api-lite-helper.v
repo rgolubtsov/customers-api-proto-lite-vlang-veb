@@ -36,6 +36,8 @@ const err_port_valid_must_be_positive_int
     + 'will be used instead.'
 const err_settings_unable_to_get
     = 'FATAL: Unable to get daemon settings. Quitting...'
+pub const err_database_cannot_connect
+    = 'FATAL: Cannot connect to the database. Quitting...'
 pub const err_cannot_start_server
     = 'FATAL: Cannot start server '
 pub const err_addr_already_in_use
@@ -69,6 +71,9 @@ pub const log_enabled_ = 'logger.debug.enabled'
 pub const log_dir_ = './log_/'
 pub const logfile_ = 'customers-api-lite.log'
 pub const logtime_ = '[YYYY-MM-DD][HH:mm:ss]'
+
+// database_path_ Daemon settings key for the SQLite database path.
+pub const database_path_ = 'sqlite.database.path'
 
 // REST URI path-related constants.
 pub const rest_version  = 'v1'
