@@ -17,6 +17,7 @@ module main
 import log
 import veb
 import os
+import db.sqlite
 
 import vseryakov.syslog as s
 
@@ -27,6 +28,7 @@ import controller as c
 // that are accessible by all endpoints and shared between different routes.
 pub struct CustomersApiLiteApp {
     dbg bool
+    cnx sqlite.DB
 mut:
     l   log.Log
 }
@@ -70,10 +72,24 @@ fn main() {
     // Calling <syslog.h> openlog(NULL, LOG_CONS | LOG_PID, LOG_DAEMON);
     s.open(os.base(os.args[0]), s.log_cons | s.log_pid, s.log_daemon)
 
+    h.dbg_(dbg, mut l, h.o_bracket + daemon_name + h.c_bracket)
+
+    // Getting the SQLite database path.
+    database_path := settings.value(h.database_path_).string()
+
+    // Trying to connect to the database.
+    mut cnx := sqlite.connect(database_path) or {
+        l.error(h.err_database_cannot_connect)
+
+        h.cleanup_(mut l)
+
+        exit(h.exit_failure)
+    }
+
+    h.dbg_(dbg, mut l, h.o_bracket + cnx.str() + h.c_bracket)
+
     l.info(h.msg_server_started + '${server_port}')
     s.info(h.msg_server_started + '${server_port}')
-
-    h.dbg_(dbg, mut l, h.o_bracket + daemon_name + h.c_bracket)
 
     // Attaching Unix signal handlers to ensure daemon clean shutdown.
     os.signal_opt(.int,  h.cleanup__)! // <== SIGINT
@@ -82,18 +98,21 @@ fn main() {
     mut app := &CustomersApiLiteApp{
         dbg: dbg
         l:   l
+        cnx: cnx
     }
 
     // Trying to start up the inbuilt web server.
     veb.run_at[CustomersApiLiteApp, RequestContext](mut app, port: server_port,
         show_startup_message: false) or {
-            h.cleanup_(mut l)
-
             if err.msg().match_glob(h.err_eaddrinuse_glob) {
                 l.error(h.err_cannot_start_server + h.err_addr_already_in_use)
             } else {
                 l.error(h.err_cannot_start_server + h.err_serv_unknown_reason)
             }
+
+            cnx.close()!
+
+            h.cleanup_(mut l)
 
             exit(h.exit_failure)
         }
