@@ -34,20 +34,20 @@ Surely, one may consider this project to be suitable for a wide variety of appli
 
 ## Building
 
-The microservice might be built and run successfully under **Ubuntu Server (Ubuntu 24.04.2 LTS x86-64)** and **Arch Linux** (both proven). &mdash; First install the necessary dependencies (`build-essential`, `tcc`, `docker.io`):
+The microservice might be built and run successfully under **Ubuntu Server (Ubuntu 24.04.2 LTS x86-64)** and **Arch Linux** (both proven). &mdash; First install the necessary dependencies (`build-essential`, `tcc`, `libsqlite3-dev`, `docker.io`):
 
 * In Ubuntu Server:
 
 ```
 $ sudo apt-get update && \
-  sudo apt-get install build-essential tcc docker.io -y
+  sudo apt-get install build-essential tcc libsqlite3-dev docker.io -y
 ...
 ```
 
 * In Arch Linux:
 
 ```
-$ sudo pacman -Syu base-devel tcc docker
+$ sudo pacman -Syu base-devel tcc sqlite docker
 ...
 ```
 
