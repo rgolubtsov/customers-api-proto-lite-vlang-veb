@@ -112,7 +112,10 @@ Installed `vseryakov.syslog` in ~/.vmodules/vseryakov/syslog .
 $ if [ ! -d bin ]; then \
       mkdir bin; \
   fi && \
-  v -o bin/api-lited .
+  v -o bin/api-lited . && \
+  if [ -f data/db/customers-api-lite.db.xz ]; then \
+      unxz data/db/customers-api-lite.db.xz; \
+  fi
 ```
 
 Or **build** the microservice using **GNU Make** (optional, but for convenience &mdash; it covers the same **V frontend** build workflow under the hood):
