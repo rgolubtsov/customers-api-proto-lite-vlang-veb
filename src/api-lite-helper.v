@@ -25,6 +25,7 @@ import vseryakov.syslog as s
 pub const exit_failure =    1 //    Failing exit status.
 pub const exit_success =    0 // Successful exit status.
 pub const slash        =  '/'
+pub const v_bar        =  '|'
 pub const o_bracket    =  '['
 pub const c_bracket    =  ']'
 pub const new_line     = '\n'
