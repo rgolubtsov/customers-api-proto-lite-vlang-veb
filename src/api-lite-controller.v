@@ -15,12 +15,21 @@
 module controller
 
 import log
+import db.sqlite
+import strconv
 
 import helper as h
+import model  as m
 
 struct Logger_ {
     logging string
     enabled bool
+}
+
+// Customer The struct defining the Customer entity.
+pub struct Customer {
+    id   int
+    name string
 }
 
 // common_ctrl_hlpr_ Common controller helper function.
@@ -44,8 +53,22 @@ pub fn add_contact_(dbg bool, mut l log.Log, payload string) {
 }
 
 // list_customers_ Helper function for the `list_customers()` endpoint.
-pub fn list_customers_(dbg bool, mut l log.Log) {
-    h.dbg_(dbg, mut l, h.o_bracket + '${dbg}' + h.c_bracket)
+pub fn list_customers_(dbg bool, mut l log.Log, cnx sqlite.DB) []Customer {
+    customers := cnx.exec(m.sql_get_all_customers) or { panic(err) }
+    mut custs := []Customer{}
+
+    for customer in customers {
+        custs << Customer{
+            id:   strconv.atoi(customer.vals[0]) or { panic(err) }
+            name:              customer.vals[1]
+        }
+    }
+
+    h.dbg_(dbg, mut l, h.o_bracket + custs[0].id.str() // getId()
+                     + h.v_bar     + custs[0].name     // getName()
+                     + h.c_bracket)
+
+    return custs
 }
 
 // get_customer_ Helper function for the `get_customer()` endpoint.
