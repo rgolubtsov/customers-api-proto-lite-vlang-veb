@@ -181,7 +181,18 @@ $ curl -v http://localhost:8765/v1/customers
 
 4. **Retrieve customer**
 
-**TBD** :cd:
+```
+$ curl -v http://localhost:8765/v1/customers/2
+...
+> GET /v1/customers/2 HTTP/1.1
+...
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+< Content-Length: 30
+< Server: veb
+...
+{"id":2,"name":"Noble Numbat"}
+```
 
 5. **List contacts for a given customer**
 
