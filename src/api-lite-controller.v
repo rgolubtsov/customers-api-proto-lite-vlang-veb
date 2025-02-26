@@ -34,7 +34,7 @@ pub struct Customer {
 
 // Contact The struct defining the Contact entity.
 pub struct Contact {
-    // TODO: Declare fields.
+    contact string
 }
 
 // common_ctrl_hlpr_ Common controller helper function.
@@ -148,9 +148,23 @@ pub fn get_customer(dbg bool, mut l log.Log, cnx sqlite.DB, customer_id string)
 pub fn get_contacts(dbg bool, mut l log.Log, cnx sqlite.DB, customer_id string
     ) []Contact {
 
-    h.dbg_(dbg, mut l, h.o_bracket + '${customer_id}' + h.c_bracket)
+    h.dbg_(dbg, mut l, h.cust_id + h.equals + customer_id)
 
-    conts := []Contact{}
+    contacts := cnx.exec_param_many(m.sql_get_all_contacts, [
+        customer_id, // <== For retrieving phones.
+        customer_id  // <== For retrieving emails.
+    ]) or { panic(err) }
+
+    mut conts := []Contact{}
+
+    for contact in contacts {
+        conts << Contact{
+            contact: contact.vals[0]
+        }
+    }
+
+    h.dbg_(dbg, mut l, h.o_bracket + conts[0].contact // getContact()
+                     + h.c_bracket)
 
     return conts
 }
