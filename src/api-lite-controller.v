@@ -47,7 +47,7 @@ pub fn common_ctrl_hlpr_(dbg bool) &Logger_ {
     return logger
 }
 
-// add_customer Puts customer data to the database.
+// put_customer Puts customer data to the database.
 //              Used by the `add_list_customers()` endpoint.
 //
 // @param `dbg` The debug logging enabler.
@@ -55,7 +55,7 @@ pub fn common_ctrl_hlpr_(dbg bool) &Logger_ {
 // @param `cnx` The connection to the database.
 //
 // @returns A new Customer entity instance of a newly created customer.
-pub fn add_customer(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
+pub fn put_customer(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
     Customer {
 
     h.dbg_(dbg, mut l, h.o_bracket + '${payload}' + h.c_bracket)
@@ -65,7 +65,7 @@ pub fn add_customer(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
     return cust
 }
 
-// add_contact Puts a contact regarding a given customer to the database.
+// put_contact Puts a contact regarding a given customer to the database.
 //             Used by the `add_contact()` endpoint.
 //
 // @param `dbg` The debug logging enabler.
@@ -73,7 +73,7 @@ pub fn add_customer(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
 // @param `cnx` The connection to the database.
 //
 // @returns A new Contact entity instance of a newly created customer contact.
-pub fn add_contact(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
+pub fn put_contact(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
     Contact {
 
     h.dbg_(dbg, mut l, h.o_bracket + '${payload}' + h.c_bracket)
@@ -83,15 +83,15 @@ pub fn add_contact(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
     return cont
 }
 
-// list_customers Retrieves all customer profiles from the database.
-//                Used by the `add_list_customers()` endpoint.
+// get_customers Retrieves all customer profiles from the database.
+//               Used by the `add_list_customers()` endpoint.
 //
 // @param `dbg` The debug logging enabler.
 // @param `l`   The main logger of the daemon.
 // @param `cnx` The connection to the database.
 //
 // @returns An array of Customer entities retrieved from the database.
-pub fn list_customers(dbg bool, mut l log.Log, cnx sqlite.DB) []Customer {
+pub fn get_customers(dbg bool, mut l log.Log, cnx sqlite.DB) []Customer {
     customers := cnx.exec(m.sql_get_all_customers) or { panic(err) }
     mut custs := []Customer{}
 
@@ -127,15 +127,15 @@ pub fn get_customer(dbg bool, mut l log.Log, cnx sqlite.DB, customer_id string)
     return cust
 }
 
-// list_contacts Retrieves all contacts associated with a given customer
-//               from the database. Used by the `list_contacts()` endpoint.
+// get_contacts Retrieves all contacts associated with a given customer
+//              from the database. Used by the `list_contacts()` endpoint.
 //
 // @param `dbg` The debug logging enabler.
 // @param `l`   The main logger of the daemon.
 // @param `cnx` The connection to the database.
 //
 // @returns An array of Contact entities retrieved from the database.
-pub fn list_contacts(dbg bool, mut l log.Log, cnx sqlite.DB, customer_id string
+pub fn get_contacts(dbg bool, mut l log.Log, cnx sqlite.DB, customer_id string
     ) []Contact {
 
     h.dbg_(dbg, mut l, h.o_bracket + '${customer_id}' + h.c_bracket)
@@ -145,16 +145,16 @@ pub fn list_contacts(dbg bool, mut l log.Log, cnx sqlite.DB, customer_id string
     return conts
 }
 
-// list_contacts_by_type Retrieves all contacts of a given type associated
-//                       with a given customer from the database.
-//                       Used by the `list_contacts_by_type()` endpoint.
+// get_contacts_by_type Retrieves all contacts of a given type associated
+//                      with a given customer from the database.
+//                      Used by the `list_contacts_by_type()` endpoint.
 //
 // @param `dbg` The debug logging enabler.
 // @param `l`   The main logger of the daemon.
 // @param `cnx` The connection to the database.
 //
 // @returns An array of Contact entities retrieved from the database.
-pub fn list_contacts_by_type(dbg bool, mut l log.Log, cnx sqlite.DB,
+pub fn get_contacts_by_type(dbg bool, mut l log.Log, cnx sqlite.DB,
     customer_id  string,
     contact_type string) []Contact {
 
