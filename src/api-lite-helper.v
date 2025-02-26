@@ -25,6 +25,7 @@ import vseryakov.syslog as s
 pub const exit_failure =    1 //    Failing exit status.
 pub const exit_success =    0 // Successful exit status.
 pub const slash        =  '/'
+pub const equals       =  '='
 pub const v_bar        =  '|'
 pub const o_bracket    =  '['
 pub const c_bracket    =  ']'
@@ -82,6 +83,10 @@ pub const rest_prefix   = 'customers'
 pub const rest_contacts = 'contacts'
 pub const phone         = 'phone'
 pub const email         = 'email'
+
+// HTTP request path variable names.
+pub const cust_id   = 'customer_id'
+pub const cont_type = 'contact_type'
 
 // HTTP response-related constants.
 pub const hdr_allow_1 = 'PUT, GET, HEAD'

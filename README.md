@@ -136,21 +136,6 @@ $ ./bin/api-lited; echo $?
 ...
 ```
 
-Thus, from now on it is already possible to send HTTP requests to the running daemon:
-
-```
-$ curl -v http://localhost:8765/v1/customers
-...
-> GET /v1/customers HTTP/1.1
-...
-< HTTP/1.1 200 OK
-< Content-Type: application/json
-< Content-Length: 34
-< Server: veb
-...
-{"logging":"debug","enabled":true}
-```
-
 ## Consuming
 
 The microservice exposes **six REST API endpoints** to web clients. They are all intended to deal with customer entities and/or contact entities that belong to customer profiles. The following table displays their syntax:
@@ -181,11 +166,33 @@ The following command-line snippets display the exact usage for these endpoints 
 
 3. **List customers**
 
-**TBD** :cd:
+```
+$ curl -v http://localhost:8765/v1/customers
+...
+> GET /v1/customers HTTP/1.1
+...
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+< Content-Length: 66
+< Server: veb
+...
+[{"id":1,"name":"Jammy Jellyfish"},{"id":2,"name":"Noble Numbat"}]
+```
 
 4. **Retrieve customer**
 
-**TBD** :cd:
+```
+$ curl -v http://localhost:8765/v1/customers/2
+...
+> GET /v1/customers/2 HTTP/1.1
+...
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+< Content-Length: 30
+< Server: veb
+...
+{"id":2,"name":"Noble Numbat"}
+```
 
 5. **List contacts for a given customer**
 
