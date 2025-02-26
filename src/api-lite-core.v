@@ -155,6 +155,8 @@ pub fn (mut app CustomersApiLiteApp) add_list_customers(mut ctx RequestContext)
 
     h.dbg_(app.dbg, mut app.l, h.o_bracket + method.str() + h.c_bracket)
 
+    mut customers := []c.Customer{}
+
     if method == .put {
         payload := ctx.req.data
 
@@ -166,7 +168,8 @@ pub fn (mut app CustomersApiLiteApp) add_list_customers(mut ctx RequestContext)
 
         ctx.res.set_status(.created) // <== HTTP 201 Created
     } else if (method == .get) || (method == .head) {
-        c.list_customers_(app.dbg, mut app.l)
+        // Retrieving all customer profiles from the database.
+        customers = c.list_customers_(app.dbg, mut app.l, app.cnx)
     } else {
         // Methods POST, PATCH, DELETE, OPTIONS, and TRACE go here.
         // For any other method veb will automatically respond
@@ -177,9 +180,7 @@ pub fn (mut app CustomersApiLiteApp) add_list_customers(mut ctx RequestContext)
         return ctx.text(h.new_line)
     }
 
-    logger := c.common_ctrl_hlpr_(app.dbg)
-
-    return ctx.json(logger)
+    return ctx.json(customers)
 }
 
 // add_contact The `PUT /v1/customers/contacts` endpoint.
