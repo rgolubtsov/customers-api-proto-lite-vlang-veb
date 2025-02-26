@@ -120,9 +120,19 @@ pub fn get_customers(dbg bool, mut l log.Log, cnx sqlite.DB) []Customer {
 pub fn get_customer(dbg bool, mut l log.Log, cnx sqlite.DB, customer_id string)
     Customer {
 
-    h.dbg_(dbg, mut l, h.o_bracket + '${customer_id}' + h.c_bracket)
+    h.dbg_(dbg, mut l, h.cust_id + h.equals + customer_id)
 
-    cust := Customer{}
+    customers := cnx.exec_param(m.sql_get_customer_by_id, customer_id)
+        or { panic(err) }
+
+    cust := Customer{
+        id:   strconv.atoi(customers[0].vals[0]) or { panic(err) }
+        name:              customers[0].vals[1]
+    }
+
+    h.dbg_(dbg, mut l, h.o_bracket + cust.id.str() // getId()
+                     + h.v_bar     + cust.name     // getName()
+                     + h.c_bracket)
 
     return cust
 }
