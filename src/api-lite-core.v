@@ -158,9 +158,7 @@ pub fn (mut app CustomersApiLiteApp) add_list_customers(mut ctx RequestContext)
     mut customers := []c.Customer{}
 
     if method == .put {
-        payload := ctx.req.data
-
-        c.add_customer_(app.dbg, mut app.l, payload)
+        c.add_customer(app.dbg, mut app.l, app.cnx, ctx.req.data)
 
         ctx.res.header.add(.location, h.slash + h.rest_version
                                     + h.slash + h.rest_prefix
@@ -169,7 +167,7 @@ pub fn (mut app CustomersApiLiteApp) add_list_customers(mut ctx RequestContext)
         ctx.res.set_status(.created) // <== HTTP 201 Created
     } else if (method == .get) || (method == .head) {
         // Retrieving all customer profiles from the database.
-        customers = c.list_customers_(app.dbg, mut app.l, app.cnx)
+        customers = c.list_customers(app.dbg, mut app.l, app.cnx)
     } else {
         // Methods POST, PATCH, DELETE, OPTIONS, and TRACE go here.
         // For any other method veb will automatically respond
@@ -215,9 +213,7 @@ pub fn (mut app CustomersApiLiteApp) add_contact(mut ctx RequestContext)
     h.dbg_(app.dbg, mut app.l, h.o_bracket + method.str() + h.c_bracket)
 
     if method == .put {
-        payload := ctx.req.data
-
-        c.add_contact_(app.dbg, mut app.l, payload)
+        c.add_contact(app.dbg, mut app.l, app.cnx, ctx.req.data)
 
         ctx.res.header.add(.location, h.slash + h.rest_version
                                     + h.slash + h.rest_prefix
@@ -259,7 +255,7 @@ pub fn (mut app CustomersApiLiteApp) get_customer(mut ctx RequestContext,
     h.dbg_(app.dbg, mut app.l, h.o_bracket + method.str() + h.c_bracket)
 
     if (method == .get) || (method == .head) {
-        c.get_customer_(app.dbg, mut app.l)
+        c.get_customer(app.dbg, mut app.l, app.cnx, customer_id)
     } else {
         ctx.res.header.add(.allow, h.hdr_allow_3)
         ctx.res.set_status(.method_not_allowed)
@@ -294,7 +290,7 @@ pub fn (mut app CustomersApiLiteApp) list_contacts(mut ctx RequestContext,
     h.dbg_(app.dbg, mut app.l, h.o_bracket + method.str() + h.c_bracket)
 
     if (method == .get) || (method == .head) {
-        c.list_contacts_(app.dbg, mut app.l)
+        c.list_contacts(app.dbg, mut app.l, app.cnx, customer_id)
     } else {
         ctx.res.header.add(.allow, h.hdr_allow_3)
         ctx.res.set_status(.method_not_allowed)
@@ -335,7 +331,8 @@ pub fn (mut app CustomersApiLiteApp) list_contacts_by_type(
     h.dbg_(app.dbg, mut app.l, h.o_bracket + method.str() + h.c_bracket)
 
     if (method == .get) || (method == .head) {
-        c.list_contacts_by_type_(app.dbg, mut app.l)
+        c.list_contacts_by_type(app.dbg, mut app.l, app.cnx,
+            customer_id, contact_type)
     } else {
         ctx.res.header.add(.allow, h.hdr_allow_3)
         ctx.res.set_status(.method_not_allowed)
