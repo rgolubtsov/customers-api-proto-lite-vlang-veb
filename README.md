@@ -196,11 +196,24 @@ $ curl -v http://localhost:8765/v1/customers/2
 
 5. **List contacts for a given customer**
 
-**TBD** :cd:
+```
+$ curl -v http://localhost:8765/v1/customers/2/contacts
+...
+> GET /v1/customers/2/contacts HTTP/1.1
+...
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+< Content-Length: 190
+< Server: veb
+...
+[{"contact":"+35760X123456"},{"contact":"+35760Y1234578"},{"contact":"+35790Z12345890"},{"contact":"nn@example.org"},{"contact":"nnumbat@example.com"},{"contact":"noble.numbat@example.com"}]
+```
 
 6. **List contacts of a given type for a given customer**
 
 **TBD** :cd:
+
+> ^ The given names in customer accounts and in email contacts (in samples above) are for demonstrational purposes only. They have nothing common WRT any actual, ever really encountered names elsewhere.
 
 ---
 
