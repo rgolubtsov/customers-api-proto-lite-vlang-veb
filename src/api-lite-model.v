@@ -17,7 +17,7 @@ module model
 // sql_get_all_customers The SQL query for retrieving all customer profiles.
 //
 // Used by the `GET /v1/customers` REST endpoint.
-const sql_get_all_customers
+pub const sql_get_all_customers
     = "select id ," // as 'Customer ID',"
     + "       name" // as 'Customer Name'"
     + " from"
@@ -29,7 +29,7 @@ const sql_get_all_customers
 //                        for a given customer.
 //
 // Used by the `GET /v1/customers/{customer_id}` REST endpoint.
-const sql_get_customer_by_id
+pub const sql_get_customer_by_id
     = "select id ," // as 'Customer ID',"
     + "       name" // as 'Customer Name'"
     + " from"
@@ -41,7 +41,7 @@ const sql_get_customer_by_id
 //                      for a given customer.
 //
 // Used by the `GET /v1/customers/{customer_id}/contacts` REST endpoint.
-const sql_get_all_contacts
+pub const sql_get_all_contacts
     = "select phones.contact" // as 'Phone(s)'"
     + " from"
     + "       contact_phones phones,"
@@ -63,7 +63,7 @@ const sql_get_all_contacts
 //
 // Used by the `GET /v1/customers/{customer_id}/contacts/{contact_type}`
 // REST endpoint.
-const sql_get_contacts_by_type
+pub const sql_get_contacts_by_type
     =["select phones.contact" // as 'Phone(s)'"
     + " from"
     + "       contact_phones phones,"
