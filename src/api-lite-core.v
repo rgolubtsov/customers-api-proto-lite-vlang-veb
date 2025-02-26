@@ -155,8 +155,6 @@ pub fn (mut app CustomersApiLiteApp) add_list_customers(mut ctx RequestContext)
 
     h.dbg_(app.dbg, mut app.l, h.o_bracket + method.str() + h.c_bracket)
 
-    mut customers := []c.Customer{}
-
     if method == .put {
         c.put_customer(app.dbg, mut app.l, app.cnx, ctx.req.data)
 
@@ -165,9 +163,13 @@ pub fn (mut app CustomersApiLiteApp) add_list_customers(mut ctx RequestContext)
                                     + h.slash + 1.str()) // TODO: cust.get_id()
 
         ctx.res.set_status(.created) // <== HTTP 201 Created
+
+        return ctx.text(h.new_line)
     } else if (method == .get) || (method == .head) {
         // Retrieving all customer profiles from the database.
-        customers = c.get_customers(app.dbg, mut app.l, app.cnx)
+        customers := c.get_customers(app.dbg, mut app.l, app.cnx)
+
+        return ctx.json(customers)
     } else {
         // Methods POST, PATCH, DELETE, OPTIONS, and TRACE go here.
         // For any other method veb will automatically respond
@@ -177,8 +179,6 @@ pub fn (mut app CustomersApiLiteApp) add_list_customers(mut ctx RequestContext)
 
         return ctx.text(h.new_line)
     }
-
-    return ctx.json(customers)
 }
 
 // add_contact The `PUT /v1/customers/contacts` endpoint.
@@ -255,17 +255,16 @@ pub fn (mut app CustomersApiLiteApp) get_customer(mut ctx RequestContext,
     h.dbg_(app.dbg, mut app.l, h.o_bracket + method.str() + h.c_bracket)
 
     if (method == .get) || (method == .head) {
-        c.get_customer(app.dbg, mut app.l, app.cnx, customer_id)
+        // Retrieving profile details for a given customer from the database.
+        customer := c.get_customer(app.dbg, mut app.l, app.cnx, customer_id)
+
+        return ctx.json(customer)
     } else {
         ctx.res.header.add(.allow, h.hdr_allow_3)
         ctx.res.set_status(.method_not_allowed)
 
         return ctx.text(h.new_line)
     }
-
-    logger := c.common_ctrl_hlpr_(app.dbg)
-
-    return ctx.json(logger)
 }
 
 // list_contacts The `GET /v1/customers/{customer_id}/contacts` endpoint.
