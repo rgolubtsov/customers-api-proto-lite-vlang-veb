@@ -16,6 +16,7 @@ module controller
 
 import log
 import db.sqlite
+import json
 import strconv
 
 import helper as h
@@ -28,8 +29,9 @@ struct Logger_ {
 
 // Customer The struct defining the Customer entity.
 pub struct Customer {
-    id   int
     name string
+pub:
+    id   int
 }
 
 // Contact The struct defining the Contact entity.
@@ -58,9 +60,24 @@ pub fn common_ctrl_hlpr_(dbg bool) &Logger_ {
 pub fn put_customer(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
     Customer {
 
-    h.dbg_(dbg, mut l, h.o_bracket + '${payload}' + h.c_bracket)
+    customer := json.decode(Customer, payload) or { panic(err) }
 
-    cust := Customer{}
+    h.dbg_(dbg, mut l, h.o_bracket + customer.name + h.c_bracket)
+
+    cnx.exec_none(m.sql_put_customer[0] + customer.name
+                + m.sql_put_customer[1])
+
+    customers := cnx.exec(m.sql_get_all_customers + m.sql_desc_limit_1)
+        or { panic(err) }
+
+    cust := Customer{
+        id:   strconv.atoi(customers[0].vals[0]) or { panic(err) }
+        name:              customers[0].vals[1]
+    }
+
+    h.dbg_(dbg, mut l, h.o_bracket + cust.id.str() // getId()
+                     + h.v_bar     + cust.name     // getName()
+                     + h.c_bracket)
 
     return cust
 }
