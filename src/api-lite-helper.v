@@ -24,6 +24,7 @@ import vseryakov.syslog as s
 // Helper constants.
 pub const exit_failure =    1 //    Failing exit status.
 pub const exit_success =    0 // Successful exit status.
+pub const space        =  ' '
 pub const slash        =  '/'
 pub const equals       =  '='
 pub const v_bar        =  '|'

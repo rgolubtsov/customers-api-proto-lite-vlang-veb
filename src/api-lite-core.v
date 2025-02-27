@@ -134,6 +134,8 @@ fn main() {
 //
 // `{customer_name}` is a name assigned to a newly created customer.
 //
+// @param `ctx` The struct containing an HTTP request/response pair.
+//
 // @returns The `Result` struct with the `201 Created` HTTP status code,
 //          the `Location` response header (among others), and the response
 //          body in JSON representation, containing profile details
@@ -198,6 +200,8 @@ pub fn (mut app CustomersApiLiteApp) add_list_customers(mut ctx RequestContext)
 //
 // `{customer_contact}` is a newly created contact (phone or email).
 //
+// @param `ctx` The struct containing an HTTP request/response pair.
+//
 // @returns The `Result` struct with the `201 Created` HTTP status code,
 //          the `Location` response header (among others), and the response
 //          body in JSON representation, containing details of a newly created
@@ -240,6 +244,7 @@ pub fn (mut app CustomersApiLiteApp) add_contact(mut ctx RequestContext)
 //
 // Retrieves profile details for a given customer from the database.
 //
+// @param `ctx`         The struct containing an HTTP request/response pair.
 // @param `customer_id` The customer ID used to retrieve customer profile data.
 //
 // @returns The `Result` struct with a specific HTTP status code provided,
@@ -272,6 +277,7 @@ pub fn (mut app CustomersApiLiteApp) get_customer(mut ctx RequestContext,
 // Retrieves from the database and lists all contacts
 // associated with a given customer.
 //
+// @param `ctx`         The struct containing an HTTP request/response pair.
 // @param `customer_id` The customer ID used to retrieve contacts
 //                      which belong to this customer.
 //
@@ -308,6 +314,7 @@ pub fn (mut app CustomersApiLiteApp) list_contacts(mut ctx RequestContext,
 // Retrieves from the database and lists all contacts of a given type
 // associated with a given customer.
 //
+// @param `ctx`          The struct containing an HTTP request/response pair.
 // @param `customer_id`  The customer ID used to retrieve contacts
 //                       which belong to this customer.
 // @param `contact_type` The particular type of contacts to retrieve
@@ -330,18 +337,18 @@ pub fn (mut app CustomersApiLiteApp) list_contacts_by_type(
     h.dbg_(app.dbg, mut app.l, h.o_bracket + method.str() + h.c_bracket)
 
     if (method == .get) || (method == .head) {
-        c.get_contacts_by_type(app.dbg, mut app.l, app.cnx,
+        // Retrieving all contacts of a given type associated
+        // with a given customer from the database.
+        contacts := c.get_contacts_by_type(app.dbg, mut app.l, app.cnx,
             customer_id, contact_type)
+
+        return ctx.json(contacts)
     } else {
         ctx.res.header.add(.allow, h.hdr_allow_3)
         ctx.res.set_status(.method_not_allowed)
 
         return ctx.text(h.new_line)
     }
-
-    logger := c.common_ctrl_hlpr_(app.dbg)
-
-    return ctx.json(logger)
 }
 
 // vim:set nu et ts=4 sw=4:

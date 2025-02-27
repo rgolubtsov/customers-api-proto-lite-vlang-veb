@@ -182,11 +182,32 @@ pub fn get_contacts_by_type(dbg bool, mut l log.Log, cnx sqlite.DB,
     customer_id  string,
     contact_type string) []Contact {
 
-    h.dbg_(dbg, mut l, h.o_bracket + '${customer_id}'
-                     + h.v_bar     + '${contact_type}'
-                     + h.c_bracket)
+    h.dbg_(dbg, mut l, h.cust_id   + h.equals + customer_id + h.space + h.v_bar
+           + h.space + h.cont_type + h.equals + contact_type)
 
-    conts := []Contact{}
+    mut sql_query := m.sql_get_contacts_by_type[2]
+
+    if (contact_type == h.phone)
+        || (contact_type == h.phone.to_upper_ascii()) {
+
+        sql_query = m.sql_get_contacts_by_type[0]
+    } else if (contact_type == h.email)
+        || (contact_type == h.email.to_upper_ascii()) {
+
+        sql_query = m.sql_get_contacts_by_type[1]
+    }
+
+    contacts  := cnx.exec_param(sql_query, customer_id) or { panic(err) }
+    mut conts := []Contact{}
+
+    for contact in contacts {
+        conts << Contact{
+            contact: contact.vals[0]
+        }
+    }
+
+    h.dbg_(dbg, mut l, h.o_bracket + conts[0].contact // getContact()
+                     + h.c_bracket)
 
     return conts
 }
