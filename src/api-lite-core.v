@@ -158,15 +158,16 @@ pub fn (mut app CustomersApiLiteApp) add_list_customers(mut ctx RequestContext)
     h.dbg_(app.dbg, mut app.l, h.o_bracket + method.str() + h.c_bracket)
 
     if method == .put {
-        c.put_customer(app.dbg, mut app.l, app.cnx, ctx.req.data)
+        // Creating a new customer (putting customer data to the database).
+        customer := c.put_customer(app.dbg, mut app.l, app.cnx, ctx.req.data)
 
         ctx.res.header.add(.location, h.slash + h.rest_version
                                     + h.slash + h.rest_prefix
-                                    + h.slash + 1.str()) // TODO: cust.get_id()
+                                    + h.slash + customer.id.str()) // getId()
 
         ctx.res.set_status(.created) // <== HTTP 201 Created
 
-        return ctx.text(h.new_line)
+        return ctx.json(customer)
     } else if (method == .get) || (method == .head) {
         // Retrieving all customer profiles from the database.
         customers := c.get_customers(app.dbg, mut app.l, app.cnx)
