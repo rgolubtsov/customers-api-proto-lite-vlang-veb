@@ -337,18 +337,18 @@ pub fn (mut app CustomersApiLiteApp) list_contacts_by_type(
     h.dbg_(app.dbg, mut app.l, h.o_bracket + method.str() + h.c_bracket)
 
     if (method == .get) || (method == .head) {
-        c.get_contacts_by_type(app.dbg, mut app.l, app.cnx,
+        // Retrieving all contacts of a given type associated
+        // with a given customer from the database.
+        contacts := c.get_contacts_by_type(app.dbg, mut app.l, app.cnx,
             customer_id, contact_type)
+
+        return ctx.json(contacts)
     } else {
         ctx.res.header.add(.allow, h.hdr_allow_3)
         ctx.res.set_status(.method_not_allowed)
 
         return ctx.text(h.new_line)
     }
-
-    logger := c.common_ctrl_hlpr_(app.dbg)
-
-    return ctx.json(logger)
 }
 
 // vim:set nu et ts=4 sw=4:
