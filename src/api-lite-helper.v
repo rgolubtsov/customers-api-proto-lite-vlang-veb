@@ -1,7 +1,7 @@
 /*
  * src/api-lite-helper.v
  * ============================================================================
- * Customers API Lite microservice prototype (V port). Version 0.0.20
+ * Customers API Lite microservice prototype (V port). Version 0.1.0
  * ============================================================================
  * A daemon written in V (vlang/veb), designed and intended to be run
  * as a microservice, implementing a special Customers API prototype
@@ -48,6 +48,10 @@ pub const err_addr_already_in_use
 pub const err_serv_unknown_reason
     = 'for an unknown reason. Quitting...'
 pub const err_eaddrinuse_glob = '*98*'
+pub const err_req_malformed
+    = 'HTTP 400 Bad Request: Request is malformed. Please check your inputs.'
+pub const err_req_method_not_allowed
+    = 'HTTP 405 Method Not Allowed. Allowed methods: '
 
 // Common notification messages.
 pub const msg_server_started = 'Server started on port '
@@ -91,8 +95,12 @@ pub const cont_type = 'contact_type'
 
 // HTTP response-related constants.
 pub const hdr_allow_1 = 'PUT, GET, HEAD'
-pub const hdr_allow_2 = 'PUT, HEAD'
+pub const hdr_allow_2 = 'PUT'
 pub const hdr_allow_3 = 'GET, HEAD'
+
+// Regex patterns for contact phones and emails.
+pub const phone_regex = '^\\+\\d{9,14}'
+pub const email_regex = '.{1,63}@.{3,190}'
 
 // get_settings_ Helper function. Used to get the daemon settings.
 pub fn get_settings_() toml.Doc {

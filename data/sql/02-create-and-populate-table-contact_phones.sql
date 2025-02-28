@@ -1,7 +1,7 @@
 --
 -- data/sql/02-create-and-populate-table-contact_phones.sql
 -- ============================================================================
--- Customers API Lite microservice prototype (V port). Version 0.0.20
+-- Customers API Lite microservice prototype (V port). Version 0.1.0
 -- ============================================================================
 -- A daemon written in V (vlang/veb), designed and intended to be run
 -- as a microservice, implementing a special Customers API prototype

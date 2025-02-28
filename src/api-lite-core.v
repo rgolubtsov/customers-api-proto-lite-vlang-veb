@@ -1,7 +1,7 @@
 /*
  * src/api-lite-core.v
  * ============================================================================
- * Customers API Lite microservice prototype (V port). Version 0.0.20
+ * Customers API Lite microservice prototype (V port). Version 0.1.0
  * ============================================================================
  * A daemon written in V (vlang/veb), designed and intended to be run
  * as a microservice, implementing a special Customers API prototype
@@ -37,6 +37,10 @@ mut:
 // It also holds a standard HTTP request/response pair.
 pub struct RequestContext {
     veb.Context
+}
+
+struct Error_ {
+    error string
 }
 
 // main The microservice entry point.
@@ -180,7 +184,9 @@ pub fn (mut app CustomersApiLiteApp) add_list_customers(mut ctx RequestContext)
         ctx.res.header.add(.allow, h.hdr_allow_1)
         ctx.res.set_status(.method_not_allowed) //< HTTP 405 Method Not Allowed
 
-        return ctx.text(h.new_line)
+        return ctx.json(Error_{
+            error: h.err_req_method_not_allowed + h.hdr_allow_1
+        })
     }
 }
 
@@ -208,8 +214,8 @@ pub fn (mut app CustomersApiLiteApp) add_list_customers(mut ctx RequestContext)
 //          body in JSON representation, containing details of a newly created
 //          customer contact (phone or email).
 //          May return client or server error depending on incoming request.
-@['/v1/customers/contacts'; put; head;
-    get; post; patch; delete; options; trace]
+@['/v1/customers/contacts'; put;
+    head; get; post; patch; delete; options; trace]
 pub fn (mut app CustomersApiLiteApp) add_contact(mut ctx RequestContext)
     veb.Result {
 
@@ -218,27 +224,28 @@ pub fn (mut app CustomersApiLiteApp) add_contact(mut ctx RequestContext)
     h.dbg_(app.dbg, mut app.l, h.o_bracket + method.str() + h.c_bracket)
 
     if method == .put {
-        c.put_contact(app.dbg, mut app.l, app.cnx, ctx.req.data)
+        // Creating a new contact (putting a contact regarding a given customer
+        // to the database).
+        customer_id, contact_type, contact := c.put_contact(app.dbg, mut app.l,
+            app.cnx, ctx.req.data)
 
         ctx.res.header.add(.location, h.slash + h.rest_version
                                     + h.slash + h.rest_prefix
-                                    + h.slash + 1.str() // TODO: cust.get_id()
+                                    + h.slash + customer_id
                                     + h.slash + h.rest_contacts
-                                    + h.slash + h.phone) // TODO: cont_type
+                                    + h.slash + contact_type)
 
         ctx.res.set_status(.created)
-    } else if method == .head {
-        // Simply respond with the HTTP 200 OK status code.
+
+        return ctx.json(contact)
     } else {
         ctx.res.header.add(.allow, h.hdr_allow_2)
         ctx.res.set_status(.method_not_allowed)
 
-        return ctx.text(h.new_line)
+        return ctx.json(Error_{
+            error: h.err_req_method_not_allowed + h.hdr_allow_2
+        })
     }
-
-    logger := c.common_ctrl_hlpr_(app.dbg)
-
-    return ctx.json(logger)
 }
 
 // get_customer The `GET /v1/customers/{customer_id}` endpoint.
@@ -269,7 +276,9 @@ pub fn (mut app CustomersApiLiteApp) get_customer(mut ctx RequestContext,
         ctx.res.header.add(.allow, h.hdr_allow_3)
         ctx.res.set_status(.method_not_allowed)
 
-        return ctx.text(h.new_line)
+        return ctx.json(Error_{
+            error: h.err_req_method_not_allowed + h.hdr_allow_3
+        })
     }
 }
 
@@ -305,7 +314,9 @@ pub fn (mut app CustomersApiLiteApp) list_contacts(mut ctx RequestContext,
         ctx.res.header.add(.allow, h.hdr_allow_3)
         ctx.res.set_status(.method_not_allowed)
 
-        return ctx.text(h.new_line)
+        return ctx.json(Error_{
+            error: h.err_req_method_not_allowed + h.hdr_allow_3
+        })
     }
 }
 
@@ -348,7 +359,9 @@ pub fn (mut app CustomersApiLiteApp) list_contacts_by_type(
         ctx.res.header.add(.allow, h.hdr_allow_3)
         ctx.res.set_status(.method_not_allowed)
 
-        return ctx.text(h.new_line)
+        return ctx.json(Error_{
+            error: h.err_req_method_not_allowed + h.hdr_allow_3
+        })
     }
 }
 
