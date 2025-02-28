@@ -39,6 +39,10 @@ pub struct RequestContext {
     veb.Context
 }
 
+struct Error_ {
+    error string
+}
+
 // main The microservice entry point.
 //
 // @returns The exit code of the overall termination of the daemon.
@@ -180,7 +184,9 @@ pub fn (mut app CustomersApiLiteApp) add_list_customers(mut ctx RequestContext)
         ctx.res.header.add(.allow, h.hdr_allow_1)
         ctx.res.set_status(.method_not_allowed) //< HTTP 405 Method Not Allowed
 
-        return ctx.text(h.new_line)
+        return ctx.json(Error_{
+            error: h.err_req_method_not_allowed + h.hdr_allow_1
+        })
     }
 }
 
@@ -208,8 +214,8 @@ pub fn (mut app CustomersApiLiteApp) add_list_customers(mut ctx RequestContext)
 //          body in JSON representation, containing details of a newly created
 //          customer contact (phone or email).
 //          May return client or server error depending on incoming request.
-@['/v1/customers/contacts'; put; head;
-    get; post; patch; delete; options; trace]
+@['/v1/customers/contacts'; put;
+    head; get; post; patch; delete; options; trace]
 pub fn (mut app CustomersApiLiteApp) add_contact(mut ctx RequestContext)
     veb.Result {
 
@@ -232,15 +238,13 @@ pub fn (mut app CustomersApiLiteApp) add_contact(mut ctx RequestContext)
         ctx.res.set_status(.created)
 
         return ctx.json(contact)
-    } else if method == .head {
-        // Simply respond with the HTTP 200 OK status code.
-
-        return ctx.text(h.new_line)
     } else {
         ctx.res.header.add(.allow, h.hdr_allow_2)
         ctx.res.set_status(.method_not_allowed)
 
-        return ctx.text(h.new_line)
+        return ctx.json(Error_{
+            error: h.err_req_method_not_allowed + h.hdr_allow_2
+        })
     }
 }
 
@@ -272,7 +276,9 @@ pub fn (mut app CustomersApiLiteApp) get_customer(mut ctx RequestContext,
         ctx.res.header.add(.allow, h.hdr_allow_3)
         ctx.res.set_status(.method_not_allowed)
 
-        return ctx.text(h.new_line)
+        return ctx.json(Error_{
+            error: h.err_req_method_not_allowed + h.hdr_allow_3
+        })
     }
 }
 
@@ -308,7 +314,9 @@ pub fn (mut app CustomersApiLiteApp) list_contacts(mut ctx RequestContext,
         ctx.res.header.add(.allow, h.hdr_allow_3)
         ctx.res.set_status(.method_not_allowed)
 
-        return ctx.text(h.new_line)
+        return ctx.json(Error_{
+            error: h.err_req_method_not_allowed + h.hdr_allow_3
+        })
     }
 }
 
@@ -351,7 +359,9 @@ pub fn (mut app CustomersApiLiteApp) list_contacts_by_type(
         ctx.res.header.add(.allow, h.hdr_allow_3)
         ctx.res.set_status(.method_not_allowed)
 
-        return ctx.text(h.new_line)
+        return ctx.json(Error_{
+            error: h.err_req_method_not_allowed + h.hdr_allow_3
+        })
     }
 }
 
