@@ -20,6 +20,17 @@ module model
 // Used by the `PUT /v1/customers` REST endpoint.
 pub const sql_put_customer = ["insert into customers (name) values ('", "')"]
 
+// sql_put_contact The SQL query for creating a new contact
+//                 for a given customer (putting a contact
+//                 regarding a given customer to the database).
+//
+// Used by the `PUT /v1/customers/contacts` REST endpoint.
+pub const sql_put_contact
+    =[["insert into contact_phones (contact, customer_id)"
+     + "                    values ('", "', ", ")"],
+      ["insert into contact_emails (contact, customer_id)"
+     + "                    values ('", "', ", ")"]]
+
 // sql_get_all_customers The SQL query for retrieving all customer profiles.
 //
 // Used by the `GET /v1/customers` REST endpoint.
@@ -88,7 +99,7 @@ pub const sql_get_contacts_by_type
 
 // sql_order_contacts_by_id The intermediate part of an SQL query,
 //                          used to order contact records by ID.
-const sql_order_contacts_by_id
+pub const sql_order_contacts_by_id
     =[' order by phones.id',
       ' order by emails.id']
 
