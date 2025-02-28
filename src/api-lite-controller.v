@@ -18,14 +18,10 @@ import log
 import db.sqlite
 import json
 import strconv
+import regex
 
 import helper as h
 import model  as m
-
-struct Logger_ {
-    logging string
-    enabled bool
-}
 
 // Customer The struct defining the Customer entity.
 pub struct Customer {
@@ -36,17 +32,8 @@ pub:
 
 // Contact The struct defining the Contact entity.
 pub struct Contact {
-    contact string
-}
-
-// common_ctrl_hlpr_ Common controller helper function.
-pub fn common_ctrl_hlpr_(dbg bool) &Logger_ {
-    logger := &Logger_{
-        logging: 'debug'
-        enabled: dbg
-    }
-
-    return logger
+    contact     string
+    customer_id string @[omitempty]
 }
 
 // put_customer Puts customer data to the database.
@@ -91,13 +78,64 @@ pub fn put_customer(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
 //
 // @returns A new Contact entity instance of a newly created customer contact.
 pub fn put_contact(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
-    Contact {
+    (string, string, Contact) {
 
-    h.dbg_(dbg, mut l, h.o_bracket + '${payload}' + h.c_bracket)
+    contact := json.decode(Contact, payload) or { panic(err) }
 
-    cont := Contact{}
+    h.dbg_(dbg, mut l, h.cust_id + h.equals + contact.customer_id)
+    h.dbg_(dbg, mut l, h.o_bracket + contact.contact + h.c_bracket)
 
-    return cont
+    // Parsing and validating a customer contact: phone or email.
+    contact_type := parse_contact_(contact.contact)
+
+    mut sql_query := [m.sql_put_contact[1][0],
+                      m.sql_put_contact[1][1],
+                      m.sql_put_contact[1][2]]
+
+    if (contact_type == h.phone)
+        || (contact_type == h.phone.to_upper_ascii()) {
+
+        sql_query = [m.sql_put_contact[0][0],
+                     m.sql_put_contact[0][1],
+                     m.sql_put_contact[0][2]]
+    } else if (contact_type == h.email)
+        || (contact_type == h.email.to_upper_ascii()) {
+
+        sql_query = [m.sql_put_contact[1][0],
+                     m.sql_put_contact[1][1],
+                     m.sql_put_contact[1][2]]
+    }
+
+    cnx.exec_none(sql_query[0] + contact.contact
+                + sql_query[1] + contact.customer_id
+                + sql_query[2])
+
+    mut sql_query_ := m.sql_get_contacts_by_type[2]
+
+    if (contact_type == h.phone)
+        || (contact_type == h.phone.to_upper_ascii()) {
+
+        sql_query_ = m.sql_get_contacts_by_type[0]
+                   + m.sql_order_contacts_by_id[0]
+    } else if (contact_type == h.email)
+        || (contact_type == h.email.to_upper_ascii()) {
+
+        sql_query_ = m.sql_get_contacts_by_type[1]
+                   + m.sql_order_contacts_by_id[1]
+    }
+
+    contacts := cnx.exec_param(sql_query_ + m.sql_desc_limit_1,
+        contact.customer_id) or { panic(err) }
+
+    cont := Contact{
+        contact: contacts[0].vals[0]
+    }
+
+    h.dbg_(dbg, mut l, h.o_bracket + contact_type
+                     + h.v_bar     + cont.contact // getContact()
+                     + h.c_bracket)
+
+    return contact.customer_id, contact_type, cont
 }
 
 // get_customers Retrieves all customer profiles from the database.
@@ -227,6 +265,18 @@ pub fn get_contacts_by_type(dbg bool, mut l log.Log, cnx sqlite.DB,
                      + h.c_bracket)
 
     return conts
+}
+
+// parse_contact_ Helper func. Used to parse and validate a customer contact.
+//                             Returns the type of contact: phone or email.
+fn parse_contact_(contact string) string {
+    phone_regex := regex.regex_opt(h.phone_regex) or { panic(err) }
+    email_regex := regex.regex_opt(h.email_regex) or { panic(err) }
+
+         if phone_regex.matches_string(contact) { return h.phone }
+    else if email_regex.matches_string(contact) { return h.email }
+
+    return h.space
 }
 
 // vim:set nu et ts=4 sw=4:
