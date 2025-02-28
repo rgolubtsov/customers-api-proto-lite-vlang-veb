@@ -94,6 +94,10 @@ pub const hdr_allow_1 = 'PUT, GET, HEAD'
 pub const hdr_allow_2 = 'PUT, HEAD'
 pub const hdr_allow_3 = 'GET, HEAD'
 
+// Regex patterns for contact phones and emails.
+pub const phone_regex = '^\\+\\d{9,14}'
+pub const email_regex = '.{1,63}@.{3,190}'
+
 // get_settings_ Helper function. Used to get the daemon settings.
 pub fn get_settings_() toml.Doc {
     return toml.parse_file(settings_) or {
