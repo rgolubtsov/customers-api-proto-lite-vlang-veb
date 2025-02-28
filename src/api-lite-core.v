@@ -218,27 +218,30 @@ pub fn (mut app CustomersApiLiteApp) add_contact(mut ctx RequestContext)
     h.dbg_(app.dbg, mut app.l, h.o_bracket + method.str() + h.c_bracket)
 
     if method == .put {
-        c.put_contact(app.dbg, mut app.l, app.cnx, ctx.req.data)
+        // Creating a new contact (putting a contact regarding a given customer
+        // to the database).
+        customer_id, contact_type, contact := c.put_contact(app.dbg, mut app.l,
+            app.cnx, ctx.req.data)
 
         ctx.res.header.add(.location, h.slash + h.rest_version
                                     + h.slash + h.rest_prefix
-                                    + h.slash + 1.str() // TODO: cust.get_id()
+                                    + h.slash + customer_id
                                     + h.slash + h.rest_contacts
-                                    + h.slash + h.phone) // TODO: cont_type
+                                    + h.slash + contact_type)
 
         ctx.res.set_status(.created)
+
+        return ctx.json(contact)
     } else if method == .head {
         // Simply respond with the HTTP 200 OK status code.
+
+        return ctx.text(h.new_line)
     } else {
         ctx.res.header.add(.allow, h.hdr_allow_2)
         ctx.res.set_status(.method_not_allowed)
 
         return ctx.text(h.new_line)
     }
-
-    logger := c.common_ctrl_hlpr_(app.dbg)
-
-    return ctx.json(logger)
 }
 
 // get_customer The `GET /v1/customers/{customer_id}` endpoint.
