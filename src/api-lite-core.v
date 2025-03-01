@@ -18,6 +18,7 @@ import log
 import veb
 import os
 import db.sqlite
+import strconv
 
 import vseryakov.syslog as s
 
@@ -268,6 +269,13 @@ pub fn (mut app CustomersApiLiteApp) get_customer(mut ctx RequestContext,
     h.dbg_(app.dbg, mut app.l, h.o_bracket + method.str() + h.c_bracket)
 
     if (method == .get) || (method == .head) {
+        // Validating the request path variable.
+        strconv.atoi(customer_id) or {
+            ctx.res.set_status(.bad_request) // <== HTTP 400 Bad Request
+
+            return ctx.json(Error_{ error: h.err_req_malformed })
+        }
+
         // Retrieving profile details for a given customer from the database.
         customer := c.get_customer(app.dbg, mut app.l, app.cnx, customer_id)
 

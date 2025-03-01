@@ -177,7 +177,11 @@ pub fn get_customer(dbg bool, mut l log.Log, cnx sqlite.DB, customer_id string)
 
     h.dbg_(dbg, mut l, h.cust_id + h.equals + customer_id)
 
-    customers := cnx.exec_param(m.sql_get_customer_by_id, customer_id)
+    // Validating the request path variable (unlikely to reach here
+    // in case it is actually malformed).
+    cust_id := strconv.atoi(customer_id) or { 1 }
+
+    customers := cnx.exec_param(m.sql_get_customer_by_id, cust_id.str())
         or { panic(err) }
 
     cust := Customer{
