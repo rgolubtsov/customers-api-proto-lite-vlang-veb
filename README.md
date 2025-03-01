@@ -31,6 +31,7 @@ Surely, one may consider this project to be suitable for a wide variety of appli
 * **[Building](#building)**
 * **[Running](#running)**
 * **[Consuming](#consuming)**
+  * **[Logging](#logging)**
 
 ## Building
 
@@ -295,6 +296,55 @@ $ curl -v http://localhost:8765/v1/customers/3/contacts/email
 ```
 
 > ^ The given names in customer accounts and in email contacts (in samples above) are for demonstrational purposes only. They have nothing common WRT any actual, ever really encountered names elsewhere.
+
+### Logging
+
+The microservice has the ability to log messages to a logfile and to the Unix syslog facility. To enable debug logging, the `debug.enabled` setting in the microservice main config file `etc/settings.conf` should be set to `true` *before starting up the microservice*. When running under Ubuntu Server or Arch Linux (not in a Docker container), logs can be seen and analyzed in an ordinary fashion, by `tail`ing the `log_/customers-api-lite.log` logfile:
+
+```
+$ tail -f log_/customers-api-lite.log
+...
+[2025-03-01][16:40:00] [DEBUG] [Customers API Lite]
+[2025-03-01][16:40:00] [DEBUG] [sqlite.DB{ conn: 1b41bf38 }]
+[2025-03-01][16:40:00] [INFO ] Server started on port 8765
+[2025-03-01][16:55:53] [DEBUG] [PUT]
+[2025-03-01][16:55:53] [DEBUG] [Saturday Sunday]
+[2025-03-01][16:55:54] [DEBUG] [5|Saturday Sunday]
+[2025-03-01][16:58:32] [DEBUG] [PUT]
+[2025-03-01][16:58:32] [DEBUG] customer_id=5
+[2025-03-01][16:58:32] [DEBUG] [Saturday.Sunday@example.com]
+[2025-03-01][16:58:32] [DEBUG] [email|Saturday.Sunday@example.com]
+[2025-03-01][16:59:54] [DEBUG] [GET]
+[2025-03-01][16:59:54] [DEBUG] customer_id=5
+[2025-03-01][16:59:54] [DEBUG] [5|Saturday Sunday]
+[2025-03-01][17:00:46] [DEBUG] [GET]
+[2025-03-01][17:00:46] [DEBUG] customer_id=5 | contact_type=email
+[2025-03-01][17:00:46] [DEBUG] [Saturday.Sunday@example.com]
+```
+
+Messages registered by the Unix system logger can be seen and analyzed using the `journalctl` utility:
+
+```
+$ journalctl -f
+...
+Mar 01 19:40:00 <hostname> api-lited[<pid>]: [Customers API Lite]
+Mar 01 19:40:00 <hostname> api-lited[<pid>]: [sqlite.DB{ conn: 1b41bf38 }]
+Mar 01 19:40:00 <hostname> api-lited[<pid>]: Server started on port 8765
+Mar 01 19:55:53 <hostname> api-lited[<pid>]: [PUT]
+Mar 01 19:55:53 <hostname> api-lited[<pid>]: [Saturday Sunday]
+Mar 01 19:55:54 <hostname> api-lited[<pid>]: [5|Saturday Sunday]
+Mar 01 19:58:32 <hostname> api-lited[<pid>]: [PUT]
+Mar 01 19:58:32 <hostname> api-lited[<pid>]: customer_id=5
+Mar 01 19:58:32 <hostname> api-lited[<pid>]: [Saturday.Sunday@example.com]
+Mar 01 19:58:32 <hostname> api-lited[<pid>]: [email|Saturday.Sunday@example.com]
+Mar 01 19:59:54 <hostname> api-lited[<pid>]: [GET]
+Mar 01 19:59:54 <hostname> api-lited[<pid>]: customer_id=5
+Mar 01 19:59:54 <hostname> api-lited[<pid>]: [5|Saturday Sunday]
+Mar 01 20:00:46 <hostname> api-lited[<pid>]: [GET]
+Mar 01 20:00:46 <hostname> api-lited[<pid>]: customer_id=5 | contact_type=email
+Mar 01 20:00:46 <hostname> api-lited[<pid>]: [Saturday.Sunday@example.com]
+Mar 01 20:10:00 <hostname> api-lited[<pid>]: Server stopped
+```
 
 ---
 
