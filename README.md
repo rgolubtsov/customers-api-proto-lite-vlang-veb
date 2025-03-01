@@ -32,6 +32,7 @@ Surely, one may consider this project to be suitable for a wide variety of appli
 * **[Running](#running)**
 * **[Consuming](#consuming)**
   * **[Logging](#logging)**
+  * **[Error handling](#error-handling)**
 
 ## Building
 
@@ -344,6 +345,17 @@ Mar 01 20:00:46 <hostname> api-lited[<pid>]: [GET]
 Mar 01 20:00:46 <hostname> api-lited[<pid>]: customer_id=5 | contact_type=email
 Mar 01 20:00:46 <hostname> api-lited[<pid>]: [Saturday.Sunday@example.com]
 Mar 01 20:10:00 <hostname> api-lited[<pid>]: Server stopped
+```
+
+**TBD** :cd:
+
+### Error handling
+
+When the URI path or request body passed in an incoming request contains inappropriate input, the microservice will respond with the **HTTP 400 Bad Request** status code, including a specific response body in JSON representation which may describe a possible cause of underlying client error, like the following:
+
+```
+$ curl http://localhost:8765/v1/customers/=qwerty4838=-i-.--089asdf..nj524987
+{"error":"HTTP 400 Bad Request: Request is malformed. Please check your inputs."}
 ```
 
 ---
