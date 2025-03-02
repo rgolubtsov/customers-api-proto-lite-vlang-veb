@@ -313,6 +313,13 @@ pub fn (mut app CustomersApiLiteApp) list_contacts(mut ctx RequestContext,
     h.dbg_(app.dbg, mut app.l, h.o_bracket + method.str() + h.c_bracket)
 
     if (method == .get) || (method == .head) {
+        // Validating the request path variable.
+        strconv.atoi(customer_id) or {
+            ctx.res.set_status(.bad_request)
+
+            return ctx.json(Error_{ error: h.err_req_malformed })
+        }
+
         // Retrieving all contacts associated with a given customer
         // from the database.
         contacts := c.get_contacts(app.dbg, mut app.l, app.cnx, customer_id)
@@ -357,6 +364,13 @@ pub fn (mut app CustomersApiLiteApp) list_contacts_by_type(
     h.dbg_(app.dbg, mut app.l, h.o_bracket + method.str() + h.c_bracket)
 
     if (method == .get) || (method == .head) {
+        // Validating the request path variable.
+        strconv.atoi(customer_id) or {
+            ctx.res.set_status(.bad_request)
+
+            return ctx.json(Error_{ error: h.err_req_malformed })
+        }
+
         // Retrieving all contacts of a given type associated
         // with a given customer from the database.
         contacts := c.get_contacts_by_type(app.dbg, mut app.l, app.cnx,

@@ -58,7 +58,7 @@ pub fn put_customer(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
         or { panic(err) }
 
     cust := Customer{
-        id:   strconv.atoi(customers[0].vals[0]) or { panic(err) }
+        id:   strconv.atoi(customers[0].vals[0]) or { 1 }
         name:              customers[0].vals[1]
     }
 
@@ -152,7 +152,7 @@ pub fn get_customers(dbg bool, mut l log.Log, cnx sqlite.DB) []Customer {
 
     for customer in customers {
         custs << Customer{
-            id:   strconv.atoi(customer.vals[0]) or { panic(err) }
+            id:   strconv.atoi(customer.vals[0]) or { 1 }
             name:              customer.vals[1]
         }
     }
@@ -185,7 +185,7 @@ pub fn get_customer(dbg bool, mut l log.Log, cnx sqlite.DB, customer_id string)
         or { panic(err) }
 
     cust := Customer{
-        id:   strconv.atoi(customers[0].vals[0]) or { panic(err) }
+        id:   strconv.atoi(customers[0].vals[0]) or { 1 }
         name:              customers[0].vals[1]
     }
 
@@ -209,9 +209,13 @@ pub fn get_contacts(dbg bool, mut l log.Log, cnx sqlite.DB, customer_id string
 
     h.dbg_(dbg, mut l, h.cust_id + h.equals + customer_id)
 
+    // Validating the request path variable (unlikely to reach here
+    // in case it is actually malformed).
+    cust_id := strconv.atoi(customer_id) or { 1 }
+
     contacts := cnx.exec_param_many(m.sql_get_all_contacts, [
-        customer_id, // <== For retrieving phones.
-        customer_id  // <== For retrieving emails.
+        cust_id.str(), // <== For retrieving phones.
+        cust_id.str()  // <== For retrieving emails.
     ]) or { panic(err) }
 
     mut conts := []Contact{}
@@ -244,6 +248,10 @@ pub fn get_contacts_by_type(dbg bool, mut l log.Log, cnx sqlite.DB,
     h.dbg_(dbg, mut l, h.cust_id   + h.equals + customer_id + h.space + h.v_bar
            + h.space + h.cont_type + h.equals + contact_type)
 
+    // Validating the request path variable (unlikely to reach here
+    // in case it is actually malformed).
+    cust_id := strconv.atoi(customer_id) or { 1 }
+
     mut sql_query := m.sql_get_contacts_by_type[2]
 
     if (contact_type == h.phone)
@@ -256,7 +264,7 @@ pub fn get_contacts_by_type(dbg bool, mut l log.Log, cnx sqlite.DB,
         sql_query = m.sql_get_contacts_by_type[1]
     }
 
-    contacts  := cnx.exec_param(sql_query, customer_id) or { panic(err) }
+    contacts  := cnx.exec_param(sql_query, cust_id.str()) or { panic(err) }
     mut conts := []Contact{}
 
     for contact in contacts {
