@@ -25,13 +25,14 @@ import model  as m
 
 // Customer The struct defining the Customer entity.
 pub struct Customer {
-    name string
 pub:
     id   int
+    name string
 }
 
 // Contact The struct defining the Contact entity.
 pub struct Contact {
+pub:
     contact     string
     customer_id string @[omitempty]
 }
@@ -47,7 +48,13 @@ pub struct Contact {
 pub fn put_customer(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
     Customer {
 
-    customer := json.decode(Customer, payload) or { panic(err) }
+    customer := json.decode(Customer, payload) or {
+        // Returning an "empty customer" in case of malformed request payload.
+        return Customer{
+            id:   0
+            name: h.space
+        }
+    }
 
     h.dbg_(dbg, mut l, h.o_bracket + customer.name + h.c_bracket)
 
@@ -80,13 +87,28 @@ pub fn put_customer(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
 pub fn put_contact(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
     (string, string, Contact) {
 
-    contact := json.decode(Contact, payload) or { panic(err) }
+    contact := json.decode(Contact, payload) or {
+        // Returning an "empty contact" in case of malformed request payload.
+        return h.space,  h.space, Contact{
+            contact:     h.space
+            customer_id: 0.str()
+        }
+    }
 
     h.dbg_(dbg, mut l, h.cust_id + h.equals + contact.customer_id)
     h.dbg_(dbg, mut l, h.o_bracket + contact.contact + h.c_bracket)
 
     // Parsing and validating a customer contact: phone or email.
     contact_type := parse_contact_(contact.contact)
+
+    if contact_type == h.space {
+        // Returning an "empty contact" when a contact given
+        // in the request payload neither phone nor email.
+        return h.space,  h.space, Contact{
+            contact:     h.space
+            customer_id: 0.str()
+        }
+    }
 
     mut sql_query := [m.sql_put_contact[1][0],
                       m.sql_put_contact[1][1],

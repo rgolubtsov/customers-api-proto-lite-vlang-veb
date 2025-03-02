@@ -166,6 +166,14 @@ pub fn (mut app CustomersApiLiteApp) add_list_customers(mut ctx RequestContext)
         // Creating a new customer (putting customer data to the database).
         customer := c.put_customer(app.dbg, mut app.l, app.cnx, ctx.req.data)
 
+        // Validating the request payload through the return value
+        // ("empty customer") from controller.
+        if (customer.id == 0) && (customer.name == h.space) {
+            ctx.res.set_status(.bad_request) // <== HTTP 400 Bad Request
+
+            return ctx.json(Error_{ error: h.err_req_malformed })
+        }
+
         ctx.res.header.add(.location, h.slash + h.rest_version
                                     + h.slash + h.rest_prefix
                                     + h.slash + customer.id.str()) // getId()
@@ -230,6 +238,14 @@ pub fn (mut app CustomersApiLiteApp) add_contact(mut ctx RequestContext)
         customer_id, contact_type, contact := c.put_contact(app.dbg, mut app.l,
             app.cnx, ctx.req.data)
 
+        // Validating the request payload through the return value
+        // ("empty contact") from controller.
+        if (contact.contact == h.space) && (contact.customer_id == 0.str()) {
+            ctx.res.set_status(.bad_request)
+
+            return ctx.json(Error_{ error: h.err_req_malformed })
+        }
+
         ctx.res.header.add(.location, h.slash + h.rest_version
                                     + h.slash + h.rest_prefix
                                     + h.slash + customer_id
@@ -271,7 +287,7 @@ pub fn (mut app CustomersApiLiteApp) get_customer(mut ctx RequestContext,
     if (method == .get) || (method == .head) {
         // Validating the request path variable.
         strconv.atoi(customer_id) or {
-            ctx.res.set_status(.bad_request) // <== HTTP 400 Bad Request
+            ctx.res.set_status(.bad_request)
 
             return ctx.json(Error_{ error: h.err_req_malformed })
         }
