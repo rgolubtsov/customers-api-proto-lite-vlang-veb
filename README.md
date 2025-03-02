@@ -356,6 +356,12 @@ When the URI path or request body passed in an incoming request contains inappro
 ```
 $ curl http://localhost:8765/v1/customers/=qwerty4838=-i-.--089asdf..nj524987
 {"error":"HTTP 400 Bad Request: Request is malformed. Please check your inputs."}
+$
+$ curl http://localhost:8765/v1/customers/3..,,7/contacts
+{"error":"HTTP 400 Bad Request: Request is malformed. Please check your inputs."}
+$
+$ curl http://localhost:8765/v1/customers/--089asdf../contacts/email
+{"error":"HTTP 400 Bad Request: Request is malformed. Please check your inputs."}
 ```
 
 ---
