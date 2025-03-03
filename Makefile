@@ -21,7 +21,7 @@ DB_FILE = customers-api-lite.db.xz
 
 # Specify flags and other vars here.
 V      = v
-VFLAGS = -o $(EXEC)
+VFLAGS = -prod -o $(EXEC)
 
 MKDIR   = mkdir
 RMFLAGS = -vR

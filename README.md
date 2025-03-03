@@ -114,7 +114,7 @@ Installed `vseryakov.syslog` in ~/.vmodules/vseryakov/syslog .
 $ if [ ! -d bin ]; then \
       mkdir bin; \
   fi && \
-  v -o bin/api-lited . && \
+  v -prod -o bin/api-lited . && \
   if [ -f data/db/customers-api-lite.db.xz ]; then \
       unxz data/db/customers-api-lite.db.xz; \
   fi
