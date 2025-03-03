@@ -29,7 +29,10 @@ Surely, one may consider this project to be suitable for a wide variety of appli
 ## Table of Contents
 
 * **[Building](#building)**
+  * **[Creating a Docker image](#creating-a-docker-image)**
 * **[Running](#running)**
+  * **[Running a Docker image](#running-a-docker-image)**
+  * **[Exploring a Docker image payload](#exploring-a-docker-image-payload)**
 * **[Consuming](#consuming)**
   * **[Logging](#logging)**
   * **[Error handling](#error-handling)**
@@ -129,6 +132,19 @@ $ make all  # <== Building the daemon.
 ...
 ```
 
+### Creating a Docker image
+
+**Build** a Docker image for the microservice:
+
+```
+$ # Pull the Ubuntu LTS image first, if not already there:
+$ sudo docker pull ubuntu:latest
+...
+$ # Then build the microservice image:
+$ sudo docker build -tcustomersapi/api-lite-v .
+...
+```
+
 ## Running
 
 **Run** the microservice using its executable directly, built previously by the V frontend or GNU Make's `all` target:
@@ -136,6 +152,87 @@ $ make all  # <== Building the daemon.
 ```
 $ ./bin/api-lited; echo $?
 ...
+```
+
+### Running a Docker image
+
+**Run** a Docker image of the microservice, deleting all stopped containers prior to that (if any):
+
+```
+$ sudo docker rm `sudo docker ps -aq`; \
+  export PORT=8765 && sudo docker run -dp${PORT}:${PORT} --name api-lite-v customersapi/api-lite-v; echo $?
+...
+```
+
+### Exploring a Docker image payload
+
+The following is not necessary but might be considered somewhat interesting &mdash; to look up into the running container, and check out that the microservice's daemon executable, config, logfile, and accompanied SQLite database are at their expected places and in effect:
+
+```
+$ sudo docker ps -a
+CONTAINER ID   IMAGE                     COMMAND           CREATED              STATUS              PORTS                                       NAMES
+<container_id> customersapi/api-lite-v   "bin/api-lited"   About a minute ago   Up About a minute   0.0.0.0:8765->8765/tcp, :::8765->8765/tcp   api-lite-v
+$
+$ sudo docker exec -it api-lite-v bash; echo $?
+daemon@<container_id>:/var/tmp/api-lite$
+daemon@<container_id>:/var/tmp/api-lite$ uname -a
+Linux <container_id> 6.8.0-53-generic #55-Ubuntu SMP PREEMPT_DYNAMIC Fri Jan 17 15:37:52 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
+daemon@<container_id>:/var/tmp/api-lite$
+daemon@<container_id>:/var/tmp/api-lite$ ls -al
+total 36
+drwxr-xr-x 1 daemon daemon 4096 Mar  3 18:20 .
+drwxrwxrwt 1 root   root   4096 Mar  3 18:10 ..
+drwxr-xr-x 1 daemon daemon 4096 Mar  3 18:10 bin
+drwxr-xr-x 1 daemon daemon 4096 Mar  3 18:10 data
+drwxr-xr-x 1 daemon daemon 4096 Mar  3 18:10 etc
+drwxr-xr-x 2 daemon daemon 4096 Mar  3 18:20 log_
+daemon@<container_id>:/var/tmp/api-lite$
+daemon@<container_id>:/var/tmp/api-lite$ ls -al bin/ data/db/ etc/ log_/
+bin/:
+total 1240
+drwxr-xr-x 1 daemon daemon    4096 Mar  3 18:10 .
+drwxr-xr-x 1 daemon daemon    4096 Mar  3 18:20 ..
+-rwxrwxr-x 1 daemon daemon 1253736 Mar  3 17:50 api-lited
+
+data/db/:
+total 40
+drwxr-xr-x 1 daemon daemon  4096 Mar  3 18:10 .
+drwxr-xr-x 1 daemon daemon  4096 Mar  3 18:10 ..
+-rw-rw-r-- 1 daemon daemon 24576 Mar  3 17:50 customers-api-lite.db
+
+etc/:
+total 16
+drwxr-xr-x 1 daemon daemon 4096 Mar  3 18:10 .
+drwxr-xr-x 1 daemon daemon 4096 Mar  3 18:20 ..
+-rw-rw-r-- 1 daemon daemon  798 Mar  3 17:45 settings.conf
+
+log_/:
+total 16
+drwxr-xr-x 2 daemon daemon 4096 Mar  3 18:20 .
+drwxr-xr-x 1 daemon daemon 4096 Mar  3 18:20 ..
+-rw-r--r-- 1 daemon daemon   59 Mar  3 18:20 customers-api-lite.log
+daemon@<container_id>:/var/tmp/api-lite$
+daemon@<container_id>:/var/tmp/api-lite$ ldd bin/api-lited
+        linux-vdso.so.1 (0x00007ffee155f000)
+        libsqlite3.so.0 => /lib/x86_64-linux-gnu/libsqlite3.so.0 (0x0000713dedcfe000)
+        libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x0000713dedaec000)
+        libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x0000713deda03000)
+        /lib64/ld-linux-x86-64.so.2 (0x0000713dedfc7000)
+daemon@<container_id>:/var/tmp/api-lite$
+daemon@<container_id>:/var/tmp/api-lite$ netstat -plunt
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp6       0      0 :::8765                 :::*                    LISTEN      1/bin/api-lited
+daemon@<container_id>:/var/tmp/api-lite$
+daemon@<container_id>:/var/tmp/api-lite$ ps aux
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+daemon         1  0.0  0.5  28064  9472 ?        Ssl  18:20   0:00 bin/api-lited
+daemon         8  0.0  0.2   4588  3968 pts/0    Ss   18:25   0:00 bash
+daemon        25  0.0  0.2   7888  4096 pts/0    R+   18:40   0:00 ps aux
+daemon@<container_id>:/var/tmp/api-lite$
+daemon@<container_id>:/var/tmp/api-lite$ exit # Or simply <Ctrl-D>.
+exit
+0
 ```
 
 ## Consuming
