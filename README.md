@@ -56,7 +56,7 @@ $ sudo pacman -Syu base-devel tcc sqlite docker
 ...
 ```
 
-The V distribution should be installed separately:
+The V distribution can be installed differently for these Linux distros:
 
 * In Ubuntu Server:
 
