@@ -444,6 +444,51 @@ Mar 04 16:29:00 <hostname> api-lited[<pid>]: [Saturday.Sunday@example.com]
 Mar 04 16:30:00 <hostname> api-lited[<pid>]: Server stopped
 ```
 
+Inside the running container logs might be queried also by `tail`ing the `log_/customers-api-lite.log` logfile:
+
+```
+daemon@<container_id>:/var/tmp/api-lite$ tail -f log_/customers-api-lite.log
+[2025-03-04][14:40:14] [DEBUG] [Customers API Lite]
+[2025-03-04][14:40:14] [DEBUG] [sqlite.DB{ conn: 56ac1d831d88 }]
+[2025-03-04][14:40:14] [INFO ] Server started on port 8765
+[2025-03-04][14:45:45] [DEBUG] [PUT]
+[2025-03-04][14:45:45] [DEBUG] [Saturday Sunday]
+[2025-03-04][14:45:45] [DEBUG] [5|Saturday Sunday]
+[2025-03-04][14:47:10] [DEBUG] [PUT]
+[2025-03-04][14:47:10] [DEBUG] customer_id=5
+[2025-03-04][14:47:10] [DEBUG] [Saturday.Sunday@example.com]
+[2025-03-04][14:47:10] [DEBUG] [email|Saturday.Sunday@example.com]
+[2025-03-04][14:48:00] [DEBUG] [GET]
+[2025-03-04][14:48:00] [DEBUG] customer_id=5
+[2025-03-04][14:48:00] [DEBUG] [5|Saturday Sunday]
+[2025-03-04][14:49:00] [DEBUG] [GET]
+[2025-03-04][14:49:00] [DEBUG] customer_id=5 | contact_type=email
+[2025-03-04][14:49:00] [DEBUG] [Saturday.Sunday@example.com]
+```
+
+And of course Docker itself gives the possibility to read log messages by using the corresponding command for that:
+
+```
+$ sudo docker logs -f api-lite-v
+[2025-03-04][14:40:14] [DEBUG] [Customers API Lite]
+[2025-03-04][14:40:14] [DEBUG] [sqlite.DB{ conn: 56ac1d831d88 }]
+[2025-03-04][14:40:14] [INFO ] Server started on port 8765
+[2025-03-04][14:45:45] [DEBUG] [PUT]
+[2025-03-04][14:45:45] [DEBUG] [Saturday Sunday]
+[2025-03-04][14:45:45] [DEBUG] [5|Saturday Sunday]
+[2025-03-04][14:47:10] [DEBUG] [PUT]
+[2025-03-04][14:47:10] [DEBUG] customer_id=5
+[2025-03-04][14:47:10] [DEBUG] [Saturday.Sunday@example.com]
+[2025-03-04][14:47:10] [DEBUG] [email|Saturday.Sunday@example.com]
+[2025-03-04][14:48:00] [DEBUG] [GET]
+[2025-03-04][14:48:00] [DEBUG] customer_id=5
+[2025-03-04][14:48:00] [DEBUG] [5|Saturday Sunday]
+[2025-03-04][14:49:00] [DEBUG] [GET]
+[2025-03-04][14:49:00] [DEBUG] customer_id=5 | contact_type=email
+[2025-03-04][14:49:00] [DEBUG] [Saturday.Sunday@example.com]
+Server stopped
+```
+
 ### Error handling
 
 When the URI path or request body passed in an incoming request contains inappropriate input, the microservice will respond with the **HTTP 400 Bad Request** status code, including a specific response body in JSON representation which may describe a possible cause of underlying client error, like the following:
