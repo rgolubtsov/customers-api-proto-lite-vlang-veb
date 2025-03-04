@@ -273,7 +273,7 @@ $ curl -vXPUT http://localhost:8765/v1/customers \
 < Content-Length: 32
 < Server: veb
 ...
-{"name":"Jamison Palmer","id":3}
+{"id":3,"name":"Jamison Palmer"}
 ```
 
 2. **Create contact**
@@ -330,7 +330,7 @@ $ curl -v http://localhost:8765/v1/customers
 < Content-Length: 136
 < Server: veb
 ...
-[{"name":"Jammy Jellyfish","id":1},{"name":"Noble Numbat","id":2},{"name":"Jamison Palmer","id":3},{"name":"Sarah Kitteringham","id":4}]
+[{"id":1,"name":"Jammy Jellyfish"},{"id":2,"name":"Noble Numbat"},{"id":3,"name":"Jamison Palmer"},{"id":4,"name":"Sarah Kitteringham"}]
 ```
 
 4. **Retrieve customer**
@@ -345,7 +345,7 @@ $ curl -v http://localhost:8765/v1/customers/3
 < Content-Length: 32
 < Server: veb
 ...
-{"name":"Jamison Palmer","id":3}
+{"id":3,"name":"Jamison Palmer"}
 ```
 
 5. **List contacts for a given customer**
