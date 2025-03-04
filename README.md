@@ -180,44 +180,44 @@ Linux <container_id> 6.8.0-53-generic #55-Ubuntu SMP PREEMPT_DYNAMIC Fri Jan 17 
 daemon@<container_id>:/var/tmp/api-lite$
 daemon@<container_id>:/var/tmp/api-lite$ ls -al
 total 36
-drwxr-xr-x 1 daemon daemon 4096 Mar  3 18:20 .
-drwxrwxrwt 1 root   root   4096 Mar  3 18:10 ..
-drwxr-xr-x 1 daemon daemon 4096 Mar  3 18:10 bin
-drwxr-xr-x 1 daemon daemon 4096 Mar  3 18:10 data
-drwxr-xr-x 1 daemon daemon 4096 Mar  3 18:10 etc
-drwxr-xr-x 2 daemon daemon 4096 Mar  3 18:20 log_
+drwxr-xr-x 1 daemon daemon 4096 Mar  4 08:40 .
+drwxrwxrwt 1 root   root   4096 Mar  4 08:30 ..
+drwxr-xr-x 1 daemon daemon 4096 Mar  4 08:30 bin
+drwxr-xr-x 1 daemon daemon 4096 Mar  4 08:30 data
+drwxr-xr-x 1 daemon daemon 4096 Mar  4 08:30 etc
+drwxr-xr-x 2 daemon daemon 4096 Mar  4 08:40 log_
 daemon@<container_id>:/var/tmp/api-lite$
 daemon@<container_id>:/var/tmp/api-lite$ ls -al bin/ data/db/ etc/ log_/
 bin/:
-total 1240
-drwxr-xr-x 1 daemon daemon    4096 Mar  3 18:10 .
-drwxr-xr-x 1 daemon daemon    4096 Mar  3 18:20 ..
--rwxrwxr-x 1 daemon daemon 1253736 Mar  3 17:50 api-lited
+total 1244
+drwxr-xr-x 1 daemon daemon    4096 Mar  4 08:30 .
+drwxr-xr-x 1 daemon daemon    4096 Mar  4 08:40 ..
+-rwxrwxr-x 1 daemon daemon 1257976 Mar  4 08:20 api-lited
 
 data/db/:
 total 40
-drwxr-xr-x 1 daemon daemon  4096 Mar  3 18:10 .
-drwxr-xr-x 1 daemon daemon  4096 Mar  3 18:10 ..
--rw-rw-r-- 1 daemon daemon 24576 Mar  3 17:50 customers-api-lite.db
+drwxr-xr-x 1 daemon daemon  4096 Mar  4 08:30 .
+drwxr-xr-x 1 daemon daemon  4096 Mar  4 08:30 ..
+-rw-rw-r-- 1 daemon daemon 24576 Mar  4 08:00 customers-api-lite.db
 
 etc/:
 total 16
-drwxr-xr-x 1 daemon daemon 4096 Mar  3 18:10 .
-drwxr-xr-x 1 daemon daemon 4096 Mar  3 18:20 ..
--rw-rw-r-- 1 daemon daemon  798 Mar  3 17:45 settings.conf
+drwxr-xr-x 1 daemon daemon 4096 Mar  4 08:30 .
+drwxr-xr-x 1 daemon daemon 4096 Mar  4 08:40 ..
+-rw-rw-r-- 1 daemon daemon  797 Mar  4 08:30 settings.conf
 
 log_/:
 total 16
-drwxr-xr-x 2 daemon daemon 4096 Mar  3 18:20 .
-drwxr-xr-x 1 daemon daemon 4096 Mar  3 18:20 ..
--rw-r--r-- 1 daemon daemon   59 Mar  3 18:20 customers-api-lite.log
+drwxr-xr-x 2 daemon daemon 4096 Mar  4 08:40 .
+drwxr-xr-x 1 daemon daemon 4096 Mar  4 08:40 ..
+-rw-r--r-- 1 daemon daemon  176 Mar  4 08:40 customers-api-lite.log
 daemon@<container_id>:/var/tmp/api-lite$
 daemon@<container_id>:/var/tmp/api-lite$ ldd bin/api-lited
-        linux-vdso.so.1 (0x00007ffee155f000)
-        libsqlite3.so.0 => /lib/x86_64-linux-gnu/libsqlite3.so.0 (0x0000713dedcfe000)
-        libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x0000713dedaec000)
-        libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x0000713deda03000)
-        /lib64/ld-linux-x86-64.so.2 (0x0000713dedfc7000)
+        linux-vdso.so.1 (0x00007ffd263f4000)
+        libsqlite3.so.0 => /lib/x86_64-linux-gnu/libsqlite3.so.0 (0x0000728b86447000)
+        libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x0000728b86235000)
+        libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x0000728b8614c000)
+        /lib64/ld-linux-x86-64.so.2 (0x0000728b86711000)
 daemon@<container_id>:/var/tmp/api-lite$
 daemon@<container_id>:/var/tmp/api-lite$ netstat -plunt
 Active Internet connections (only servers)
@@ -226,9 +226,9 @@ tcp6       0      0 :::8765                 :::*                    LISTEN      
 daemon@<container_id>:/var/tmp/api-lite$
 daemon@<container_id>:/var/tmp/api-lite$ ps aux
 USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-daemon         1  0.0  0.5  28064  9472 ?        Ssl  18:20   0:00 bin/api-lited
-daemon         8  0.0  0.2   4588  3968 pts/0    Ss   18:25   0:00 bash
-daemon        25  0.0  0.2   7888  4096 pts/0    R+   18:40   0:00 ps aux
+daemon         1  0.0  0.5  28068  9216 ?        Ssl  08:40   0:00 bin/api-lited
+daemon         7  0.0  0.2   4588  3712 pts/0    Ss   08:45   0:00 bash
+daemon        25  8.6  0.2   7888  3968 pts/0    R+   08:50   0:00 ps aux
 daemon@<container_id>:/var/tmp/api-lite$
 daemon@<container_id>:/var/tmp/api-lite$ exit # Or simply <Ctrl-D>.
 exit
