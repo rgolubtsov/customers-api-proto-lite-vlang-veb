@@ -95,10 +95,10 @@ Then V can be invoked from anywhere just like system default C compiler:
 
 ```
 $ v --version
-V 0.4.9 01bee65
+V 0.4.9 a59ebea
 ```
 
-> Since V is still in beta state and changing continuously, this project is currently developing using the version (and the last build commit) of V given above, from 18th of February, 2025.
+> Since V is still in beta state and changing continuously, this project is currently developing using the version (and the last build commit) of V given above, from 3rd of March, 2025.
 
 ---
 
