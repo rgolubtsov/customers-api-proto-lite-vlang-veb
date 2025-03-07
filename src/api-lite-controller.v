@@ -149,6 +149,12 @@ pub fn put_contact(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
     contacts := cnx.exec_param(sql_query_ + m.sql_desc_limit_1,
         contact.customer_id) or { panic(err) }
 
+    // Returning an "empty contact" when there is no customer
+    // with requested ID found.
+    if contacts.len == 0 {
+        return contact.customer_id, contact_type, Contact{}
+    }
+
     cont := Contact{
         contact: contacts[0].vals[0]
     }

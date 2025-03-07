@@ -244,6 +244,10 @@ pub fn (mut app CustomersApiLiteApp) add_contact(mut ctx RequestContext)
             ctx.res.set_status(.bad_request)
 
             return ctx.json(Error_{ error: h.err_req_malformed })
+        } else if (contact.contact.len == 0) && (contact.customer_id.len == 0){
+            ctx.res.set_status(.not_found)
+
+            return ctx.json(Error_{ error: h.err_req_not_found_1 })
         }
 
         ctx.res.header.add(.location, h.slash + h.rest_version
