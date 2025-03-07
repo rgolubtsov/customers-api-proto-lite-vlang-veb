@@ -189,44 +189,44 @@ Linux <container_id> 6.8.0-53-generic #55-Ubuntu SMP PREEMPT_DYNAMIC Fri Jan 17 
 daemon@<container_id>:/var/tmp/api-lite$
 daemon@<container_id>:/var/tmp/api-lite$ ls -al
 total 36
-drwxr-xr-x 1 daemon daemon 4096 Mar  4 08:40 .
-drwxrwxrwt 1 root   root   4096 Mar  4 08:30 ..
-drwxr-xr-x 1 daemon daemon 4096 Mar  4 08:30 bin
-drwxr-xr-x 1 daemon daemon 4096 Mar  4 08:30 data
-drwxr-xr-x 1 daemon daemon 4096 Mar  4 08:30 etc
-drwxr-xr-x 2 daemon daemon 4096 Mar  4 08:40 log_
+drwxr-xr-x 1 daemon daemon 4096 Mar  7 19:50 .
+drwxrwxrwt 1 root   root   4096 Mar  7 19:20 ..
+drwxr-xr-x 1 daemon daemon 4096 Mar  7 19:20 bin
+drwxr-xr-x 1 daemon daemon 4096 Mar  7 19:20 data
+drwxr-xr-x 1 daemon daemon 4096 Mar  7 19:20 etc
+drwxr-xr-x 2 daemon daemon 4096 Mar  7 19:50 log_
 daemon@<container_id>:/var/tmp/api-lite$
 daemon@<container_id>:/var/tmp/api-lite$ ls -al bin/ data/db/ etc/ log_/
 bin/:
 total 1244
-drwxr-xr-x 1 daemon daemon    4096 Mar  4 08:30 .
-drwxr-xr-x 1 daemon daemon    4096 Mar  4 08:40 ..
--rwxrwxr-x 1 daemon daemon 1257976 Mar  4 08:20 api-lited
+drwxr-xr-x 1 daemon daemon    4096 Mar  7 19:20 .
+drwxr-xr-x 1 daemon daemon    4096 Mar  7 19:50 ..
+-rwxrwxr-x 1 daemon daemon 1258216 Mar  7 19:10 api-lited
 
 data/db/:
 total 40
-drwxr-xr-x 1 daemon daemon  4096 Mar  4 08:30 .
-drwxr-xr-x 1 daemon daemon  4096 Mar  4 08:30 ..
--rw-rw-r-- 1 daemon daemon 24576 Mar  4 08:00 customers-api-lite.db
+drwxr-xr-x 1 daemon daemon  4096 Mar  7 19:20 .
+drwxr-xr-x 1 daemon daemon  4096 Mar  7 19:20 ..
+-rw-rw-r-- 1 daemon daemon 24576 Mar  7 19:10 customers-api-lite.db
 
 etc/:
 total 16
-drwxr-xr-x 1 daemon daemon 4096 Mar  4 08:30 .
-drwxr-xr-x 1 daemon daemon 4096 Mar  4 08:40 ..
--rw-rw-r-- 1 daemon daemon  797 Mar  4 08:30 settings.conf
+drwxr-xr-x 1 daemon daemon 4096 Mar  7 19:20 .
+drwxr-xr-x 1 daemon daemon 4096 Mar  7 19:50 ..
+-rw-rw-r-- 1 daemon daemon  797 Mar  7 19:10 settings.conf
 
 log_/:
 total 16
-drwxr-xr-x 2 daemon daemon 4096 Mar  4 08:40 .
-drwxr-xr-x 1 daemon daemon 4096 Mar  4 08:40 ..
--rw-r--r-- 1 daemon daemon  176 Mar  4 08:40 customers-api-lite.log
+drwxr-xr-x 2 daemon daemon 4096 Mar  7 19:50 .
+drwxr-xr-x 1 daemon daemon 4096 Mar  7 19:50 ..
+-rw-r--r-- 1 daemon daemon  176 Mar  7 19:50 customers-api-lite.log
 daemon@<container_id>:/var/tmp/api-lite$
 daemon@<container_id>:/var/tmp/api-lite$ ldd bin/api-lited
-        linux-vdso.so.1 (0x00007ffd263f4000)
-        libsqlite3.so.0 => /lib/x86_64-linux-gnu/libsqlite3.so.0 (0x0000728b86447000)
-        libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x0000728b86235000)
-        libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x0000728b8614c000)
-        /lib64/ld-linux-x86-64.so.2 (0x0000728b86711000)
+        linux-vdso.so.1 (0x00007ffed47e1000)
+        libsqlite3.so.0 => /lib/x86_64-linux-gnu/libsqlite3.so.0 (0x00007546dfb91000)
+        libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007546df97f000)
+        libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007546df896000)
+        /lib64/ld-linux-x86-64.so.2 (0x00007546dfe5b000)
 daemon@<container_id>:/var/tmp/api-lite$
 daemon@<container_id>:/var/tmp/api-lite$ netstat -plunt
 Active Internet connections (only servers)
@@ -235,9 +235,9 @@ tcp6       0      0 :::8765                 :::*                    LISTEN      
 daemon@<container_id>:/var/tmp/api-lite$
 daemon@<container_id>:/var/tmp/api-lite$ ps aux
 USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-daemon         1  0.0  0.5  28068  9216 ?        Ssl  08:40   0:00 bin/api-lited
-daemon         7  0.0  0.2   4588  3712 pts/0    Ss   08:45   0:00 bash
-daemon        25  8.6  0.2   7888  3968 pts/0    R+   08:50   0:00 ps aux
+daemon         1  0.0  0.5  28068  9344 ?        Ssl  19:50   0:00 bin/api-lited
+daemon         8  0.0  0.2   4588  3840 pts/0    Ss   19:55   0:00 bash
+daemon        25  0.0  0.2   7888  3968 pts/0    R+   20:00   0:00 ps aux
 daemon@<container_id>:/var/tmp/api-lite$
 daemon@<container_id>:/var/tmp/api-lite$ exit # Or simply <Ctrl-D>.
 exit
@@ -411,22 +411,22 @@ The microservice has the ability to log messages to a logfile and to the Unix sy
 ```
 $ tail -f log_/customers-api-lite.log
 ...
-[2025-03-04][13:20:00] [DEBUG] [Customers API Lite]
-[2025-03-04][13:20:00] [DEBUG] [sqlite.DB{ conn: 5ae31b5c8ea8 }]
-[2025-03-04][13:20:00] [INFO ] Server started on port 8765
-[2025-03-04][13:25:04] [DEBUG] [PUT]
-[2025-03-04][13:25:04] [DEBUG] [Saturday Sunday]
-[2025-03-04][13:25:04] [DEBUG] [5|Saturday Sunday]
-[2025-03-04][13:27:05] [DEBUG] [PUT]
-[2025-03-04][13:27:05] [DEBUG] customer_id=5
-[2025-03-04][13:27:05] [DEBUG] [Saturday.Sunday@example.com]
-[2025-03-04][13:27:05] [DEBUG] [email|Saturday.Sunday@example.com]
-[2025-03-04][13:28:19] [DEBUG] [GET]
-[2025-03-04][13:28:19] [DEBUG] customer_id=5
-[2025-03-04][13:28:19] [DEBUG] [5|Saturday Sunday]
-[2025-03-04][13:29:00] [DEBUG] [GET]
-[2025-03-04][13:29:00] [DEBUG] customer_id=5 | contact_type=email
-[2025-03-04][13:29:00] [DEBUG] [Saturday.Sunday@example.com]
+[2025-03-07][20:10:10] [DEBUG] [Customers API Lite]
+[2025-03-07][20:10:10] [DEBUG] [sqlite.DB{ conn: 5885185ffea8 }]
+[2025-03-07][20:10:10] [INFO ] Server started on port 8765
+[2025-03-07][20:13:00] [DEBUG] [PUT]
+[2025-03-07][20:13:00] [DEBUG] [Saturday Sunday]
+[2025-03-07][20:13:00] [DEBUG] [5|Saturday Sunday]
+[2025-03-07][20:15:00] [DEBUG] [PUT]
+[2025-03-07][20:15:00] [DEBUG] customer_id=5
+[2025-03-07][20:15:00] [DEBUG] [Saturday.Sunday@example.com]
+[2025-03-07][20:15:00] [DEBUG] [email|Saturday.Sunday@example.com]
+[2025-03-07][20:15:50] [DEBUG] [GET]
+[2025-03-07][20:15:50] [DEBUG] customer_id=5
+[2025-03-07][20:15:50] [DEBUG] [5|Saturday Sunday]
+[2025-03-07][20:17:00] [DEBUG] [GET]
+[2025-03-07][20:17:00] [DEBUG] customer_id=5 | contact_type=email
+[2025-03-07][20:17:00] [DEBUG] [Saturday.Sunday@example.com]
 ```
 
 Messages registered by the Unix system logger can be seen and analyzed using the `journalctl` utility:
@@ -434,67 +434,67 @@ Messages registered by the Unix system logger can be seen and analyzed using the
 ```
 $ journalctl -f
 ...
-Mar 04 16:20:00 <hostname> api-lited[<pid>]: [Customers API Lite]
-Mar 04 16:20:00 <hostname> api-lited[<pid>]: [sqlite.DB{ conn: 5ae31b5c8ea8 }]
-Mar 04 16:20:00 <hostname> api-lited[<pid>]: Server started on port 8765
-Mar 04 16:25:04 <hostname> api-lited[<pid>]: [PUT]
-Mar 04 16:25:04 <hostname> api-lited[<pid>]: [Saturday Sunday]
-Mar 04 16:25:04 <hostname> api-lited[<pid>]: [5|Saturday Sunday]
-Mar 04 16:27:05 <hostname> api-lited[<pid>]: [PUT]
-Mar 04 16:27:05 <hostname> api-lited[<pid>]: customer_id=5
-Mar 04 16:27:05 <hostname> api-lited[<pid>]: [Saturday.Sunday@example.com]
-Mar 04 16:27:05 <hostname> api-lited[<pid>]: [email|Saturday.Sunday@example.com]
-Mar 04 16:28:19 <hostname> api-lited[<pid>]: [GET]
-Mar 04 16:28:19 <hostname> api-lited[<pid>]: customer_id=5
-Mar 04 16:28:19 <hostname> api-lited[<pid>]: [5|Saturday Sunday]
-Mar 04 16:29:00 <hostname> api-lited[<pid>]: [GET]
-Mar 04 16:29:00 <hostname> api-lited[<pid>]: customer_id=5 | contact_type=email
-Mar 04 16:29:00 <hostname> api-lited[<pid>]: [Saturday.Sunday@example.com]
-Mar 04 16:30:00 <hostname> api-lited[<pid>]: Server stopped
+Mar 07 23:10:10 <hostname> api-lited[<pid>]: [Customers API Lite]
+Mar 07 23:10:10 <hostname> api-lited[<pid>]: [sqlite.DB{ conn: 5885185ffea8 }]
+Mar 07 23:10:10 <hostname> api-lited[<pid>]: Server started on port 8765
+Mar 07 23:13:00 <hostname> api-lited[<pid>]: [PUT]
+Mar 07 23:13:00 <hostname> api-lited[<pid>]: [Saturday Sunday]
+Mar 07 23:13:00 <hostname> api-lited[<pid>]: [5|Saturday Sunday]
+Mar 07 23:15:00 <hostname> api-lited[<pid>]: [PUT]
+Mar 07 23:15:00 <hostname> api-lited[<pid>]: customer_id=5
+Mar 07 23:15:00 <hostname> api-lited[<pid>]: [Saturday.Sunday@example.com]
+Mar 07 23:15:00 <hostname> api-lited[<pid>]: [email|Saturday.Sunday@example.com]
+Mar 07 23:15:50 <hostname> api-lited[<pid>]: [GET]
+Mar 07 23:15:50 <hostname> api-lited[<pid>]: customer_id=5
+Mar 07 23:15:50 <hostname> api-lited[<pid>]: [5|Saturday Sunday]
+Mar 07 23:17:00 <hostname> api-lited[<pid>]: [GET]
+Mar 07 23:17:00 <hostname> api-lited[<pid>]: customer_id=5 | contact_type=email
+Mar 07 23:17:00 <hostname> api-lited[<pid>]: [Saturday.Sunday@example.com]
+Mar 07 23:20:10 <hostname> api-lited[<pid>]: Server stopped
 ```
 
 Inside the running container logs might be queried also by `tail`ing the `log_/customers-api-lite.log` logfile:
 
 ```
 daemon@<container_id>:/var/tmp/api-lite$ tail -f log_/customers-api-lite.log
-[2025-03-04][14:40:14] [DEBUG] [Customers API Lite]
-[2025-03-04][14:40:14] [DEBUG] [sqlite.DB{ conn: 56ac1d831d88 }]
-[2025-03-04][14:40:14] [INFO ] Server started on port 8765
-[2025-03-04][14:45:45] [DEBUG] [PUT]
-[2025-03-04][14:45:45] [DEBUG] [Saturday Sunday]
-[2025-03-04][14:45:45] [DEBUG] [5|Saturday Sunday]
-[2025-03-04][14:47:10] [DEBUG] [PUT]
-[2025-03-04][14:47:10] [DEBUG] customer_id=5
-[2025-03-04][14:47:10] [DEBUG] [Saturday.Sunday@example.com]
-[2025-03-04][14:47:10] [DEBUG] [email|Saturday.Sunday@example.com]
-[2025-03-04][14:48:00] [DEBUG] [GET]
-[2025-03-04][14:48:00] [DEBUG] customer_id=5
-[2025-03-04][14:48:00] [DEBUG] [5|Saturday Sunday]
-[2025-03-04][14:49:00] [DEBUG] [GET]
-[2025-03-04][14:49:00] [DEBUG] customer_id=5 | contact_type=email
-[2025-03-04][14:49:00] [DEBUG] [Saturday.Sunday@example.com]
+[2025-03-07][20:40:10] [DEBUG] [Customers API Lite]
+[2025-03-07][20:40:10] [DEBUG] [sqlite.DB{ conn: 5c709503ad88 }]
+[2025-03-07][20:40:10] [INFO ] Server started on port 8765
+[2025-03-07][20:45:00] [DEBUG] [PUT]
+[2025-03-07][20:45:00] [DEBUG] [Saturday Sunday]
+[2025-03-07][20:45:00] [DEBUG] [5|Saturday Sunday]
+[2025-03-07][20:47:00] [DEBUG] [PUT]
+[2025-03-07][20:47:00] [DEBUG] customer_id=5
+[2025-03-07][20:47:00] [DEBUG] [Saturday.Sunday@example.com]
+[2025-03-07][20:47:00] [DEBUG] [email|Saturday.Sunday@example.com]
+[2025-03-07][20:49:00] [DEBUG] [GET]
+[2025-03-07][20:49:00] [DEBUG] customer_id=5
+[2025-03-07][20:49:00] [DEBUG] [5|Saturday Sunday]
+[2025-03-07][20:49:30] [DEBUG] [GET]
+[2025-03-07][20:49:30] [DEBUG] customer_id=5 | contact_type=email
+[2025-03-07][20:49:30] [DEBUG] [Saturday.Sunday@example.com]
 ```
 
 And of course Docker itself gives the possibility to read log messages by using the corresponding command for that:
 
 ```
 $ sudo docker logs -f api-lite-v
-[2025-03-04][14:40:14] [DEBUG] [Customers API Lite]
-[2025-03-04][14:40:14] [DEBUG] [sqlite.DB{ conn: 56ac1d831d88 }]
-[2025-03-04][14:40:14] [INFO ] Server started on port 8765
-[2025-03-04][14:45:45] [DEBUG] [PUT]
-[2025-03-04][14:45:45] [DEBUG] [Saturday Sunday]
-[2025-03-04][14:45:45] [DEBUG] [5|Saturday Sunday]
-[2025-03-04][14:47:10] [DEBUG] [PUT]
-[2025-03-04][14:47:10] [DEBUG] customer_id=5
-[2025-03-04][14:47:10] [DEBUG] [Saturday.Sunday@example.com]
-[2025-03-04][14:47:10] [DEBUG] [email|Saturday.Sunday@example.com]
-[2025-03-04][14:48:00] [DEBUG] [GET]
-[2025-03-04][14:48:00] [DEBUG] customer_id=5
-[2025-03-04][14:48:00] [DEBUG] [5|Saturday Sunday]
-[2025-03-04][14:49:00] [DEBUG] [GET]
-[2025-03-04][14:49:00] [DEBUG] customer_id=5 | contact_type=email
-[2025-03-04][14:49:00] [DEBUG] [Saturday.Sunday@example.com]
+[2025-03-07][20:40:10] [DEBUG] [Customers API Lite]
+[2025-03-07][20:40:10] [DEBUG] [sqlite.DB{ conn: 5c709503ad88 }]
+[2025-03-07][20:40:10] [INFO ] Server started on port 8765
+[2025-03-07][20:45:00] [DEBUG] [PUT]
+[2025-03-07][20:45:00] [DEBUG] [Saturday Sunday]
+[2025-03-07][20:45:00] [DEBUG] [5|Saturday Sunday]
+[2025-03-07][20:47:00] [DEBUG] [PUT]
+[2025-03-07][20:47:00] [DEBUG] customer_id=5
+[2025-03-07][20:47:00] [DEBUG] [Saturday.Sunday@example.com]
+[2025-03-07][20:47:00] [DEBUG] [email|Saturday.Sunday@example.com]
+[2025-03-07][20:49:00] [DEBUG] [GET]
+[2025-03-07][20:49:00] [DEBUG] customer_id=5
+[2025-03-07][20:49:00] [DEBUG] [5|Saturday Sunday]
+[2025-03-07][20:49:30] [DEBUG] [GET]
+[2025-03-07][20:49:30] [DEBUG] customer_id=5 | contact_type=email
+[2025-03-07][20:49:30] [DEBUG] [Saturday.Sunday@example.com]
 Server stopped
 ```
 
