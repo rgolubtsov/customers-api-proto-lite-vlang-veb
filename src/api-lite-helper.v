@@ -50,6 +50,14 @@ pub const err_serv_unknown_reason
 pub const err_eaddrinuse_glob = '*98*'
 pub const err_req_malformed
     = 'HTTP 400 Bad Request: Request is malformed. Please check your inputs.'
+pub const err_req_not_found_1
+    = 'HTTP 404 Not Found: No such customer exists.'
+pub const err_req_not_found_2
+    = 'HTTP 404 Not Found: No contacts belonging to a given customer exist, '
+    + 'or no such customer exists.'
+pub const err_req_not_found_3
+    = 'HTTP 404 Not Found: No contacts of a given type belonging to a given '
+    + 'customer exist, or no such customer exists.'
 pub const err_req_method_not_allowed
     = 'HTTP 405 Method Not Allowed. Allowed methods: '
 

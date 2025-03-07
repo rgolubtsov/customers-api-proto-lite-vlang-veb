@@ -295,6 +295,12 @@ pub fn (mut app CustomersApiLiteApp) get_customer(mut ctx RequestContext,
         // Retrieving profile details for a given customer from the database.
         customer := c.get_customer(app.dbg, mut app.l, app.cnx, customer_id)
 
+        if customer.id == 0 {
+            ctx.res.set_status(.not_found)
+
+            return ctx.json(Error_{ error: h.err_req_not_found_1 })
+        }
+
         return ctx.json(customer)
     } else {
         ctx.res.header.add(.allow, h.hdr_allow_3)
@@ -339,6 +345,12 @@ pub fn (mut app CustomersApiLiteApp) list_contacts(mut ctx RequestContext,
         // Retrieving all contacts associated with a given customer
         // from the database.
         contacts := c.get_contacts(app.dbg, mut app.l, app.cnx, customer_id)
+
+        if contacts.len == 0 {
+            ctx.res.set_status(.not_found)
+
+            return ctx.json(Error_{ error: h.err_req_not_found_2 })
+        }
 
         return ctx.json(contacts)
     } else {
@@ -391,6 +403,12 @@ pub fn (mut app CustomersApiLiteApp) list_contacts_by_type(
         // with a given customer from the database.
         contacts := c.get_contacts_by_type(app.dbg, mut app.l, app.cnx,
             customer_id, contact_type)
+
+        if contacts.len == 0 {
+            ctx.res.set_status(.not_found)
+
+            return ctx.json(Error_{ error: h.err_req_not_found_3 })
+        }
 
         return ctx.json(contacts)
     } else {

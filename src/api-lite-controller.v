@@ -206,6 +206,9 @@ pub fn get_customer(dbg bool, mut l log.Log, cnx sqlite.DB, customer_id string)
     customers := cnx.exec_param(m.sql_get_customer_by_id, cust_id.str())
         or { panic(err) }
 
+    // Returning an "empty customer" when there is no customer with such ID.
+    if customers.len == 0 { return Customer{} }
+
     cust := Customer{
         id:   strconv.atoi(customers[0].vals[0]) or { 1 }
         name:              customers[0].vals[1]
@@ -247,6 +250,10 @@ pub fn get_contacts(dbg bool, mut l log.Log, cnx sqlite.DB, customer_id string
             contact: contact.vals[0]
         }
     }
+
+    // Returning no contacts when there are no contacts belonging
+    // to a given customer exist, or there is no customer with such ID.
+    if conts.len == 0 { return conts }
 
     h.dbg_(dbg, mut l, h.o_bracket + conts[0].contact // getContact()
                      + h.c_bracket)
@@ -294,6 +301,11 @@ pub fn get_contacts_by_type(dbg bool, mut l log.Log, cnx sqlite.DB,
             contact: contact.vals[0]
         }
     }
+
+    // Returning no contacts when there are no contacts of a given type
+    // belonging to a given customer exist, or there is no customer
+    // with such ID.
+    if conts.len == 0 { return conts }
 
     h.dbg_(dbg, mut l, h.o_bracket + conts[0].contact // getContact()
                      + h.c_bracket)
