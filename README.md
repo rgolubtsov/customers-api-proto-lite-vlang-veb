@@ -475,7 +475,7 @@ daemon@<container_id>:/var/tmp/api-lite$ tail -f log_/customers-api-lite.log
 [2025-03-07][20:49:30] [DEBUG] [Saturday.Sunday@example.com]
 ```
 
-And of course Docker itself gives the possibility to read log messages by using the corresponding command for that:
+And of course, Docker itself gives the possibility to read log messages by using the corresponding command for that:
 
 ```
 $ sudo docker logs -f api-lite-v
