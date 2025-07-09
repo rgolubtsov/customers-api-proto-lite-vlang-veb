@@ -147,8 +147,8 @@ pub fn get_server_port_(settings toml.Doc, mut l log.Log) int {
 // dbg_ Helper func. Used to log messages for debugging aims in a free form.
 pub fn dbg_(dbg bool, mut l log.Log, message string) {
     if dbg {
-        l.debug(message);
-        s.debug(message);
+        l.debug(message)
+        s.debug(message)
     }
 }
 
