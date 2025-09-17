@@ -61,7 +61,7 @@ The V distribution can be installed differently for these Linux distros:
 * In Ubuntu Server:
 
 ```
-$ curl -LOk https://github.com/vlang/v/releases/latest/download/v_linux.zip
+$ curl -LO https://github.com/vlang/v/releases/latest/download/v_linux.zip
 ...
 $
 $ unzip v_linux.zip
@@ -81,7 +81,7 @@ PATH="$HOME/bin:$HOME/.local/bin:$HOME/v:$PATH"
 
 ```
 $ mkdir -p aur/build && cd aur/build/
-$ curl -LOk https://aur.archlinux.org/cgit/aur.git/snapshot/vlang.tar.gz
+$ curl -LO https://aur.archlinux.org/cgit/aur.git/snapshot/vlang.tar.gz
 ...
 $
 $ tar -xvf vlang.tar.gz
