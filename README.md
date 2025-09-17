@@ -63,7 +63,6 @@ The V distribution can be installed differently for these Linux distros:
 ```
 $ curl -LO https://github.com/vlang/v/releases/latest/download/v_linux.zip
 ...
-$
 $ unzip v_linux.zip
 ...
 ```
@@ -83,10 +82,8 @@ PATH="$HOME/bin:$HOME/.local/bin:$HOME/v:$PATH"
 $ mkdir -p aur/build && cd aur/build/
 $ curl -LO https://aur.archlinux.org/cgit/aur.git/snapshot/vlang.tar.gz
 ...
-$
 $ tar -xvf vlang.tar.gz
 ...
-$
 $ cd vlang/ && makepkg -sirc
 ...
 ```
@@ -410,7 +407,6 @@ The microservice has the ability to log messages to a logfile and to the Unix sy
 
 ```
 $ tail -f log_/customers-api-lite.log
-...
 [2025-03-07][20:10:10] [DEBUG] [Customers API Lite]
 [2025-03-07][20:10:10] [DEBUG] [sqlite.DB{ conn: 5885185ffea8 }]
 [2025-03-07][20:10:10] [INFO ] Server started on port 8765
