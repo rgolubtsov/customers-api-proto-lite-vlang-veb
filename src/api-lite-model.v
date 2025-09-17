@@ -18,7 +18,7 @@ module model
 //                  (putting customer data to the database).
 //
 // Used by the `PUT /v1/customers` REST endpoint.
-pub const sql_put_customer = ["insert into customers (name) values ('", "')"]
+pub const sql_put_customer = 'insert into customers (name) values (?)'
 
 // sql_put_contact The SQL query for creating a new contact
 //                 for a given customer (putting a contact
@@ -26,10 +26,8 @@ pub const sql_put_customer = ["insert into customers (name) values ('", "')"]
 //
 // Used by the `PUT /v1/customers/contacts` REST endpoint.
 pub const sql_put_contact
-    =[["insert into contact_phones (contact, customer_id)"
-     + "                    values ('", "', ", ")"],
-      ["insert into contact_emails (contact, customer_id)"
-     + "                    values ('", "', ", ")"]]
+    =['insert into contact_phones (contact, customer_id) values (?, ?)',
+      'insert into contact_emails (contact, customer_id) values (?, ?)']
 
 // sql_get_all_customers The SQL query for retrieving all customer profiles.
 //
