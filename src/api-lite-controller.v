@@ -58,8 +58,8 @@ pub fn put_customer(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
 
     h.dbg_(dbg, mut l, h.o_bracket + customer.name + h.c_bracket)
 
-    cnx.exec_none(m.sql_put_customer[0] + customer.name
-                + m.sql_put_customer[1])
+    // Creating a new customer (putting customer data to the database).
+    cnx.exec_param(m.sql_put_customer, customer.name) or { panic(err) }
 
     customers := cnx.exec(m.sql_get_all_customers + m.sql_desc_limit_1)
         or { panic(err) }
@@ -110,37 +110,32 @@ pub fn put_contact(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
         }
     }
 
-    mut sql_query := [m.sql_put_contact[1][0],
-                      m.sql_put_contact[1][1],
-                      m.sql_put_contact[1][2]]
+    mut sql_query := m.sql_put_contact[1]
 
-    if (contact_type == h.phone)
-        || (contact_type == h.phone.to_upper_ascii()) {
+           if (contact_type == h.phone) ||
+              (contact_type == h.phone.to_upper_ascii()) {
 
-        sql_query = [m.sql_put_contact[0][0],
-                     m.sql_put_contact[0][1],
-                     m.sql_put_contact[0][2]]
-    } else if (contact_type == h.email)
-        || (contact_type == h.email.to_upper_ascii()) {
+        sql_query = m.sql_put_contact[0]
+    } else if (contact_type == h.email) ||
+              (contact_type == h.email.to_upper_ascii()) {
 
-        sql_query = [m.sql_put_contact[1][0],
-                     m.sql_put_contact[1][1],
-                     m.sql_put_contact[1][2]]
+        sql_query = m.sql_put_contact[1]
     }
 
-    cnx.exec_none(sql_query[0] + contact.contact
-                + sql_query[1] + contact.customer_id
-                + sql_query[2])
+    // Creating a new contact (putting a contact regarding a given customer
+    // to the database).
+    cnx.exec_param_many(sql_query, [contact.contact, contact.customer_id])
+        or { panic(err) }
 
     mut sql_query_ := m.sql_get_contacts_by_type[2]
 
-    if (contact_type == h.phone)
-        || (contact_type == h.phone.to_upper_ascii()) {
+           if (contact_type == h.phone) ||
+              (contact_type == h.phone.to_upper_ascii()) {
 
         sql_query_ = m.sql_get_contacts_by_type[0]
                    + m.sql_order_contacts_by_id[0]
-    } else if (contact_type == h.email)
-        || (contact_type == h.email.to_upper_ascii()) {
+    } else if (contact_type == h.email) ||
+              (contact_type == h.email.to_upper_ascii()) {
 
         sql_query_ = m.sql_get_contacts_by_type[1]
                    + m.sql_order_contacts_by_id[1]
@@ -289,12 +284,12 @@ pub fn get_contacts_by_type(dbg bool, mut l log.Log, cnx sqlite.DB,
 
     mut sql_query := m.sql_get_contacts_by_type[2]
 
-    if (contact_type == h.phone)
-        || (contact_type == h.phone.to_upper_ascii()) {
+           if (contact_type == h.phone) ||
+              (contact_type == h.phone.to_upper_ascii()) {
 
         sql_query = m.sql_get_contacts_by_type[0]
-    } else if (contact_type == h.email)
-        || (contact_type == h.email.to_upper_ascii()) {
+    } else if (contact_type == h.email) ||
+              (contact_type == h.email.to_upper_ascii()) {
 
         sql_query = m.sql_get_contacts_by_type[1]
     }
