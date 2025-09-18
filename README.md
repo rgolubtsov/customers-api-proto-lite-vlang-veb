@@ -134,8 +134,8 @@ $ make all  # <== Building the daemon.
 **Build** a Docker image for the microservice:
 
 ```
-$ # Pull the Ubuntu LTS image first, if not already there:
-$ sudo docker pull ubuntu:latest
+$ # Pull the V (based on Alpine Linux) image first, if not already there:
+$ sudo docker pull thevlang/vlang:alpine
 ...
 $ # Then build the microservice image:
 $ sudo docker build -tcustomersapi/api-lite-v .
