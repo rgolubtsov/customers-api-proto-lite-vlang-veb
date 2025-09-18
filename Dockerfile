@@ -11,20 +11,27 @@
 #
 
 # === Stage 1: Install dependencies ===========================================
-FROM       ubuntu:latest
-RUN        ["apt-get", "update"]
-RUN        ["apt-get", "install", "libsqlite3-0", "net-tools", "-y"]
+FROM       thevlang/vlang:alpine
+RUN        ["apk", "add", "make"]
 
-# === Stage 2: Run the microservice ===========================================
+# === Stage 2: Build the microservice =========================================
 USER       daemon
 WORKDIR    var/tmp
-COPY       bin     api-lite/bin/
-COPY       etc     api-lite/etc/
-COPY       data/db api-lite/data/db/
+COPY       src      api-lite/src/
+COPY       etc      api-lite/etc/
+COPY       data/db  api-lite/data/db/
+COPY       Makefile api-lite/
 WORKDIR    api-lite
 USER       root
-RUN        ["chown", "-R", "daemon:daemon", "."]
+RUN        ["v", "/opt/vlang/cmd/tools/vpm" ]
+RUN        ["mkdir", "-p", "/sbin/.vmodules"]
+RUN        ["chown", "-R", "daemon:daemon", "/sbin/.vmodules", "."]
 USER       daemon
+RUN        ["v", "install", "vseryakov.syslog"]
+RUN        ["make", "clean"]
+RUN        ["make", "all"  ]
+
+# === Stage 3: Run the microservice ===========================================
 ENTRYPOINT ["bin/api-lited"]
 
 # vim:set nu ts=4 sw=4:
