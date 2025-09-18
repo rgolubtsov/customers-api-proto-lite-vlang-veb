@@ -23,20 +23,6 @@ import regex
 import helper as h
 import model  as m
 
-// Customer The struct defining the Customer entity.
-pub struct Customer {
-pub:
-    id   int
-    name string
-}
-
-// Contact The struct defining the Contact entity.
-pub struct Contact {
-pub:
-    contact     string
-    customer_id string @[omitempty]
-}
-
 // put_customer Puts customer data to the database.
 //              Used by the `add_list_customers()` endpoint.
 //
@@ -46,11 +32,11 @@ pub:
 //
 // @returns A new Customer entity instance of a newly created customer.
 pub fn put_customer(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
-    Customer {
+    m.Customer {
 
-    customer := json.decode(Customer, payload) or {
+    customer := json.decode(m.Customer, payload) or {
         // Returning an "empty customer" in case of malformed request payload.
-        return Customer{
+        return m.Customer{
             id:   0
             name: h.space
         }
@@ -64,7 +50,7 @@ pub fn put_customer(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
     customers := cnx.exec(m.sql_get_all_customers + m.sql_desc_limit_1)
         or { panic(err) }
 
-    cust := Customer{
+    cust := m.Customer{
         id:   strconv.atoi(customers[0].vals[0]) or { 1 }
         name:              customers[0].vals[1]
     }
@@ -85,11 +71,11 @@ pub fn put_customer(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
 //
 // @returns A new Contact entity instance of a newly created customer contact.
 pub fn put_contact(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
-    (string, string, Contact) {
+    (string, string, m.Contact) {
 
-    contact := json.decode(Contact, payload) or {
+    contact := json.decode(m.Contact, payload) or {
         // Returning an "empty contact" in case of malformed request payload.
-        return h.space,  h.space, Contact{
+        return h.space,  h.space, m.Contact{
             contact:     h.space
             customer_id: 0.str()
         }
@@ -104,7 +90,7 @@ pub fn put_contact(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
     if contact_type == h.space {
         // Returning an "empty contact" when a contact given
         // in the request payload neither phone nor email.
-        return h.space,  h.space, Contact{
+        return h.space,  h.space, m.Contact{
             contact:     h.space
             customer_id: 0.str()
         }
@@ -147,10 +133,10 @@ pub fn put_contact(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
     // Returning an "empty contact" when there is no customer
     // with requested ID found.
     if contacts.len == 0 {
-        return contact.customer_id, contact_type, Contact{}
+        return contact.customer_id, contact_type, m.Contact{}
     }
 
-    cont := Contact{
+    cont := m.Contact{
         contact: contacts[0].vals[0]
     }
 
@@ -169,12 +155,12 @@ pub fn put_contact(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
 // @param `cnx` The connection to the database.
 //
 // @returns An array of Customer entities retrieved from the database.
-pub fn get_customers(dbg bool, mut l log.Log, cnx sqlite.DB) []Customer {
+pub fn get_customers(dbg bool, mut l log.Log, cnx sqlite.DB) []m.Customer {
     customers := cnx.exec(m.sql_get_all_customers) or { panic(err) }
-    mut custs := []Customer{}
+    mut custs := []m.Customer{}
 
     for customer in customers {
-        custs << Customer{
+        custs << m.Customer{
             id:   strconv.atoi(customer.vals[0]) or { 1 }
             name:              customer.vals[1]
         }
@@ -196,7 +182,7 @@ pub fn get_customers(dbg bool, mut l log.Log, cnx sqlite.DB) []Customer {
 //
 // @returns A Customer entity instance of a given customer.
 pub fn get_customer(dbg bool, mut l log.Log, cnx sqlite.DB, customer_id string)
-    Customer {
+    m.Customer {
 
     h.dbg_(dbg, mut l, h.cust_id + h.equals + customer_id)
 
@@ -208,9 +194,9 @@ pub fn get_customer(dbg bool, mut l log.Log, cnx sqlite.DB, customer_id string)
         or { panic(err) }
 
     // Returning an "empty customer" when there is no customer with such ID.
-    if customers.len == 0 { return Customer{} }
+    if customers.len == 0 { return m.Customer{} }
 
-    cust := Customer{
+    cust := m.Customer{
         id:   strconv.atoi(customers[0].vals[0]) or { 1 }
         name:              customers[0].vals[1]
     }
@@ -231,7 +217,7 @@ pub fn get_customer(dbg bool, mut l log.Log, cnx sqlite.DB, customer_id string)
 //
 // @returns An array of Contact entities retrieved from the database.
 pub fn get_contacts(dbg bool, mut l log.Log, cnx sqlite.DB, customer_id string
-    ) []Contact {
+    ) []m.Contact {
 
     h.dbg_(dbg, mut l, h.cust_id + h.equals + customer_id)
 
@@ -244,10 +230,10 @@ pub fn get_contacts(dbg bool, mut l log.Log, cnx sqlite.DB, customer_id string
         cust_id.str()  // <== For retrieving emails.
     ]) or { panic(err) }
 
-    mut conts := []Contact{}
+    mut conts := []m.Contact{}
 
     for contact in contacts {
-        conts << Contact{
+        conts << m.Contact{
             contact: contact.vals[0]
         }
     }
@@ -273,7 +259,7 @@ pub fn get_contacts(dbg bool, mut l log.Log, cnx sqlite.DB, customer_id string
 // @returns An array of Contact entities retrieved from the database.
 pub fn get_contacts_by_type(dbg bool, mut l log.Log, cnx sqlite.DB,
     customer_id  string,
-    contact_type string) []Contact {
+    contact_type string) []m.Contact {
 
     h.dbg_(dbg, mut l, h.cust_id   + h.equals + customer_id + h.space + h.v_bar
            + h.space + h.cont_type + h.equals + contact_type)
@@ -295,10 +281,10 @@ pub fn get_contacts_by_type(dbg bool, mut l log.Log, cnx sqlite.DB,
     }
 
     contacts  := cnx.exec_param(sql_query, cust_id.str()) or { panic(err) }
-    mut conts := []Contact{}
+    mut conts := []m.Contact{}
 
     for contact in contacts {
-        conts << Contact{
+        conts << m.Contact{
             contact: contact.vals[0]
         }
     }

@@ -105,4 +105,18 @@ pub const sql_order_contacts_by_id
 //                  used to retrieve the last record created.
 pub const sql_desc_limit_1 = ' desc limit 1'
 
+// Customer The struct defining the Customer entity.
+pub struct Customer {
+pub:
+    id   int
+    name string
+}
+
+// Contact The struct defining the Contact entity.
+pub struct Contact {
+pub:
+    contact     string
+    customer_id string @[omitempty]
+}
+
 // vim:set nu et ts=4 sw=4:
