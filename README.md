@@ -463,45 +463,45 @@ Sep 18 19:55:00 <hostname> api-lited[<pid>]: Server stopped
 Inside the running container logs might be queried also by `tail`ing the `log_/customers-api-lite.log` logfile:
 
 ```
-daemon@<container_id>:/var/tmp/api-lite$ tail -f log_/customers-api-lite.log
-[2025-03-07][20:40:10] [DEBUG] [Customers API Lite]
-[2025-03-07][20:40:10] [DEBUG] [sqlite.DB{ conn: 5c709503ad88 }]
-[2025-03-07][20:40:10] [INFO ] Server started on port 8765
-[2025-03-07][20:45:00] [DEBUG] [PUT]
-[2025-03-07][20:45:00] [DEBUG] [Saturday Sunday]
-[2025-03-07][20:45:00] [DEBUG] [5|Saturday Sunday]
-[2025-03-07][20:47:00] [DEBUG] [PUT]
-[2025-03-07][20:47:00] [DEBUG] customer_id=5
-[2025-03-07][20:47:00] [DEBUG] [Saturday.Sunday@example.com]
-[2025-03-07][20:47:00] [DEBUG] [email|Saturday.Sunday@example.com]
-[2025-03-07][20:49:00] [DEBUG] [GET]
-[2025-03-07][20:49:00] [DEBUG] customer_id=5
-[2025-03-07][20:49:00] [DEBUG] [5|Saturday Sunday]
-[2025-03-07][20:49:30] [DEBUG] [GET]
-[2025-03-07][20:49:30] [DEBUG] customer_id=5 | contact_type=email
-[2025-03-07][20:49:30] [DEBUG] [Saturday.Sunday@example.com]
+/src/var/tmp/api-lite $ tail -f log_/customers-api-lite.log
+[2025-09-18][22:30:40] [DEBUG] [Customers API Lite]
+[2025-09-18][22:30:40] [DEBUG] [sqlite.DB{ conn: 7fce282658c8 }]
+[2025-09-18][22:30:40] [INFO ] Server started on port 8765
+[2025-09-18][22:35:40] [DEBUG] [PUT]
+[2025-09-18][22:35:40] [DEBUG] [Saturday Sunday]
+[2025-09-18][22:35:40] [DEBUG] [5|Saturday Sunday]
+[2025-09-18][22:40:40] [DEBUG] [PUT]
+[2025-09-18][22:40:40] [DEBUG] customer_id=5
+[2025-09-18][22:40:40] [DEBUG] [Saturday.Sunday@example.com]
+[2025-09-18][22:40:40] [DEBUG] [email|Saturday.Sunday@example.com]
+[2025-09-18][22:45:50] [DEBUG] [GET]
+[2025-09-18][22:45:50] [DEBUG] customer_id=5
+[2025-09-18][22:45:50] [DEBUG] [5|Saturday Sunday]
+[2025-09-18][22:50:00] [DEBUG] [GET]
+[2025-09-18][22:50:00] [DEBUG] customer_id=5 | contact_type=email
+[2025-09-18][22:50:00] [DEBUG] [Saturday.Sunday@example.com]
 ```
 
 And of course, Docker itself gives the possibility to read log messages by using the corresponding command for that:
 
 ```
 $ sudo docker logs -f api-lite-v
-[2025-03-07][20:40:10] [DEBUG] [Customers API Lite]
-[2025-03-07][20:40:10] [DEBUG] [sqlite.DB{ conn: 5c709503ad88 }]
-[2025-03-07][20:40:10] [INFO ] Server started on port 8765
-[2025-03-07][20:45:00] [DEBUG] [PUT]
-[2025-03-07][20:45:00] [DEBUG] [Saturday Sunday]
-[2025-03-07][20:45:00] [DEBUG] [5|Saturday Sunday]
-[2025-03-07][20:47:00] [DEBUG] [PUT]
-[2025-03-07][20:47:00] [DEBUG] customer_id=5
-[2025-03-07][20:47:00] [DEBUG] [Saturday.Sunday@example.com]
-[2025-03-07][20:47:00] [DEBUG] [email|Saturday.Sunday@example.com]
-[2025-03-07][20:49:00] [DEBUG] [GET]
-[2025-03-07][20:49:00] [DEBUG] customer_id=5
-[2025-03-07][20:49:00] [DEBUG] [5|Saturday Sunday]
-[2025-03-07][20:49:30] [DEBUG] [GET]
-[2025-03-07][20:49:30] [DEBUG] customer_id=5 | contact_type=email
-[2025-03-07][20:49:30] [DEBUG] [Saturday.Sunday@example.com]
+[2025-09-18][22:30:40] [DEBUG] [Customers API Lite]
+[2025-09-18][22:30:40] [DEBUG] [sqlite.DB{ conn: 7fce282658c8 }]
+[2025-09-18][22:30:40] [INFO ] Server started on port 8765
+[2025-09-18][22:35:40] [DEBUG] [PUT]
+[2025-09-18][22:35:40] [DEBUG] [Saturday Sunday]
+[2025-09-18][22:35:40] [DEBUG] [5|Saturday Sunday]
+[2025-09-18][22:40:40] [DEBUG] [PUT]
+[2025-09-18][22:40:40] [DEBUG] customer_id=5
+[2025-09-18][22:40:40] [DEBUG] [Saturday.Sunday@example.com]
+[2025-09-18][22:40:40] [DEBUG] [email|Saturday.Sunday@example.com]
+[2025-09-18][22:45:50] [DEBUG] [GET]
+[2025-09-18][22:45:50] [DEBUG] customer_id=5
+[2025-09-18][22:45:50] [DEBUG] [5|Saturday Sunday]
+[2025-09-18][22:50:00] [DEBUG] [GET]
+[2025-09-18][22:50:00] [DEBUG] customer_id=5 | contact_type=email
+[2025-09-18][22:50:00] [DEBUG] [Saturday.Sunday@example.com]
 Server stopped
 ```
 
