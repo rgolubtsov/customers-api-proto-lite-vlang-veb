@@ -179,65 +179,76 @@ $ sudo docker ps -a
 CONTAINER ID   IMAGE                     COMMAND           CREATED              STATUS              PORTS                                       NAMES
 <container_id> customersapi/api-lite-v   "bin/api-lited"   About a minute ago   Up About a minute   0.0.0.0:8765->8765/tcp, :::8765->8765/tcp   api-lite-v
 $
-$ sudo docker exec -it api-lite-v bash; echo $?
-daemon@<container_id>:/var/tmp/api-lite$
-daemon@<container_id>:/var/tmp/api-lite$ uname -a
-Linux <container_id> 6.8.0-53-generic #55-Ubuntu SMP PREEMPT_DYNAMIC Fri Jan 17 15:37:52 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
-daemon@<container_id>:/var/tmp/api-lite$
-daemon@<container_id>:/var/tmp/api-lite$ ls -al
-total 36
-drwxr-xr-x 1 daemon daemon 4096 Mar  7 19:50 .
-drwxrwxrwt 1 root   root   4096 Mar  7 19:20 ..
-drwxr-xr-x 1 daemon daemon 4096 Mar  7 19:20 bin
-drwxr-xr-x 1 daemon daemon 4096 Mar  7 19:20 data
-drwxr-xr-x 1 daemon daemon 4096 Mar  7 19:20 etc
-drwxr-xr-x 2 daemon daemon 4096 Mar  7 19:50 log_
-daemon@<container_id>:/var/tmp/api-lite$
-daemon@<container_id>:/var/tmp/api-lite$ ls -al bin/ data/db/ etc/ log_/
+$ sudo docker exec -it api-lite-v sh; echo $?
+/src/var/tmp/api-lite $
+/src/var/tmp/api-lite $ uname -a
+Linux <container_id> 6.8.0-79-generic #79-Ubuntu SMP PREEMPT_DYNAMIC Tue Aug 12 14:42:46 UTC 2025 x86_64 Linux
+/src/var/tmp/api-lite $
+/src/var/tmp/api-lite $ v --version
+V 0.4.11 fa49b76
+/src/var/tmp/api-lite $
+/src/var/tmp/api-lite $ ls -al
+total 44
+drwxr-xr-x    1 daemon   daemon        4096 Sep 18 22:30 .
+drwxr-xr-x    1 root     root          4096 Sep 18 22:20 ..
+-rw-rw-r--    1 daemon   daemon        1145 Sep 18 21:50 Makefile
+drwxr-xr-x    2 daemon   daemon        4096 Sep 18 22:22 bin
+drwxr-xr-x    1 daemon   daemon        4096 Sep 18 22:20 data
+drwxr-xr-x    1 daemon   daemon        4096 Sep 18 22:20 etc
+drwxr-xr-x    2 daemon   daemon        4096 Sep 18 22:30 log_
+drwxr-xr-x    1 daemon   daemon        4096 Sep 18 22:20 src
+/src/var/tmp/api-lite $
+/src/var/tmp/api-lite $ ls -al bin/ data/db/ etc/ log_/ src/
 bin/:
-total 1244
-drwxr-xr-x 1 daemon daemon    4096 Mar  7 19:20 .
-drwxr-xr-x 1 daemon daemon    4096 Mar  7 19:50 ..
--rwxrwxr-x 1 daemon daemon 1258216 Mar  7 19:10 api-lited
+total 1356
+drwxr-xr-x    2 daemon   daemon        4096 Sep 18 22:22 .
+drwxr-xr-x    1 daemon   daemon        4096 Sep 18 22:30 ..
+-rwxr-xr-x    1 daemon   daemon     1372240 Sep 18 22:23 api-lited
 
 data/db/:
 total 40
-drwxr-xr-x 1 daemon daemon  4096 Mar  7 19:20 .
-drwxr-xr-x 1 daemon daemon  4096 Mar  7 19:20 ..
--rw-rw-r-- 1 daemon daemon 24576 Mar  7 19:10 customers-api-lite.db
+drwxr-xr-x    1 daemon   daemon        4096 Sep 18 22:23 .
+drwxr-xr-x    1 daemon   daemon        4096 Sep 18 22:20 ..
+-rw-r--r--    1 daemon   daemon       24576 Sep 18 22:23 customers-api-lite.db
 
 etc/:
 total 16
-drwxr-xr-x 1 daemon daemon 4096 Mar  7 19:20 .
-drwxr-xr-x 1 daemon daemon 4096 Mar  7 19:50 ..
--rw-rw-r-- 1 daemon daemon  797 Mar  7 19:10 settings.conf
+drwxr-xr-x    1 daemon   daemon        4096 Sep 18 22:20 .
+drwxr-xr-x    1 daemon   daemon        4096 Sep 18 22:30 ..
+-rw-rw-r--    1 daemon   daemon         797 Sep 18 22:20 settings.conf
 
 log_/:
 total 16
-drwxr-xr-x 2 daemon daemon 4096 Mar  7 19:50 .
-drwxr-xr-x 1 daemon daemon 4096 Mar  7 19:50 ..
--rw-r--r-- 1 daemon daemon  176 Mar  7 19:50 customers-api-lite.log
-daemon@<container_id>:/var/tmp/api-lite$
-daemon@<container_id>:/var/tmp/api-lite$ ldd bin/api-lited
-        linux-vdso.so.1 (0x00007ffed47e1000)
-        libsqlite3.so.0 => /lib/x86_64-linux-gnu/libsqlite3.so.0 (0x00007546dfb91000)
-        libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007546df97f000)
-        libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007546df896000)
-        /lib64/ld-linux-x86-64.so.2 (0x00007546dfe5b000)
-daemon@<container_id>:/var/tmp/api-lite$
-daemon@<container_id>:/var/tmp/api-lite$ netstat -plunt
+drwxr-xr-x    2 daemon   daemon        4096 Sep 18 22:30 .
+drwxr-xr-x    1 daemon   daemon        4096 Sep 18 22:30 ..
+-rw-r--r--    1 daemon   daemon         176 Sep 18 22:30 customers-api-lite.log
+
+src/:
+total 56
+drwxr-xr-x    1 daemon   daemon        4096 Sep 18 22:20 .
+drwxr-xr-x    1 daemon   daemon        4096 Sep 18 22:30 ..
+-rw-rw-r--    1 daemon   daemon       10635 Sep 18 21:50 api-lite-controller.v
+-rw-rw-r--    1 daemon   daemon       15343 Sep 18 21:50 api-lite-core.v
+-rw-rw-r--    1 daemon   daemon        5875 Sep 18 21:50 api-lite-helper.v
+-rw-rw-r--    1 daemon   daemon        4241 Sep 18 21:50 api-lite-model.v
+/src/var/tmp/api-lite $
+/src/var/tmp/api-lite $ ldd bin/api-lited
+        /lib/ld-musl-x86_64.so.1 (0x74e4dfff2000)
+        libsqlite3.so.0 => /usr/lib/libsqlite3.so.0 (0x74e4dfd99000)
+        libc.musl-x86_64.so.1 => /lib/ld-musl-x86_64.so.1 (0x74e4dfff2000)
+/src/var/tmp/api-lite $
+/src/var/tmp/api-lite $ netstat -plunt
 Active Internet connections (only servers)
 Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
-tcp6       0      0 :::8765                 :::*                    LISTEN      1/bin/api-lited
-daemon@<container_id>:/var/tmp/api-lite$
-daemon@<container_id>:/var/tmp/api-lite$ ps aux
-USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-daemon         1  0.0  0.5  28068  9344 ?        Ssl  19:50   0:00 bin/api-lited
-daemon         8  0.0  0.2   4588  3840 pts/0    Ss   19:55   0:00 bash
-daemon        25  0.0  0.2   7888  3968 pts/0    R+   20:00   0:00 ps aux
-daemon@<container_id>:/var/tmp/api-lite$
-daemon@<container_id>:/var/tmp/api-lite$ exit # Or simply <Ctrl-D>.
-exit
+tcp        0      0 :::8765                 :::*                    LISTEN      1/api-lited
+/src/var/tmp/api-lite $
+/src/var/tmp/api-lite $ ps aux
+PID   USER     TIME  COMMAND
+    1 daemon    0:00 bin/api-lited
+    8 daemon    0:00 sh
+   20 daemon    0:00 ps aux
+/src/var/tmp/api-lite $
+/src/var/tmp/api-lite $ exit # Or simply <Ctrl-D>.
 0
 ```
 
