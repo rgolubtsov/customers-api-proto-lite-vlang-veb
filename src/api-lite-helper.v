@@ -1,7 +1,7 @@
 /*
  * src/api-lite-helper.v
  * ============================================================================
- * Customers API Lite microservice prototype (V port). Version 0.2.6
+ * Customers API Lite microservice prototype (V port). Version 0.2.7
  * ============================================================================
  * A daemon written in V (vlang/veb), designed and intended to be run
  * as a microservice, implementing a special Customers API prototype
