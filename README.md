@@ -155,10 +155,18 @@ To run the microservice as a *true* daemon, i.e. in the background, redirecting 
 
 ```
 $ ./bin/api-lited > /dev/null 2>&1 &
-...
+[1] <pid>
 ```
 
 **Note:** This will suppress all the console output only; logging to a logfile and to the Unix syslog will remain unchanged.
+
+The daemonized microservice then can be stopped at any time by issuing the following command:
+
+```
+$ kill -SIGTERM <pid>
+$
+[1]+  Done                    ./bin/api-lited > /dev/null 2>&1
+```
 
 ### Running a Docker image
 
