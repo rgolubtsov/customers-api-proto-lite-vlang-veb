@@ -276,9 +276,10 @@ pub fn (mut app CustomersApiLiteApp) add_contact(mut ctx RequestContext)
 // @param `ctx`         The struct containing an HTTP request/response pair.
 // @param `customer_id` The customer ID used to retrieve customer profile data.
 //
-// @returns The `Result` struct with a specific HTTP status code provided,
-//          containing profile details for a given customer
-//          (in the response body in JSON representation).
+// @returns The `Result` struct with the `200 OK` HTTP status code, containing
+//          profile details for a given customer (in the response body
+//          in JSON representation).
+//          May return client or server error depending on incoming request.
 @['/v1/customers/:customer_id'; get; head;
     put; post; patch; delete; options; trace]
 pub fn (mut app CustomersApiLiteApp) get_customer(mut ctx RequestContext,
