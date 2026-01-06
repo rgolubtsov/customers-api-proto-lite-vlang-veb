@@ -92,8 +92,7 @@ pub const sql_get_contacts_by_type
     + '       customers      cust'
     + ' where'
     + '      (cust.id = emails.customer_id) and'
-    + '      (cust.id =                  ?)',
-      'select name from customers where (id = ?)']
+    + '      (cust.id =                  ?)']
 
 // sql_order_contacts_by_id The intermediate part of an SQL query,
 //                          used to order contact records by ID.
