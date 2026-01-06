@@ -134,7 +134,7 @@ $ make all  # <== Building the daemon.
 **Build** a Docker image for the microservice:
 
 ```
-$ # Pull the V (based on Alpine Linux) image first, if not already there:
+$ # Pull the V image first (based on Alpine Linux), if not already there:
 $ sudo docker pull thevlang/vlang:alpine
 ...
 $ # Then build the microservice image:
