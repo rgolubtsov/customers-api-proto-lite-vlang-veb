@@ -407,7 +407,7 @@ pub fn (mut app CustomersApiLiteApp) list_contacts_by_type(
         // Retrieving all contacts of a given type associated
         // with a given customer from the database.
         contacts := c.get_contacts_by_type(app.dbg, mut app.l, app.cnx,
-            customer_id, contact_type)
+            customer_id, contact_type.to_lower_ascii())
 
         if contacts.len == 0 {
             ctx.res.set_status(.not_found)
