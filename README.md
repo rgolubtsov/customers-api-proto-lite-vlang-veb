@@ -116,7 +116,7 @@ $ if [ ! -d bin ]; then \
   fi && \
   v -prod -o bin/api-lited . && \
   if [ -f data/db/customers-api-lite.db.xz ]; then \
-      unxz data/db/customers-api-lite.db.xz; \
+     unxz data/db/customers-api-lite.db.xz; \
   fi
 ```
 
