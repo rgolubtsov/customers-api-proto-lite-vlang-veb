@@ -96,15 +96,10 @@ pub fn put_contact(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
         }
     }
 
-    mut sql_query := m.sql_put_contact[1]
-
-           if (contact_type == h.phone) ||
-              (contact_type == h.phone.to_upper_ascii()) {
-
+    mut sql_query:= m.sql_put_contact[1]
+           if contact_type == h.phone {
         sql_query = m.sql_put_contact[0]
-    } else if (contact_type == h.email) ||
-              (contact_type == h.email.to_upper_ascii()) {
-
+    } else if contact_type == h.email {
         sql_query = m.sql_put_contact[1]
     }
 
@@ -113,21 +108,17 @@ pub fn put_contact(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
     cnx.exec_param_many(sql_query, [contact.contact, contact.customer_id])
         or { panic(err) }
 
-    mut sql_query_ := m.sql_get_contacts_by_type[2]
+        sql_query = m.sql_get_contacts_by_type[1]
 
-           if (contact_type == h.phone) ||
-              (contact_type == h.phone.to_upper_ascii()) {
-
-        sql_query_ = m.sql_get_contacts_by_type[0]
-                   + m.sql_order_contacts_by_id[0]
-    } else if (contact_type == h.email) ||
-              (contact_type == h.email.to_upper_ascii()) {
-
-        sql_query_ = m.sql_get_contacts_by_type[1]
-                   + m.sql_order_contacts_by_id[1]
+           if contact_type == h.phone {
+        sql_query = m.sql_get_contacts_by_type[0]
+                  + m.sql_order_contacts_by_id[0]
+    } else if contact_type == h.email {
+        sql_query = m.sql_get_contacts_by_type[1]
+                  + m.sql_order_contacts_by_id[1]
     }
 
-    contacts := cnx.exec_param(sql_query_ + m.sql_desc_limit_1,
+    contacts := cnx.exec_param(sql_query + m.sql_desc_limit_1,
         contact.customer_id) or { panic(err) }
 
     // Returning an "empty contact" when there is no customer
@@ -268,15 +259,10 @@ pub fn get_contacts_by_type(dbg bool, mut l log.Log, cnx sqlite.DB,
     // in case it is actually malformed).
     cust_id := strconv.atoi(customer_id) or { 1 }
 
-    mut sql_query := m.sql_get_contacts_by_type[2]
-
-           if (contact_type == h.phone) ||
-              (contact_type == h.phone.to_upper_ascii()) {
-
+    mut sql_query:= m.sql_get_contacts_by_type[1]
+           if contact_type == h.phone {
         sql_query = m.sql_get_contacts_by_type[0]
-    } else if (contact_type == h.email) ||
-              (contact_type == h.email.to_upper_ascii()) {
-
+    } else if contact_type == h.email {
         sql_query = m.sql_get_contacts_by_type[1]
     }
 
@@ -308,8 +294,7 @@ fn parse_contact_(contact string) string {
 
          if phone_regex.matches_string(contact) { return h.phone }
     else if email_regex.matches_string(contact) { return h.email }
-
-    return h.space
+    else { return h.space }
 }
 
 // vim:set nu et ts=4 sw=4:
