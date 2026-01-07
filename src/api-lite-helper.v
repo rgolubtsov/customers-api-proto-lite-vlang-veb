@@ -24,6 +24,7 @@ import vseryakov.syslog as s
 // Helper constants.
 pub const exit_failure =    1 //    Failing exit status.
 pub const exit_success =    0 // Successful exit status.
+pub const empty_string =   ''
 pub const space        =  ' '
 pub const slash        =  '/'
 pub const equals       =  '='
@@ -58,8 +59,6 @@ pub const err_req_not_found_2
 pub const err_req_not_found_3
     = 'HTTP 404 Not Found: No contacts of a given type belonging to a given '
     + 'customer exist, or no such customer exists.'
-pub const err_req_method_not_allowed
-    = 'HTTP 405 Method Not Allowed. Allowed methods: '
 
 // Common notification messages.
 pub const msg_server_started = 'Server started on port '

@@ -191,11 +191,10 @@ pub fn (mut app CustomersApiLiteApp) add_list_customers(mut ctx RequestContext)
         // For any other method veb will automatically respond
         // with the HTTP 404 Not Found status code.
         ctx.res.header.add(.allow, h.hdr_allow_1)
+        ctx.res.header.set(.content_length, 0.str())
         ctx.res.set_status(.method_not_allowed) //< HTTP 405 Method Not Allowed
 
-        return ctx.json(Error_{
-            error: h.err_req_method_not_allowed + h.hdr_allow_1
-        })
+        return ctx.send_response_to_client(h.empty_string, h.empty_string)
     }
 }
 
@@ -261,11 +260,10 @@ pub fn (mut app CustomersApiLiteApp) add_contact(mut ctx RequestContext)
         return ctx.json(contact)
     } else {
         ctx.res.header.add(.allow, h.hdr_allow_2)
+        ctx.res.header.set(.content_length, 0.str())
         ctx.res.set_status(.method_not_allowed)
 
-        return ctx.json(Error_{
-            error: h.err_req_method_not_allowed + h.hdr_allow_2
-        })
+        return ctx.send_response_to_client(h.empty_string, h.empty_string)
     }
 }
 
@@ -309,11 +307,10 @@ pub fn (mut app CustomersApiLiteApp) get_customer(mut ctx RequestContext,
         return ctx.json(customer)
     } else {
         ctx.res.header.add(.allow, h.hdr_allow_3)
+        ctx.res.header.set(.content_length, 0.str())
         ctx.res.set_status(.method_not_allowed)
 
-        return ctx.json(Error_{
-            error: h.err_req_method_not_allowed + h.hdr_allow_3
-        })
+        return ctx.send_response_to_client(h.empty_string, h.empty_string)
     }
 }
 
@@ -360,11 +357,10 @@ pub fn (mut app CustomersApiLiteApp) list_contacts(mut ctx RequestContext,
         return ctx.json(contacts)
     } else {
         ctx.res.header.add(.allow, h.hdr_allow_3)
+        ctx.res.header.set(.content_length, 0.str())
         ctx.res.set_status(.method_not_allowed)
 
-        return ctx.json(Error_{
-            error: h.err_req_method_not_allowed + h.hdr_allow_3
-        })
+        return ctx.send_response_to_client(h.empty_string, h.empty_string)
     }
 }
 
@@ -418,11 +414,10 @@ pub fn (mut app CustomersApiLiteApp) list_contacts_by_type(
         return ctx.json(contacts)
     } else {
         ctx.res.header.add(.allow, h.hdr_allow_3)
+        ctx.res.header.set(.content_length, 0.str())
         ctx.res.set_status(.method_not_allowed)
 
-        return ctx.json(Error_{
-            error: h.err_req_method_not_allowed + h.hdr_allow_3
-        })
+        return ctx.send_response_to_client(h.empty_string, h.empty_string)
     }
 }
 
