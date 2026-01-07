@@ -155,7 +155,7 @@ fn main() {
 //          and the response body in JSON representation,
 //          containing a list of all customer profiles.
 //          May return client or server error depending on incoming request.
-@['/v1/customers'; put; get; head; post; patch; delete; options; trace]
+@['/v1/customers'; put; get; head; post; patch; delete; options]
 pub fn (mut app ApiLiteCore) add_or_list_customers(mut ctx HttpContext)
     veb.Result {
 
@@ -188,12 +188,12 @@ pub fn (mut app ApiLiteCore) add_or_list_customers(mut ctx HttpContext)
 
         return ctx.json(customers)
     } else {
-        // Methods POST, PATCH, DELETE, OPTIONS, and TRACE go here.
+        // Methods POST, PATCH, DELETE, and OPTIONS go here.
         // For any other method veb will automatically respond
         // with the HTTP 404 Not Found status code.
         ctx.res.header.set(.allow, h.hdr_allow_1)
         ctx.res.header.set(.content_length, 0.str())
-        ctx.res.set_status(.method_not_allowed) //< HTTP 405 Method Not Allowed
+        ctx.res.set_status(.method_not_allowed) // <== 405 Method Not Allowed
 
         return ctx.send_response_to_client(h.empty_string, h.empty_string)
     }
@@ -223,8 +223,7 @@ pub fn (mut app ApiLiteCore) add_or_list_customers(mut ctx HttpContext)
 //          body in JSON representation, containing details of a newly created
 //          customer contact (phone or email).
 //          May return client or server error depending on incoming request.
-@['/v1/customers/contacts'; put;
-    head; get; post; patch; delete; options; trace]
+@['/v1/customers/contacts'; put; get; head; post; patch; delete; options]
 pub fn (mut app ApiLiteCore) add_contact(mut ctx HttpContext) veb.Result {
     method := ctx.req.method
 
@@ -277,8 +276,7 @@ pub fn (mut app ApiLiteCore) add_contact(mut ctx HttpContext) veb.Result {
 //          profile details for a given customer (in the response body
 //          in JSON representation).
 //          May return client or server error depending on incoming request.
-@['/v1/customers/:customer_id'; get; head;
-    put; post; patch; delete; options; trace]
+@['/v1/customers/:customer_id'; get; head; put; post; patch; delete; options]
 pub fn (mut app ApiLiteCore) get_customer(mut ctx HttpContext,
     customer_id string) veb.Result {
 
@@ -326,8 +324,8 @@ pub fn (mut app ApiLiteCore) get_customer(mut ctx HttpContext,
 //          and the response body in JSON representation,
 //          containing a list of all contacts associated with a given customer.
 //          May return client or server error depending on incoming request.
-@['/v1/customers/:customer_id/contacts'; get; head;
-    put; post; patch; delete; options; trace]
+@['/v1/customers/:customer_id/contacts'; get; head; put; post; patch; delete;
+options]
 pub fn (mut app ApiLiteCore) list_contacts(mut ctx HttpContext,
     customer_id string) veb.Result {
 
@@ -380,8 +378,8 @@ pub fn (mut app ApiLiteCore) list_contacts(mut ctx HttpContext,
 //          containing a list of all contacts of a given type
 //          associated with a given customer.
 //          May return client or server error depending on incoming request.
-@['/v1/customers/:customer_id/contacts/:contact_type'; get; head;
-    put; post; patch; delete; options; trace]
+@['/v1/customers/:customer_id/contacts/:contact_type'; get; head; put; post;
+patch; delete; options]
 pub fn (mut app ApiLiteCore) list_contacts_by_type(mut ctx HttpContext,
     customer_id string, contact_type string) veb.Result {
 
