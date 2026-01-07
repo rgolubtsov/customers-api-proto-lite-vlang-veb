@@ -24,7 +24,7 @@ import helper as h
 import model  as m
 
 // put_customer Puts customer data to the database.
-//              Used by the `add_list_customers()` endpoint.
+//              Used by the `add_or_list_customers()` endpoint.
 //
 // @param `dbg` The debug logging enabler.
 // @param `l`   The main logger of the daemon.
@@ -139,7 +139,7 @@ pub fn put_contact(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
 }
 
 // get_customers Retrieves all customer profiles from the database.
-//               Used by the `add_list_customers()` endpoint.
+//               Used by the `add_or_list_customers()` endpoint.
 //
 // @param `dbg` The debug logging enabler.
 // @param `l`   The main logger of the daemon.
@@ -249,8 +249,7 @@ pub fn get_contacts(dbg bool, mut l log.Log, cnx sqlite.DB, customer_id string
 //
 // @returns An array of Contact entities retrieved from the database.
 pub fn get_contacts_by_type(dbg bool, mut l log.Log, cnx sqlite.DB,
-    customer_id  string,
-    contact_type string) []m.Contact {
+    customer_id string, contact_type string) []m.Contact {
 
     h.dbg_(dbg, mut l, h.cust_id   + h.equals + customer_id + h.space + h.v_bar
            + h.space + h.cont_type + h.equals + contact_type)

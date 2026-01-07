@@ -25,21 +25,23 @@ import vseryakov.syslog as s
 import helper     as h
 import controller as c
 
-// CustomersApiLiteApp The main web app struct containing arbitrary data
-// that are accessible by all endpoints and shared between different routes.
-pub struct CustomersApiLiteApp {
+// ApiLiteCore The main web app struct containing arbitrary data items,
+//             all of which are accessible by all endpoints and shared
+//             between different routes.
+pub struct ApiLiteCore {
     dbg bool
     cnx sqlite.DB
 mut:
     l   log.Log
 }
 
-// RequestContext The struct containing data that are specific to each request.
-// It also holds a standard HTTP request/response pair.
-pub struct RequestContext {
+// HttpContext The struct holding a standard HTTP request/response pair,
+//             data items that are specific to each request.
+pub struct HttpContext {
     veb.Context
 }
 
+// Error_ The struct defining the Error entity.
 struct Error_ {
     error string
 }
@@ -100,14 +102,14 @@ fn main() {
     os.signal_opt(.int,  h.cleanup__)! // <== SIGINT
     os.signal_opt(.term, h.cleanup__)! // <== SIGTERM
 
-    mut app := &CustomersApiLiteApp{
+    mut app := &ApiLiteCore{
         dbg: dbg
         l:   l
         cnx: cnx
     }
 
     // Trying to start up the inbuilt web server.
-    veb.run_at[CustomersApiLiteApp, RequestContext](mut app, port: server_port,
+    veb.run_at[ApiLiteCore, HttpContext](mut app, port: server_port,
         show_startup_message: false) or {
             if err.msg().match_glob(h.err_eaddrinuse_glob) {
                 l.error(h.err_cannot_start_server + h.err_addr_already_in_use)
@@ -125,8 +127,7 @@ fn main() {
 
 // REST API endpoints ---------------------------------------------------------
 
-// add_list_customers The compound `PUT /v1/customers`
-//                               / `GET /v1/customers` endpoint.
+// add_or_list_customers The compound `PUT|GET /v1/customers` endpoint.
 //
 // 1. `PUT /v1/customers`. Creates a new customer (puts customer data
 //                         to the database).
@@ -155,7 +156,7 @@ fn main() {
 //          containing a list of all customer profiles.
 //          May return client or server error depending on incoming request.
 @['/v1/customers'; put; get; head; post; patch; delete; options; trace]
-pub fn (mut app CustomersApiLiteApp) add_list_customers(mut ctx RequestContext)
+pub fn (mut app ApiLiteCore) add_or_list_customers(mut ctx HttpContext)
     veb.Result {
 
     method := ctx.req.method
@@ -224,9 +225,7 @@ pub fn (mut app CustomersApiLiteApp) add_list_customers(mut ctx RequestContext)
 //          May return client or server error depending on incoming request.
 @['/v1/customers/contacts'; put;
     head; get; post; patch; delete; options; trace]
-pub fn (mut app CustomersApiLiteApp) add_contact(mut ctx RequestContext)
-    veb.Result {
-
+pub fn (mut app ApiLiteCore) add_contact(mut ctx HttpContext) veb.Result {
     method := ctx.req.method
 
     h.dbg_(app.dbg, mut app.l, h.o_bracket + method.str() + h.c_bracket)
@@ -280,7 +279,7 @@ pub fn (mut app CustomersApiLiteApp) add_contact(mut ctx RequestContext)
 //          May return client or server error depending on incoming request.
 @['/v1/customers/:customer_id'; get; head;
     put; post; patch; delete; options; trace]
-pub fn (mut app CustomersApiLiteApp) get_customer(mut ctx RequestContext,
+pub fn (mut app ApiLiteCore) get_customer(mut ctx HttpContext,
     customer_id string) veb.Result {
 
     method := ctx.req.method
@@ -329,7 +328,7 @@ pub fn (mut app CustomersApiLiteApp) get_customer(mut ctx RequestContext,
 //          May return client or server error depending on incoming request.
 @['/v1/customers/:customer_id/contacts'; get; head;
     put; post; patch; delete; options; trace]
-pub fn (mut app CustomersApiLiteApp) list_contacts(mut ctx RequestContext,
+pub fn (mut app ApiLiteCore) list_contacts(mut ctx HttpContext,
     customer_id string) veb.Result {
 
     method := ctx.req.method
@@ -383,10 +382,8 @@ pub fn (mut app CustomersApiLiteApp) list_contacts(mut ctx RequestContext,
 //          May return client or server error depending on incoming request.
 @['/v1/customers/:customer_id/contacts/:contact_type'; get; head;
     put; post; patch; delete; options; trace]
-pub fn (mut app CustomersApiLiteApp) list_contacts_by_type(
-    mut ctx          RequestContext,
-        customer_id  string,
-        contact_type string) veb.Result {
+pub fn (mut app ApiLiteCore) list_contacts_by_type(mut ctx HttpContext,
+    customer_id string, contact_type string) veb.Result {
 
     method := ctx.req.method
 
