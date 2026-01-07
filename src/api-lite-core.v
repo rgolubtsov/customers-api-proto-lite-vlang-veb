@@ -111,18 +111,19 @@ fn main() {
     // Trying to start up the inbuilt web server.
     veb.run_at[ApiLiteCore, HttpContext](mut app, port: server_port,
         show_startup_message: false) or {
-            if err.msg().match_glob(h.err_eaddrinuse_glob) {
-                l.error(h.err_cannot_start_server + h.err_addr_already_in_use)
-            } else {
-                l.error(h.err_cannot_start_server + h.err_serv_unknown_reason)
-            }
 
-            cnx.close()!
-
-            h.cleanup_(mut l)
-
-            exit(h.exit_failure)
+        if err.msg().match_glob(h.err_eaddrinuse_glob) {
+            l.error(h.err_cannot_start_server + h.err_addr_already_in_use)
+        } else {
+            l.error(h.err_cannot_start_server + h.err_serv_unknown_reason)
         }
+
+        cnx.close()!
+
+        h.cleanup_(mut l)
+
+        exit(h.exit_failure)
+    }
 } // End main.
 
 // REST API endpoints ---------------------------------------------------------
