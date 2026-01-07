@@ -26,9 +26,10 @@ import model  as m
 // put_customer Puts customer data to the database.
 //              Used by the `add_or_list_customers()` endpoint.
 //
-// @param `dbg` The debug logging enabler.
-// @param `l`   The main logger of the daemon.
-// @param `cnx` The connection to the database.
+// @param `dbg`     The debug logging enabler.
+// @param `l`       The main logger of the daemon.
+// @param `cnx`     The connection to the database.
+// @param `payload` The request body (expected to be in JSON representation).
 //
 // @returns A new Customer entity instance of a newly created customer.
 pub fn put_customer(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
@@ -65,9 +66,10 @@ pub fn put_customer(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
 // put_contact Puts a contact regarding a given customer to the database.
 //             Used by the `add_contact()` endpoint.
 //
-// @param `dbg` The debug logging enabler.
-// @param `l`   The main logger of the daemon.
-// @param `cnx` The connection to the database.
+// @param `dbg`     The debug logging enabler.
+// @param `l`       The main logger of the daemon.
+// @param `cnx`     The connection to the database.
+// @param `payload` The request body (expected to be in JSON representation).
 //
 // @returns A new Contact entity instance of a newly created customer contact.
 pub fn put_contact(dbg bool, mut l log.Log, cnx sqlite.DB, payload string)
@@ -167,9 +169,10 @@ pub fn get_customers(dbg bool, mut l log.Log, cnx sqlite.DB) []m.Customer {
 // get_customer Retrieves profile details for a given customer
 //              from the database. Used by the `get_customer()` endpoint.
 //
-// @param `dbg` The debug logging enabler.
-// @param `l`   The main logger of the daemon.
-// @param `cnx` The connection to the database.
+// @param `dbg`         The debug logging enabler.
+// @param `l`           The main logger of the daemon.
+// @param `cnx`         The connection to the database.
+// @param `customer_id` The customer ID used to retrieve customer profile data.
 //
 // @returns A Customer entity instance of a given customer.
 pub fn get_customer(dbg bool, mut l log.Log, cnx sqlite.DB, customer_id string)
@@ -202,9 +205,11 @@ pub fn get_customer(dbg bool, mut l log.Log, cnx sqlite.DB, customer_id string)
 // get_contacts Retrieves all contacts associated with a given customer
 //              from the database. Used by the `list_contacts()` endpoint.
 //
-// @param `dbg` The debug logging enabler.
-// @param `l`   The main logger of the daemon.
-// @param `cnx` The connection to the database.
+// @param `dbg`         The debug logging enabler.
+// @param `l`           The main logger of the daemon.
+// @param `cnx`         The connection to the database.
+// @param `customer_id` The customer ID used to retrieve contacts
+//                      which belong to this customer.
 //
 // @returns An array of Contact entities retrieved from the database.
 pub fn get_contacts(dbg bool, mut l log.Log, cnx sqlite.DB, customer_id string
@@ -243,9 +248,13 @@ pub fn get_contacts(dbg bool, mut l log.Log, cnx sqlite.DB, customer_id string
 //                      with a given customer from the database.
 //                      Used by the `list_contacts_by_type()` endpoint.
 //
-// @param `dbg` The debug logging enabler.
-// @param `l`   The main logger of the daemon.
-// @param `cnx` The connection to the database.
+// @param `dbg`          The debug logging enabler.
+// @param `l`            The main logger of the daemon.
+// @param `cnx`          The connection to the database.
+// @param `customer_id`  The customer ID used to retrieve contacts
+//                       which belong to this customer.
+// @param `contact_type` The particular type of contacts to retrieve
+//                       (e.g. phone, email, postal address, etc.).
 //
 // @returns An array of Contact entities retrieved from the database.
 pub fn get_contacts_by_type(dbg bool, mut l log.Log, cnx sqlite.DB,
