@@ -102,14 +102,14 @@ fn main() {
     os.signal_opt(.int,  h.cleanup__)! // <== SIGINT
     os.signal_opt(.term, h.cleanup__)! // <== SIGTERM
 
-    mut app := &ApiLiteCore{
+    mut api := &ApiLiteCore{
         dbg: dbg
         l:   l
         cnx: cnx
     }
 
     // Trying to start up the inbuilt web server.
-    veb.run_at[ApiLiteCore, HttpContext](mut app, port: server_port,
+    veb.run_at[ApiLiteCore, HttpContext](mut api, port: server_port,
         show_startup_message: false) or {
 
         if err.msg().match_glob(h.err_eaddrinuse_glob) {
@@ -157,16 +157,16 @@ fn main() {
 //          containing a list of all customer profiles.
 //          May return client or server error depending on incoming request.
 @['/v1/customers'; put; get; head; post; patch; delete; options]
-pub fn (mut app ApiLiteCore) add_or_list_customers(mut ctx HttpContext)
+pub fn (mut api ApiLiteCore) add_or_list_customers(mut ctx HttpContext)
     veb.Result {
 
     method := ctx.req.method
 
-    h.dbg_(app.dbg, mut app.l, h.o_bracket + method.str() + h.c_bracket)
+    h.dbg_(api.dbg, mut api.l, h.o_bracket + method.str() + h.c_bracket)
 
     if method == .put {
         // Creating a new customer (putting customer data to the database).
-        customer := c.put_customer(app.dbg, mut app.l, app.cnx, ctx.req.data)
+        customer := c.put_customer(api.dbg, mut api.l, api.cnx, ctx.req.data)
 
         // Validating the request payload through the return value
         // ("empty customer") from controller.
@@ -185,7 +185,7 @@ pub fn (mut app ApiLiteCore) add_or_list_customers(mut ctx HttpContext)
         return ctx.json(customer)
     } else if (method == .get) || (method == .head) {
         // Retrieving all customer profiles from the database.
-        customers := c.get_customers(app.dbg, mut app.l, app.cnx)
+        customers := c.get_customers(api.dbg, mut api.l, api.cnx)
 
         return ctx.json(customers)
     } else {
@@ -225,16 +225,16 @@ pub fn (mut app ApiLiteCore) add_or_list_customers(mut ctx HttpContext)
 //          customer contact (phone or email).
 //          May return client or server error depending on incoming request.
 @['/v1/customers/contacts'; put; get; head; post; patch; delete; options]
-pub fn (mut app ApiLiteCore) add_contact(mut ctx HttpContext) veb.Result {
+pub fn (mut api ApiLiteCore) add_contact(mut ctx HttpContext) veb.Result {
     method := ctx.req.method
 
-    h.dbg_(app.dbg, mut app.l, h.o_bracket + method.str() + h.c_bracket)
+    h.dbg_(api.dbg, mut api.l, h.o_bracket + method.str() + h.c_bracket)
 
     if method == .put {
         // Creating a new contact (putting a contact regarding a given customer
         // to the database).
-        customer_id, contact_type, contact := c.put_contact(app.dbg, mut app.l,
-            app.cnx, ctx.req.data)
+        customer_id, contact_type, contact := c.put_contact(api.dbg, mut api.l,
+            api.cnx, ctx.req.data)
 
         // Validating the request payload through the return value
         // ("empty contact") from controller.
@@ -278,12 +278,12 @@ pub fn (mut app ApiLiteCore) add_contact(mut ctx HttpContext) veb.Result {
 //          in JSON representation).
 //          May return client or server error depending on incoming request.
 @['/v1/customers/:customer_id'; get; head; put; post; patch; delete; options]
-pub fn (mut app ApiLiteCore) get_customer(mut ctx HttpContext,
+pub fn (mut api ApiLiteCore) get_customer(mut ctx HttpContext,
     customer_id string) veb.Result {
 
     method := ctx.req.method
 
-    h.dbg_(app.dbg, mut app.l, h.o_bracket + method.str() + h.c_bracket)
+    h.dbg_(api.dbg, mut api.l, h.o_bracket + method.str() + h.c_bracket)
 
     if (method == .get) || (method == .head) {
         // Validating the request path variable.
@@ -294,7 +294,7 @@ pub fn (mut app ApiLiteCore) get_customer(mut ctx HttpContext,
         }
 
         // Retrieving profile details for a given customer from the database.
-        customer := c.get_customer(app.dbg, mut app.l, app.cnx, customer_id)
+        customer := c.get_customer(api.dbg, mut api.l, api.cnx, customer_id)
 
         if customer.id == 0 {
             ctx.res.set_status(.not_found)
@@ -327,12 +327,12 @@ pub fn (mut app ApiLiteCore) get_customer(mut ctx HttpContext,
 //          May return client or server error depending on incoming request.
 @['/v1/customers/:customer_id/contacts'; get; head; put; post; patch; delete;
 options]
-pub fn (mut app ApiLiteCore) list_contacts(mut ctx HttpContext,
+pub fn (mut api ApiLiteCore) list_contacts(mut ctx HttpContext,
     customer_id string) veb.Result {
 
     method := ctx.req.method
 
-    h.dbg_(app.dbg, mut app.l, h.o_bracket + method.str() + h.c_bracket)
+    h.dbg_(api.dbg, mut api.l, h.o_bracket + method.str() + h.c_bracket)
 
     if (method == .get) || (method == .head) {
         // Validating the request path variable.
@@ -344,7 +344,7 @@ pub fn (mut app ApiLiteCore) list_contacts(mut ctx HttpContext,
 
         // Retrieving all contacts associated with a given customer
         // from the database.
-        contacts := c.get_contacts(app.dbg, mut app.l, app.cnx, customer_id)
+        contacts := c.get_contacts(api.dbg, mut api.l, api.cnx, customer_id)
 
         if contacts.len == 0 {
             ctx.res.set_status(.not_found)
@@ -381,12 +381,12 @@ pub fn (mut app ApiLiteCore) list_contacts(mut ctx HttpContext,
 //          May return client or server error depending on incoming request.
 @['/v1/customers/:customer_id/contacts/:contact_type'; get; head; put; post;
 patch; delete; options]
-pub fn (mut app ApiLiteCore) list_contacts_by_type(mut ctx HttpContext,
+pub fn (mut api ApiLiteCore) list_contacts_by_type(mut ctx HttpContext,
     customer_id string, contact_type string) veb.Result {
 
     method := ctx.req.method
 
-    h.dbg_(app.dbg, mut app.l, h.o_bracket + method.str() + h.c_bracket)
+    h.dbg_(api.dbg, mut api.l, h.o_bracket + method.str() + h.c_bracket)
 
     if (method == .get) || (method == .head) {
         // Validating the request path variable.
@@ -398,7 +398,7 @@ pub fn (mut app ApiLiteCore) list_contacts_by_type(mut ctx HttpContext,
 
         // Retrieving all contacts of a given type associated
         // with a given customer from the database.
-        contacts := c.get_contacts_by_type(app.dbg, mut app.l, app.cnx,
+        contacts := c.get_contacts_by_type(api.dbg, mut api.l, api.cnx,
             customer_id, contact_type.to_lower_ascii())
 
         if contacts.len == 0 {
