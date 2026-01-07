@@ -174,7 +174,7 @@ pub fn (mut app CustomersApiLiteApp) add_list_customers(mut ctx RequestContext)
             return ctx.json(Error_{ error: h.err_req_malformed })
         }
 
-        ctx.res.header.add(.location, h.slash + h.rest_version
+        ctx.res.header.set(.location, h.slash + h.rest_version
                                     + h.slash + h.rest_prefix
                                     + h.slash + customer.id.str()) // getId()
 
@@ -190,7 +190,7 @@ pub fn (mut app CustomersApiLiteApp) add_list_customers(mut ctx RequestContext)
         // Methods POST, PATCH, DELETE, OPTIONS, and TRACE go here.
         // For any other method veb will automatically respond
         // with the HTTP 404 Not Found status code.
-        ctx.res.header.add(.allow, h.hdr_allow_1)
+        ctx.res.header.set(.allow, h.hdr_allow_1)
         ctx.res.header.set(.content_length, 0.str())
         ctx.res.set_status(.method_not_allowed) //< HTTP 405 Method Not Allowed
 
@@ -249,7 +249,7 @@ pub fn (mut app CustomersApiLiteApp) add_contact(mut ctx RequestContext)
             return ctx.json(Error_{ error: h.err_req_not_found_1 })
         }
 
-        ctx.res.header.add(.location, h.slash + h.rest_version
+        ctx.res.header.set(.location, h.slash + h.rest_version
                                     + h.slash + h.rest_prefix
                                     + h.slash + customer_id
                                     + h.slash + h.rest_contacts
@@ -259,7 +259,7 @@ pub fn (mut app CustomersApiLiteApp) add_contact(mut ctx RequestContext)
 
         return ctx.json(contact)
     } else {
-        ctx.res.header.add(.allow, h.hdr_allow_2)
+        ctx.res.header.set(.allow, h.hdr_allow_2)
         ctx.res.header.set(.content_length, 0.str())
         ctx.res.set_status(.method_not_allowed)
 
@@ -306,7 +306,7 @@ pub fn (mut app CustomersApiLiteApp) get_customer(mut ctx RequestContext,
 
         return ctx.json(customer)
     } else {
-        ctx.res.header.add(.allow, h.hdr_allow_3)
+        ctx.res.header.set(.allow, h.hdr_allow_3)
         ctx.res.header.set(.content_length, 0.str())
         ctx.res.set_status(.method_not_allowed)
 
@@ -356,7 +356,7 @@ pub fn (mut app CustomersApiLiteApp) list_contacts(mut ctx RequestContext,
 
         return ctx.json(contacts)
     } else {
-        ctx.res.header.add(.allow, h.hdr_allow_3)
+        ctx.res.header.set(.allow, h.hdr_allow_3)
         ctx.res.header.set(.content_length, 0.str())
         ctx.res.set_status(.method_not_allowed)
 
@@ -413,7 +413,7 @@ pub fn (mut app CustomersApiLiteApp) list_contacts_by_type(
 
         return ctx.json(contacts)
     } else {
-        ctx.res.header.add(.allow, h.hdr_allow_3)
+        ctx.res.header.set(.allow, h.hdr_allow_3)
         ctx.res.header.set(.content_length, 0.str())
         ctx.res.set_status(.method_not_allowed)
 
