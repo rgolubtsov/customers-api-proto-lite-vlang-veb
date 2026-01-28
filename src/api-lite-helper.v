@@ -101,6 +101,7 @@ pub const cust_id   = 'customer_id'
 pub const cont_type = 'contact_type'
 
 // HTTP response-related constants.
+pub const hdr_x_req_m = 'X-Request-Method'
 pub const hdr_allow_1 = 'PUT, GET, HEAD'
 pub const hdr_allow_2 = 'PUT'
 pub const hdr_allow_3 = 'GET, HEAD'

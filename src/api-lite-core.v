@@ -29,6 +29,7 @@ import controller as c
 //             all of which are accessible by all endpoints and shared
 //             between different routes.
 pub struct ApiLiteCore {
+    veb.Middleware[HttpContext]
     dbg bool
     cnx sqlite.DB
 mut:
@@ -108,6 +109,9 @@ fn main() {
         cnx: cnx
     }
 
+    // Registering middleware functions.
+    api.use(handler: before_all)
+
     // Trying to start up the inbuilt web server.
     veb.run_at[ApiLiteCore, HttpContext](mut api, port: server_port,
         show_startup_message: false) or {
@@ -124,7 +128,16 @@ fn main() {
 
         exit(h.exit_failure)
     }
-} // End main.
+}
+
+// Request filters ------------------------------------------------------------
+
+pub fn before_all(mut ctx HttpContext) bool {
+    ctx.set_custom_header(h.hdr_x_req_m, ctx.req.method.str())
+        or { print(h.empty_string) }
+
+    return true
+}
 
 // REST API endpoints ---------------------------------------------------------
 
