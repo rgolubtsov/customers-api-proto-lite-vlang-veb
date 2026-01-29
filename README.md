@@ -301,6 +301,7 @@ $ curl -vXPUT http://localhost:8765/v1/customers \
 > Content-Length: 25
 ...
 < HTTP/1.1 201 Created
+< X-Request-Method: PUT
 < Location: /v1/customers/3
 < Content-Type: application/json
 < Content-Length: 32
@@ -322,6 +323,7 @@ $ curl -vXPUT http://localhost:8765/v1/customers/contacts \
 > Content-Length: 44
 ...
 < HTTP/1.1 201 Created
+< X-Request-Method: PUT
 < Location: /v1/customers/3/contacts/phone
 < Content-Type: application/json
 < Content-Length: 26
@@ -343,6 +345,7 @@ $ curl -vXPUT http://localhost:8765/v1/customers/contacts \
 > Content-Length: 58
 ...
 < HTTP/1.1 201 Created
+< X-Request-Method: PUT
 < Location: /v1/customers/3/contacts/email
 < Content-Type: application/json
 < Content-Length: 40
@@ -359,6 +362,7 @@ $ curl -v http://localhost:8765/v1/customers
 > GET /v1/customers HTTP/1.1
 ...
 < HTTP/1.1 200 OK
+< X-Request-Method: GET
 < Content-Type: application/json
 < Content-Length: 136
 < Server: veb
@@ -374,6 +378,7 @@ $ curl -v http://localhost:8765/v1/customers/3
 > GET /v1/customers/3 HTTP/1.1
 ...
 < HTTP/1.1 200 OK
+< X-Request-Method: GET
 < Content-Type: application/json
 < Content-Length: 32
 < Server: veb
@@ -389,6 +394,7 @@ $ curl -v http://localhost:8765/v1/customers/3/contacts
 > GET /v1/customers/3/contacts HTTP/1.1
 ...
 < HTTP/1.1 200 OK
+< X-Request-Method: GET
 < Content-Type: application/json
 < Content-Length: 186
 < Server: veb
@@ -404,6 +410,7 @@ $ curl -v http://localhost:8765/v1/customers/3/contacts/phone
 > GET /v1/customers/3/contacts/phone HTTP/1.1
 ...
 < HTTP/1.1 200 OK
+< X-Request-Method: GET
 < Content-Type: application/json
 < Content-Length: 82
 < Server: veb
@@ -419,6 +426,7 @@ $ curl -v http://localhost:8765/v1/customers/3/contacts/email
 > GET /v1/customers/3/contacts/email HTTP/1.1
 ...
 < HTTP/1.1 200 OK
+< X-Request-Method: GET
 < Content-Type: application/json
 < Content-Length: 105
 < Server: veb
