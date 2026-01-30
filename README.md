@@ -442,22 +442,22 @@ The microservice has the ability to log messages to a logfile and to the Unix sy
 
 ```
 $ tail -f log_/customers-api-lite.log
-[2025-09-18][17:50:30] [DEBUG] [Customers API Lite]
-[2025-09-18][17:50:30] [DEBUG] [sqlite.DB{ conn: 63d0e845b028 }]
-[2025-09-18][17:50:30] [INFO ] Server started on port 8765
-[2025-09-18][17:51:30] [DEBUG] [PUT]
-[2025-09-18][17:51:30] [DEBUG] [Saturday Sunday]
-[2025-09-18][17:51:30] [DEBUG] [5|Saturday Sunday]
-[2025-09-18][17:52:30] [DEBUG] [PUT]
-[2025-09-18][17:52:30] [DEBUG] customer_id=5
-[2025-09-18][17:52:30] [DEBUG] [Saturday.Sunday@example.com]
-[2025-09-18][17:52:30] [DEBUG] [email|Saturday.Sunday@example.com]
-[2025-09-18][17:53:40] [DEBUG] [GET]
-[2025-09-18][17:53:40] [DEBUG] customer_id=5
-[2025-09-18][17:53:40] [DEBUG] [5|Saturday Sunday]
-[2025-09-18][17:54:50] [DEBUG] [GET]
-[2025-09-18][17:54:50] [DEBUG] customer_id=5 | contact_type=email
-[2025-09-18][17:54:50] [DEBUG] [Saturday.Sunday@example.com]
+[2026-01-30][00:10:00] [DEBUG] [Customers API Lite]
+[2026-01-30][00:10:00] [DEBUG] [sqlite.DB{ conn: 55a236909f78 }]
+[2026-01-30][00:10:00] [INFO ] Server started on port 8765
+[2026-01-30][00:10:30] [DEBUG] [PUT]
+[2026-01-30][00:10:30] [DEBUG] [Saturday Sunday]
+[2026-01-30][00:10:30] [DEBUG] [5|Saturday Sunday]
+[2026-01-30][00:10:50] [DEBUG] [PUT]
+[2026-01-30][00:10:50] [DEBUG] customer_id=5
+[2026-01-30][00:10:50] [DEBUG] [Saturday.Sunday@example.com]
+[2026-01-30][00:10:50] [DEBUG] [email|Saturday.Sunday@example.com]
+[2026-01-30][00:11:10] [DEBUG] [GET]
+[2026-01-30][00:11:10] [DEBUG] customer_id=5
+[2026-01-30][00:11:10] [DEBUG] [5|Saturday Sunday]
+[2026-01-30][00:11:40] [DEBUG] [GET]
+[2026-01-30][00:11:40] [DEBUG] customer_id=5 | contact_type=email
+[2026-01-30][00:11:40] [DEBUG] [Saturday.Sunday@example.com]
 ```
 
 Messages registered by the Unix system logger can be seen and analyzed using the `journalctl` utility:
@@ -465,23 +465,23 @@ Messages registered by the Unix system logger can be seen and analyzed using the
 ```
 $ journalctl -f
 ...
-Sep 18 19:50:30 <hostname> api-lited[<pid>]: [Customers API Lite]
-Sep 18 19:50:30 <hostname> api-lited[<pid>]: [sqlite.DB{ conn: 63d0e845b028 }]
-Sep 18 19:50:30 <hostname> api-lited[<pid>]: Server started on port 8765
-Sep 18 19:51:30 <hostname> api-lited[<pid>]: [PUT]
-Sep 18 19:51:30 <hostname> api-lited[<pid>]: [Saturday Sunday]
-Sep 18 19:51:30 <hostname> api-lited[<pid>]: [5|Saturday Sunday]
-Sep 18 19:52:30 <hostname> api-lited[<pid>]: [PUT]
-Sep 18 19:52:30 <hostname> api-lited[<pid>]: customer_id=5
-Sep 18 19:52:30 <hostname> api-lited[<pid>]: [Saturday.Sunday@example.com]
-Sep 18 19:52:30 <hostname> api-lited[<pid>]: [email|Saturday.Sunday@example.com]
-Sep 18 19:53:40 <hostname> api-lited[<pid>]: [GET]
-Sep 18 19:53:40 <hostname> api-lited[<pid>]: customer_id=5
-Sep 18 19:53:40 <hostname> api-lited[<pid>]: [5|Saturday Sunday]
-Sep 18 19:54:50 <hostname> api-lited[<pid>]: [GET]
-Sep 18 19:54:50 <hostname> api-lited[<pid>]: customer_id=5 | contact_type=email
-Sep 18 19:54:50 <hostname> api-lited[<pid>]: [Saturday.Sunday@example.com]
-Sep 18 19:55:00 <hostname> api-lited[<pid>]: Server stopped
+Jan 30 03:10:00 <hostname> api-lited[<pid>]: [Customers API Lite]
+Jan 30 03:10:00 <hostname> api-lited[<pid>]: [sqlite.DB{ conn: 55a236909f78 }]
+Jan 30 03:10:00 <hostname> api-lited[<pid>]: Server started on port 8765
+Jan 30 03:10:30 <hostname> api-lited[<pid>]: [PUT]
+Jan 30 03:10:30 <hostname> api-lited[<pid>]: [Saturday Sunday]
+Jan 30 03:10:30 <hostname> api-lited[<pid>]: [5|Saturday Sunday]
+Jan 30 03:10:50 <hostname> api-lited[<pid>]: [PUT]
+Jan 30 03:10:50 <hostname> api-lited[<pid>]: customer_id=5
+Jan 30 03:10:50 <hostname> api-lited[<pid>]: [Saturday.Sunday@example.com]
+Jan 30 03:10:50 <hostname> api-lited[<pid>]: [email|Saturday.Sunday@example.com]
+Jan 30 03:11:10 <hostname> api-lited[<pid>]: [GET]
+Jan 30 03:11:10 <hostname> api-lited[<pid>]: customer_id=5
+Jan 30 03:11:10 <hostname> api-lited[<pid>]: [5|Saturday Sunday]
+Jan 30 03:11:40 <hostname> api-lited[<pid>]: [GET]
+Jan 30 03:11:40 <hostname> api-lited[<pid>]: customer_id=5 | contact_type=email
+Jan 30 03:11:40 <hostname> api-lited[<pid>]: [Saturday.Sunday@example.com]
+Jan 30 03:12:00 <hostname> api-lited[<pid>]: Server stopped
 ```
 
 Inside the running container logs might be queried also by `tail`ing the `log_/customers-api-lite.log` logfile:
